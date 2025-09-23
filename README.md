@@ -6,6 +6,8 @@
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
+![GitHub Actions](https://github.com/Hacker0458/managebac-assignment-checker/workflows/🚀%20ManageBac%20Assignment%20Checker%20CI/CD/badge.svg)
+![Downloads](https://img.shields.io/github/downloads/Hacker0458/managebac-assignment-checker/total.svg)
 
 **🎯 An intelligent automation tool for ManageBac assignment tracking**  
 **一个用于ManageBac作业追踪的智能自动化工具**
@@ -33,6 +35,16 @@
 
 #### Installation
 
+**🚀 Quick Install (One Command):**
+```bash
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git && cd managebac-assignment-checker && pip install -r requirements.txt && python main_new.py --interactive
+```
+
+**🎯 Auto Install Scripts:**
+- **Linux/macOS**: `./install.sh`
+- **Windows**: `install.bat`
+
+**📋 Step by Step:**
 ```bash
 # Clone the repository
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git
@@ -164,6 +176,16 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 #### 安装
 
+**🚀 快速安装（一键命令）：**
+```bash
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git && cd managebac-assignment-checker && pip install -r requirements.txt && python main_new.py --interactive
+```
+
+**🎯 自动安装脚本：**
+- **Linux/macOS**: `./install.sh`
+- **Windows**: `install.bat`
+
+**📋 分步安装：**
 ```bash
 # 克隆仓库
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git

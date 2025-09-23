@@ -7,13 +7,20 @@
 include README.md
 include LICENSE
 include CHANGELOG.md
+include RELEASE_NOTES.md
 include MANIFEST.in
 
 # Configuration files | 配置文件
 include pyproject.toml
 include setup.py
 include requirements.txt
+include requirements-test.txt
+include pytest.ini
 include config.example.env
+
+# Installation scripts | 安装脚本
+include install.sh
+include install.bat
 
 # Source code | 源代码
 recursive-include managebac_checker *.py
