@@ -5,7 +5,7 @@
 
 # Core Dependencies | 核心依赖
 playwright>=1.45.0          # Web automation and scraping | 网页自动化和抓取
-python-dotenv>=1.1.1        # Environment variable management | 环境变量管理
+python-dotenv>=1.0.0        # Environment variable management | 环境变量管理
 
 # Optional Dependencies | 可选依赖
 jinja2>=3.1.4              # HTML template engine | HTML模板引擎 (optional)
