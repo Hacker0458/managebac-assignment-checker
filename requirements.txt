@@ -11,6 +11,11 @@ python-dotenv>=1.0.0        # Environment variable management | 环境变量管�
 jinja2>=3.1.4              # HTML template engine | HTML模板引擎 (optional)
 openai>=1.0.0              # AI Assistant integration | AI助手集成 (optional)
 
+# GUI Dependencies | GUI依赖 (optional)
+pystray>=0.19.0            # System tray integration | 系统托盘集成 (optional)
+pillow>=10.0.0             # Image processing for icons | 图标图像处理 (optional)
+plyer>=2.1.0               # Desktop notifications | 桌面通知 (optional)
+
 # Development Dependencies | 开发依赖
 pytest>=8.4.2              # Testing framework | 测试框架
 pytest-asyncio>=0.23.0     # Async testing support | 异步测试支持
