@@ -81,15 +81,23 @@ def launch_gui():
         print("🚀 Launching ManageBac Assignment Checker GUI...")
         print("🚀 正在启动ManageBac作业检查器GUI...")
         
-        # Try enhanced GUI first, fallback to basic GUI
+        # Try professional GUI first, then enhanced, then basic
         try:
-            from managebac_checker.enhanced_gui import main
+            from managebac_checker.professional_gui import main
+            print("🎯 Starting Professional GUI...")
+            print("🎯 启动专业版GUI...")
             main()
         except ImportError:
-            print("⚠️ Enhanced GUI not available, using basic GUI...")
-            print("⚠️ 增强版GUI不可用，使用基础GUI...")
-            from managebac_checker.gui import main
-            main()
+            try:
+                from managebac_checker.enhanced_gui import main
+                print("⚠️ Professional GUI not available, using enhanced GUI...")
+                print("⚠️ 专业版GUI不可用，使用增强版GUI...")
+                main()
+            except ImportError:
+                print("⚠️ Enhanced GUI not available, using basic GUI...")
+                print("⚠️ 增强版GUI不可用，使用基础GUI...")
+                from managebac_checker.gui import main
+                main()
         
     except ImportError as e:
         print(f"❌ Import error: {e}")
