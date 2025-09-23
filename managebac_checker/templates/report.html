@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="{{ theme }}">
+    <title>{{ title }}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #475569;
+            --text-color: #1e293b;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Dark theme support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light-gray: #1e293b;
+                --medium-gray: #334155;
+                --text-color: #f1f5f9;
+                --dark-gray: #cbd5e1;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s infinite linear;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% { transform: translateX(-50px); }
+            100% { transform: translateX(50px); }
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--light-gray);
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-color);
+        }
+        
+        .stat-card.urgent::before { background: var(--danger-color); }
+        .stat-card.courses::before { background: var(--success-color); }
+        .stat-card.priority::before { background: var(--warning-color); }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .stat-card.urgent .stat-number { color: var(--danger-color); }
+        .stat-card.courses .stat-number { color: var(--success-color); }
+        .stat-card.priority .stat-number { color: var(--warning-color); }
+        
+        .stat-label {
+            color: var(--dark-gray);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+        }
+        
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+        
+        .assignments-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .assignment-card {
+            background: white;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .assignment-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .assignment-card.high-priority {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .assignment-card.medium-priority {
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .assignment-card.low-priority {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .assignment-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .assignment-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .badge.high { background: #fee2e2; color: #991b1b; }
+        .badge.medium { background: #fef3c7; color: #92400e; }
+        .badge.low { background: #d1fae5; color: #065f46; }
+        .badge.urgent { background: #fee2e2; color: #991b1b; }
+        .badge.soon { background: #fef3c7; color: #92400e; }
+        .badge.later { background: #d1fae5; color: #065f46; }
+        
+        .footer {
+            background: var(--light-gray);
+            padding: 2rem;
+            text-align: center;
+            color: var(--dark-gray);
+            border-top: 1px solid var(--medium-gray);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-dark);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .assignment-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .header {
+                background: var(--primary-color) !important;
+                -webkit-print-color-adjust: exact;
+            }
+            
+            .assignment-card:hover {
+                transform: none;
+                box-shadow: var(--shadow);
+            }
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--medium-gray);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>{{ header_title }}</h1>
+            <div class="subtitle">{{ header_subtitle }}</div>
+        </div>
+        
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">{{ total_assignments }}</span>
+                <div class="stat-label">{{ total_label }}</div>
+            </div>
+            <div class="stat-card urgent">
+                <span class="stat-number">{{ urgent_count }}</span>
+                <div class="stat-label">{{ urgent_label }}</div>
+            </div>
+            <div class="stat-card courses">
+                <span class="stat-number">{{ courses_count }}</span>
+                <div class="stat-label">{{ courses_label }}</div>
+            </div>
+            <div class="stat-card priority">
+                <span class="stat-number">{{ high_priority_count }}</span>
+                <div class="stat-label">{{ high_priority_label }}</div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            {% if include_charts %}
+            <!-- Charts Section -->
+            <div class="section">
+                <h2 class="section-title">
+                    📊 {{ charts_title }}
+                </h2>
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <div class="chart-title">{{ priority_chart_title }}</div>
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-title">{{ course_chart_title }}</div>
+                        <canvas id="courseChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-title">{{ urgency_chart_title }}</div>
+                        <canvas id="urgencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Urgent Assignments -->
+            {% if urgent_assignments %}
+            <div class="section">
+                <h2 class="section-title">
+                    🔥 {{ urgent_section_title }}
+                </h2>
+                <div class="assignments-grid">
+                    {% for assignment in urgent_assignments %}
+                    <div class="assignment-card {{ assignment.priority }}-priority fade-in">
+                        <div class="assignment-title">{{ assignment.title }}</div>
+                        <div class="assignment-meta">
+                            <div class="meta-item">
+                                <span>⏰</span>
+                                <span>{{ assignment.due_date }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span>📚</span>
+                                <span>{{ assignment.course }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span>📊</span>
+                                <span>{{ assignment.status }}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge {{ assignment.priority }}">{{ assignment.priority_text }}</span>
+                            <span class="badge {{ assignment.urgency }}">{{ assignment.urgency_text }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- All Assignments -->
+            <div class="section">
+                <h2 class="section-title">
+                    📋 {{ all_assignments_title }}
+                </h2>
+                <div class="assignments-grid">
+                    {% for assignment in assignments %}
+                    <div class="assignment-card {{ assignment.priority }}-priority fade-in">
+                        <div class="assignment-title">{{ assignment.title }}</div>
+                        <div class="assignment-meta">
+                            <div class="meta-item">
+                                <span>⏰</span>
+                                <span>{{ assignment.due_date }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span>📚</span>
+                                <span>{{ assignment.course }}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span>📊</span>
+                                <span>{{ assignment.status }}</span>
+                            </div>
+                            {% if assignment.type %}
+                            <div class="meta-item">
+                                <span>📝</span>
+                                <span>{{ assignment.type }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span class="badge {{ assignment.priority }}">{{ assignment.priority_text }}</span>
+                            <span class="badge {{ assignment.urgency }}">{{ assignment.urgency_text }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Course Summary -->
+            {% if course_summary %}
+            <div class="section">
+                <h2 class="section-title">
+                    📚 {{ course_summary_title }}
+                </h2>
+                <div class="assignments-grid">
+                    {% for course, count in course_summary %}
+                    <div class="assignment-card low-priority">
+                        <div class="assignment-title">{{ course }}</div>
+                        <div class="assignment-meta">
+                            <div class="meta-item">
+                                <span>📝</span>
+                                <span>{{ count }} {{ assignments_text }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="https://github.com/Hacker0458/managebac-assignment-checker" class="footer-link">GitHub</a>
+                <a href="https://github.com/Hacker0458/managebac-assignment-checker#readme" class="footer-link">{{ documentation_text }}</a>
+                <a href="https://github.com/Hacker0458/managebac-assignment-checker/issues" class="footer-link">{{ report_issue_text }}</a>
+            </div>
+            <div>
+                <p>{{ footer_text }}</p>
+                <p><small>{{ generated_text }} {{ timestamp }}</small></p>
+            </div>
+        </div>
+    </div>
+    
+    {% if include_charts %}
+    <script>
+        // Chart.js configuration
+        Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        Chart.defaults.plugins.legend.display = true;
+        Chart.defaults.plugins.legend.position = 'bottom';
+        
+        // Priority Distribution Chart
+        const priorityCtx = document.getElementById('priorityChart').getContext('2d');
+        new Chart(priorityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ priority_labels | safe }},
+                datasets: [{
+                    data: {{ priority_data | safe }},
+                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+        
+        // Course Distribution Chart
+        const courseCtx = document.getElementById('courseChart').getContext('2d');
+        new Chart(courseCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ course_labels | safe }},
+                datasets: [{
+                    label: '{{ assignments_text }}',
+                    data: {{ course_data | safe }},
+                    backgroundColor: '#3b82f6',
+                    borderColor: '#1d4ed8',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Urgency Distribution Chart
+        const urgencyCtx = document.getElementById('urgencyChart').getContext('2d');
+        new Chart(urgencyCtx, {
+            type: 'pie',
+            data: {
+                labels: {{ urgency_labels | safe }},
+                datasets: [{
+                    data: {{ urgency_data | safe }},
+                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+        
+        // Animate charts on load
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.fade-in');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                }, 100);
+            });
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

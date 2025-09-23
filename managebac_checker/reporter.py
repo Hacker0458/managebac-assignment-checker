@@ -1,327 +1,516 @@
 """
-报告生成功能模块
+🎓 ManageBac Assignment Checker Reporter | ManageBac作业检查器报告生成器
+========================================================================
+
+Report generation functionality for ManageBac Assignment Checker.
+ManageBac作业检查器的报告生成功能模块。
 """
 
 import json
+import os
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from pathlib import Path
+
+from .logging_utils import BilingualLogger
 
 
 class ReportGenerator:
-    """处理各种格式的报告生成"""
-    
-    def __init__(self, config):
-        """初始化报告生成器"""
+    """
+    Handles various format report generation.
+    处理各种格式的报告生成。
+    """
+
+    def __init__(self, config, logger: Optional[BilingualLogger] = None):
+        """
+        Initialize report generator.
+        初始化报告生成器。
+
+        Args:
+            config: Configuration instance
+            logger: Logger instance
+        """
         self.config = config
+        self.logger = logger
         self.output_dir = config.output_dir
-    
-    def generate_reports(self, assignments: List[Dict[str, Any]], analysis: Dict[str, Any]) -> Dict[str, str]:
-        """生成多种格式的报告"""
-        report_data = {
-            'assignments': assignments,
-            'analysis': analysis,
-            'generated_at': datetime.now().isoformat(),
-            'student_email': self.config.email
+        self.language = config.language
+
+        # Bilingual text templates | 双语文本模板
+        self.texts = self._get_bilingual_texts()
+
+    def _get_bilingual_texts(self) -> Dict[str, Dict[str, str]]:
+        """Get bilingual text templates."""
+        return {
+            "title": {
+                "en": "ManageBac Assignment Report",
+                "zh": "ManageBac作业检查报告",
+            },
+            "header_title": {
+                "en": "📚 ManageBac Assignment Report",
+                "zh": "📚 ManageBac作业检查报告",
+            },
+            "header_subtitle": {
+                "en": f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                "zh": f"生成时间：{datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')}",
+            },
+            "total_label": {"en": "Total Assignments", "zh": "总作业数"},
+            "urgent_label": {"en": "Urgent Assignments", "zh": "紧急作业"},
+            "courses_label": {"en": "Courses Involved", "zh": "涉及课程"},
+            "high_priority_label": {"en": "High Priority", "zh": "高优先级"},
+            "charts_title": {"en": "Data Analysis", "zh": "数据分析"},
+            "priority_chart_title": {"en": "Priority Distribution", "zh": "优先级分布"},
+            "course_chart_title": {"en": "Course Distribution", "zh": "课程分布"},
+            "urgency_chart_title": {"en": "Urgency Distribution", "zh": "紧急程度分布"},
+            "urgent_section_title": {
+                "en": "Urgent Assignments - Immediate Attention Required",
+                "zh": "紧急作业 - 需要立即关注",
+            },
+            "all_assignments_title": {
+                "en": "All Assignment Details",
+                "zh": "所有作业详情",
+            },
+            "course_summary_title": {"en": "Course Summary", "zh": "课程汇总"},
+            "assignments_text": {"en": "assignments", "zh": "个作业"},
+            "documentation_text": {"en": "Documentation", "zh": "文档"},
+            "report_issue_text": {"en": "Report Issue", "zh": "报告问题"},
+            "footer_text": {
+                "en": "🚀 ManageBac Assignment Checker - Making assignment management easier!",
+                "zh": "🚀 ManageBac作业检查器 - 让作业管理更简单！",
+            },
+            "generated_text": {"en": "Generated at", "zh": "生成时间："},
+            "priority_high": {"en": "High", "zh": "高"},
+            "priority_medium": {"en": "Medium", "zh": "中"},
+            "priority_low": {"en": "Low", "zh": "低"},
+            "urgency_urgent": {"en": "Urgent", "zh": "紧急"},
+            "urgency_soon": {"en": "Soon", "zh": "即将到期"},
+            "urgency_later": {"en": "Later", "zh": "稍后"},
         }
-        
+
+    def get_text(self, key: str) -> str:
+        """Get localized text."""
+        return self.texts.get(key, {}).get(
+            self.language, self.texts.get(key, {}).get("en", key)
+        )
+
+    def generate_reports(
+        self, assignments: List[Dict[str, Any]], analysis: Dict[str, Any]
+    ) -> Dict[str, str]:
+        """
+        Generate reports in multiple formats.
+        生成多种格式的报告。
+        """
+        report_data = {
+            "assignments": assignments,
+            "analysis": analysis,
+            "generated_at": datetime.now().isoformat(),
+            "student_email": self.config.email,
+            "language": self.language,
+            "config": {
+                "url": self.config.url,
+                "total_assignments": analysis.get("total_assignments", 0),
+                "urgent_count": analysis.get("urgent_count", 0),
+                "courses_count": len(analysis.get("by_course", {})),
+                "high_priority_count": analysis.get("by_priority", {}).get("high", 0),
+            },
+        }
+
         reports = {}
-        
+
         for format_type in self.config.get_report_formats():
-            if format_type == 'json':
-                reports['json'] = self._generate_json_report(report_data)
-            elif format_type == 'html':
-                reports['html'] = self._generate_html_report(report_data)
-            elif format_type == 'markdown':
-                reports['markdown'] = self._generate_markdown_report(report_data)
-            elif format_type == 'console':
-                reports['console'] = self._generate_console_report(report_data)
-        
+            if format_type == "json":
+                reports["json"] = self._generate_json_report(report_data)
+            elif format_type == "html":
+                reports["html"] = self._generate_html_report(report_data)
+            elif format_type == "markdown":
+                reports["markdown"] = self._generate_markdown_report(report_data)
+            elif format_type == "console":
+                reports["console"] = self._generate_console_report(report_data)
+
         return reports
-    
+
     def _generate_json_report(self, data: Dict[str, Any]) -> str:
-        """生成JSON格式报告"""
+        """Generate JSON format report."""
         try:
             return json.dumps(data, ensure_ascii=False, indent=2, default=str)
         except Exception as e:
-            return f"{{\"error\": \"生成JSON报告失败: {e}\"}}"
-    
+            error_msg = (
+                f"生成JSON报告失败: {e}"
+                if self.language == "zh"
+                else f"Failed to generate JSON report: {e}"
+            )
+            return json.dumps({"error": error_msg})
+
     def _generate_html_report(self, data: Dict[str, Any]) -> str:
-        """生成HTML格式报告"""
-        assignments = data['assignments']
-        analysis = data['analysis']
-        generated_at = data['generated_at']
-        
+        """Generate HTML format report using template."""
+        try:
+            # Prepare template data
+            template_data = self._prepare_html_template_data(data)
+
+            # Try to use Jinja2 template if available
+            try:
+                from jinja2 import Environment, FileSystemLoader
+
+                template_dir = Path(__file__).parent / "templates"
+                env = Environment(loader=FileSystemLoader(template_dir))
+                template = env.get_template("report.html")
+
+                return template.render(**template_data)
+
+            except ImportError:
+                # Fallback to simple string replacement
+                return self._generate_simple_html_report(template_data)
+
+        except Exception as e:
+            error_msg = (
+                f"生成HTML报告失败: {e}"
+                if self.language == "zh"
+                else f"Failed to generate HTML report: {e}"
+            )
+            if self.logger:
+                self.logger.error_occurred(error_msg)
+            return self._generate_fallback_html(data, error_msg)
+
+    def _prepare_html_template_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Prepare data for HTML template."""
+        analysis = data["analysis"]
+        assignments = data["assignments"]
+
+        # Process assignments for display
+        processed_assignments = []
+        for assignment in assignments:
+            processed_assignment = assignment.copy()
+            processed_assignment["priority_text"] = self.get_text(
+                f"priority_{assignment.get('priority', 'low')}"
+            )
+            processed_assignment["urgency_text"] = self.get_text(
+                f"urgency_{assignment.get('urgency', 'later')}"
+            )
+            processed_assignments.append(processed_assignment)
+
+        # Get urgent assignments
+        urgent_assignments = [
+            a for a in processed_assignments if a.get("urgency") == "urgent"
+        ][
+            :10
+        ]  # Limit to top 10
+
+        # Course summary
+        course_summary = list(analysis.get("by_course", {}).items())
+        course_summary.sort(key=lambda x: x[1], reverse=True)
+
+        return {
+            "language": self.language,
+            "theme": getattr(self.config, "html_theme", "auto"),
+            "title": self.get_text("title"),
+            "header_title": self.get_text("header_title"),
+            "header_subtitle": self.get_text("header_subtitle"),
+            "total_assignments": analysis.get("total_assignments", 0),
+            "urgent_count": analysis.get("urgent_count", 0),
+            "courses_count": len(analysis.get("by_course", {})),
+            "high_priority_count": analysis.get("by_priority", {}).get("high", 0),
+            "total_label": self.get_text("total_label"),
+            "urgent_label": self.get_text("urgent_label"),
+            "courses_label": self.get_text("courses_label"),
+            "high_priority_label": self.get_text("high_priority_label"),
+            "include_charts": getattr(self.config, "include_charts", True),
+            "charts_title": self.get_text("charts_title"),
+            "priority_chart_title": self.get_text("priority_chart_title"),
+            "course_chart_title": self.get_text("course_chart_title"),
+            "urgency_chart_title": self.get_text("urgency_chart_title"),
+            "urgent_section_title": self.get_text("urgent_section_title"),
+            "all_assignments_title": self.get_text("all_assignments_title"),
+            "course_summary_title": self.get_text("course_summary_title"),
+            "assignments": processed_assignments,
+            "urgent_assignments": urgent_assignments,
+            "course_summary": course_summary,
+            "assignments_text": self.get_text("assignments_text"),
+            "documentation_text": self.get_text("documentation_text"),
+            "report_issue_text": self.get_text("report_issue_text"),
+            "footer_text": self.get_text("footer_text"),
+            "generated_text": self.get_text("generated_text"),
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            # Chart data
+            "priority_labels": json.dumps(
+                [
+                    self.get_text("priority_high"),
+                    self.get_text("priority_medium"),
+                    self.get_text("priority_low"),
+                ]
+            ),
+            "priority_data": json.dumps(
+                [
+                    analysis.get("by_priority", {}).get("high", 0),
+                    analysis.get("by_priority", {}).get("medium", 0),
+                    analysis.get("by_priority", {}).get("low", 0),
+                ]
+            ),
+            "course_labels": json.dumps(list(analysis.get("by_course", {}).keys())),
+            "course_data": json.dumps(list(analysis.get("by_course", {}).values())),
+            "urgency_labels": json.dumps(
+                [
+                    self.get_text("urgency_urgent"),
+                    self.get_text("urgency_soon"),
+                    self.get_text("urgency_later"),
+                ]
+            ),
+            "urgency_data": json.dumps(
+                [
+                    len([a for a in assignments if a.get("urgency") == "urgent"]),
+                    len([a for a in assignments if a.get("urgency") == "soon"]),
+                    len([a for a in assignments if a.get("urgency") == "later"]),
+                ]
+            ),
+        }
+
+    def _generate_simple_html_report(self, template_data: Dict[str, Any]) -> str:
+        """Generate HTML report without Jinja2."""
+        # Read template file
+        template_path = Path(__file__).parent / "templates" / "report.html"
+
+        if not template_path.exists():
+            return self._generate_fallback_html(
+                template_data, "Template file not found"
+            )
+
+        with open(template_path, "r", encoding="utf-8") as f:
+            template_content = f.read()
+
+        # Simple template variable replacement
+        for key, value in template_data.items():
+            placeholder = f"{{{{ {key} }}}}"
+            template_content = template_content.replace(placeholder, str(value))
+
+        # Remove Jinja2 specific syntax that wasn't replaced
+        import re
+
+        template_content = re.sub(r"{%.*?%}", "", template_content, flags=re.DOTALL)
+        template_content = re.sub(r"{{.*?}}", "", template_content)
+
+        return template_content
+
+    def _generate_fallback_html(self, data: Any, error: str = "") -> str:
+        """Generate a simple fallback HTML report."""
+        assignments = data.get("assignments", []) if isinstance(data, dict) else []
+        analysis = data.get("analysis", {}) if isinstance(data, dict) else {}
+
         html = f"""
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <title>ManageBac作业检查报告</title>
-    <style>
-        :root {{ color-scheme: light; }}
-        html, body {{ background:#f7fafc; }}
-        body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; margin: 24px; color:#111827; }}
-        a {{ color:#1d4ed8; text-decoration:none; }}
-        a:hover {{ text-decoration:underline; }}
-        .container {{ max-width: 1100px; margin: 0 auto; background-color: #ffffff; padding: 28px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border:1px solid #e5e7eb; }}
-        h1 {{ color: #111827; border-bottom: 4px solid #2563eb; padding-bottom: 10px; margin-top:0; }}
-        h2 {{ color: #111827; margin-top: 28px; }}
-        h3 {{ color:#111827; }}
-        .summary {{ background-color: #f3f4f6; padding: 18px; border-radius: 10px; margin: 18px 0; border:1px solid #e5e7eb; }}
-        .urgent {{ background-color: #ef4444; color: #ffffff; padding: 10px; border-radius: 10px; margin: 6px 0; }}
-        .soon {{ background-color: #f59e0b; color: #111827; padding: 10px; border-radius: 10px; margin: 6px 0; }}
-        .later {{ background-color: #10b981; color: #ffffff; padding: 10px; border-radius: 10px; margin: 6px 0; }}
-        .assignment {{ border-left: 6px solid #2563eb; padding: 14px; margin: 10px 0; background-color: #ffffff; border:1px solid #e5e7eb; border-radius:8px; color:#111827; }}
-        .high-priority {{ border-left-color: #ef4444; }}
-        .medium-priority {{ border-left-color: #f59e0b; }}
-        .low-priority {{ border-left-color: #10b981; }}
-        .stats {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }}
-        .stat-item {{ text-align: center; padding: 16px; background-color: #2563eb; color: white; border-radius: 10px; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.1); }}
-        .kpi-bar {{ background:#e5e7eb; height:10px; border-radius:999px; overflow:hidden; }}
-        .kpi-fill {{ height:10px; background:#2563eb; }}
-        .kpi-fill.red {{ background:#ef4444; }}
-        .kpi-fill.yellow {{ background:#f59e0b; }}
-        .kpi-fill.green {{ background:#10b981; }}
-        table {{ width: 100%; border-collapse: collapse; margin: 16px 0; font-size:14px; }}
-        th, td {{ border: 1px solid #e5e7eb; padding: 10px; text-align: left; color:#111827; }}
-        th {{ background-color: #2563eb; color: #ffffff; }}
-        .footer {{ text-align: center; margin-top: 30px; color: #6b7280; font-size: 12px; }}
-        .badge {{ display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; margin-left:6px; }}
-        .badge.high {{ background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }}
-        .badge.medium {{ background:#fef3c7; color:#92400e; border:1px solid #fde68a; }}
-        .badge.low {{ background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>📚 ManageBac作业检查报告</h1>
-        
-        <div class="summary">
-            <h2>📈 概览统计</h2>
+        <!DOCTYPE html>
+        <html lang="{self.language}">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{self.get_text("title")}</title>
+            <style>
+                body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px; line-height: 1.6; }}
+                .header {{ background: #3b82f6; color: white; padding: 2rem; border-radius: 8px; text-align: center; }}
+                .stats {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }}
+                .stat {{ background: #f8fafc; padding: 1rem; border-radius: 8px; text-align: center; }}
+                .assignment {{ border: 1px solid #e2e8f0; padding: 1rem; margin: 1rem 0; border-radius: 8px; }}
+                .urgent {{ border-left: 4px solid #ef4444; }}
+                .error {{ background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin: 1rem 0; }}
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>{self.get_text("header_title")}</h1>
+                <p>{self.get_text("header_subtitle")}</p>
+            </div>
+        """
+
+        if error:
+            html += f'<div class="error">⚠️ {error}</div>'
+
+        # Statistics
+        html += f"""
             <div class="stats">
-                <div class="stat-item">
-                    <h3>{analysis['total_assignments']}</h3>
-                    <p>总任务</p>
-                    <div class="kpi-bar" title="总任务">
-                        <div class="kpi-fill" style="width:100%"></div>
-                    </div>
+                <div class="stat">
+                    <h3>{analysis.get("total_assignments", 0)}</h3>
+                    <p>{self.get_text("total_label")}</p>
                 </div>
-                <div class="stat-item">
-                    <h3>{analysis['urgent_count']}</h3>
-                    <p>紧急任务</p>
-                    <div class="kpi-bar" title="紧急任务">
-                        <div class="kpi-fill red" style="width:{(analysis['urgent_count'] / max(analysis['total_assignments'],1)) * 100:.0f}%"></div>
-                    </div>
+                <div class="stat">
+                    <h3>{analysis.get("urgent_count", 0)}</h3>
+                    <p>{self.get_text("urgent_label")}</p>
                 </div>
-                <div class="stat-item">
-                    <h3>{len(analysis['by_course'])}</h3>
-                    <p>涉及课程</p>
-                    <div class="kpi-bar" title="课程覆盖">
-                        <div class="kpi-fill green" style="width:{(len(analysis['by_course'])/max(len(analysis['by_course']),1)) * 100:.0f}%"></div>
-                    </div>
+                <div class="stat">
+                    <h3>{len(analysis.get("by_course", {}))}</h3>
+                    <p>{self.get_text("courses_label")}</p>
                 </div>
             </div>
-        </div>
-        
-        <h2>😨 紧急作业</h2>
-        <p>以下为近期（规则：按日期文本粗略判断）更紧急的任务：</p>
         """
-        
-        # 添加紧急作业
-        for assignment in analysis['assignments_by_urgency']['urgent']:
-            html += f'''
-        <div class="assignment urgent">
-            <strong>🔥 {assignment['title'][:100]}</strong><br>
-            <em>截止日期: {assignment['due_date']}</em><br>
-            <small>状态: {assignment['status']}</small>
-        </div>
-            '''
-        
-        # 添加课程统计
-        html += """
-        <h2>📚 课程统计</h2>
-        <table>
-            <tr><th>课程</th><th>作业数量</th></tr>
-        """
-        
-        for course, count in analysis['by_course'].items():
-            html += f"<tr><td>{course}</td><td>{count}</td></tr>"
-        
-        html += """
-        </table>
-        
-        <h2>📋 作业分类</h2>
-        <div>
-            <h3>🟠 未提交（Pending） - {len(analysis['grouped_by_status']['pending'])} 个</h3>
-        </div>
-        
-        """
-        
-        # Pending 列表
-        for i, assignment in enumerate(analysis['grouped_by_status']['pending'], 1):
-            priority = self._calculate_priority(assignment)
-            priority_class = f"{priority}-priority"
-            priority_text = {'high': '🔴 高', 'medium': '🟡 中', 'low': '🟢 低'}[priority]
-            html += f'''
-        <div class="assignment {priority_class}">
-            <strong>{i}. {assignment['title'][:150]}</strong><br>
-            <em>课程: {assignment.get('course','未知')}</em> |
-            <em>类型: {assignment.get('type','Unknown')}</em> |
-            <em>截止日期: {assignment['due_date']}</em> |
-            <em>状态: {assignment['status']}</em> |
-            <em>优先级: {priority_text}</em>
-        </div>
-            '''
-        
-        html += """
-        <div style="margin-top:20px;">
-            <h3>✅ 已提交（Submitted） - {len(analysis['grouped_by_status']['submitted'])} 个</h3>
-        </div>
-        """
-        
-        for i, assignment in enumerate(analysis['grouped_by_status']['submitted'], 1):
-            html += f'''
-        <div class="assignment low-priority">
-            <strong>{i}. {assignment['title'][:150]}</strong><br>
-            <em>课程: {assignment.get('course','未知')}</em> |
-            <em>类型: {assignment.get('type','Unknown')}</em> |
-            <em>截止日期: {assignment['due_date']}</em> |
-            <em>状态: {assignment['status']}</em>
-        </div>
-            '''
-        
-        html += """
-        <div style="margin-top:20px;">
-            <h3>⛔ 逾期（Overdue） - {len(analysis['grouped_by_status']['overdue'])} 个</h3>
-        </div>
-        """
-        
-        for i, assignment in enumerate(analysis['grouped_by_status']['overdue'], 1):
-            html += f'''
-        <div class="assignment urgent">
-            <strong>{i}. {assignment['title'][:150]}</strong><br>
-            <em>课程: {assignment.get('course','未知')}</em> |
-            <em>类型: {assignment.get('type','Unknown')}</em> |
-            <em>截止日期: {assignment['due_date']}</em> |
-            <em>状态: {assignment['status']}</em>
-        </div>
-            '''
-        
-        html += f"""
-        <div class="footer">
-            <p>报告生成时间: {generated_at}</p>
-            <p>由 ManageBac Assignment Checker 自动生成</p>
-        </div>
-    </div>
-</body>
-</html>
-        """
-        
-        return html
-    
-    def _generate_markdown_report(self, data: Dict[str, Any]) -> str:
-        """生成Markdown格式报告"""
-        assignments = data['assignments']
-        analysis = data['analysis']
-        generated_at = data['generated_at']
-        
-        md = f"""# 📚 ManageBac作业检查报告
 
-生成时间: {generated_at}
+        # Assignments
+        html += f'<h2>{self.get_text("all_assignments_title")}</h2>'
+
+        for assignment in assignments:
+            urgency_class = "urgent" if assignment.get("urgency") == "urgent" else ""
+            html += f"""
+                <div class="assignment {urgency_class}">
+                    <h3>{assignment.get("title", "")}</h3>
+                    <p>⏰ {assignment.get("due_date", "")}</p>
+                    <p>📚 {assignment.get("course", "")}</p>
+                    <p>📊 {assignment.get("status", "")}</p>
+                </div>
+            """
+
+        html += f"""
+            <footer style="text-align: center; margin-top: 2rem; color: #666;">
+                <p>{self.get_text("footer_text")}</p>
+                <p><small>{self.get_text("generated_text")} {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</small></p>
+            </footer>
+        </body>
+        </html>
+        """
+
+        return html
+
+    def _generate_markdown_report(self, data: Dict[str, Any]) -> str:
+        """Generate Markdown format report."""
+        analysis = data["analysis"]
+        assignments = data["assignments"]
+
+        if self.language == "zh":
+            md = f"""# 📚 ManageBac作业检查报告
+
+**生成时间**: {datetime.now().strftime('%Y年%m月%d日 %H:%M:%S')}  
+**学生邮箱**: {data["student_email"]}  
+**ManageBac网址**: {self.config.url}
 
 ## 📈 概览统计
 
-- 待办作业总数: {analysis['total_assignments']}
-- 紧急作业: {analysis['urgent_count']}
-- 已提交: {analysis['submitted_count']} | 未提交: {analysis['pending_count']} | 逾期: {analysis['overdue_count']}
-- 涉及课程: {len(analysis['by_course'])}
-
-### 优先级分布
-- 🔴 高: {analysis['by_priority']['high']}
-- 🟡 中: {analysis['by_priority']['medium']}
-- 🟢 低: {analysis['by_priority']['low']}
-
-## 😨 紧急作业
+| 指标 | 数量 |
+|------|------|
+| 📋 总作业数 | {analysis.get("total_assignments", 0)} |
+| 😨 紧急作业 | {analysis.get("urgent_count", 0)} |
+| 📚 涉及课程 | {len(analysis.get("by_course", {}))} |
+| 🔴 高优先级 | {analysis.get("by_priority", {}).get("high", 0)} |
+| 🟡 中优先级 | {analysis.get("by_priority", {}).get("medium", 0)} |
+| 🟢 低优先级 | {analysis.get("by_priority", {}).get("low", 0)} |
 
 """
-        
-        if analysis['assignments_by_urgency']['urgent']:
-            for assignment in analysis['assignments_by_urgency']['urgent']:
-                md += f"- 🔥 {assignment['title'][:100]} — {assignment['due_date']}\n"
         else:
-            md += "暂无紧急作业\n"
-        
-        md += "\n## 📚 课程统计\n\n"
-        for course, count in analysis['by_course'].items():
-            md += f"- {course}: {count} 个作业\n"
-        
-        md += "\n## 📋 作业分类\n\n### 🟠 未提交（Pending）\n\n"
-        
-        for i, assignment in enumerate(analysis['grouped_by_status']['pending'], 1):
-            priority = self._calculate_priority(assignment)
-            priority_emoji = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}[priority]
-            md += f"- {i}. {assignment['title'][:100]}\n  - 课程: {assignment.get('course','未知')}\n  - 类型: {assignment.get('type','Unknown')}\n  - 截止日期: {assignment['due_date']}\n  - 状态: {assignment['status']}\n  - 优先级: {priority_emoji} {priority.upper()}\n"
-        
-        md += "\n### ✅ 已提交（Submitted）\n\n"
-        for i, assignment in enumerate(analysis['grouped_by_status']['submitted'], 1):
-            md += f"- {i}. {assignment['title'][:100]} — {assignment['due_date']} (课程: {assignment.get('course','未知')}, 类型: {assignment.get('type','Unknown')})\n"
-        
-        md += "\n### ⛔ 逾期（Overdue）\n\n"
-        for i, assignment in enumerate(analysis['grouped_by_status']['overdue'], 1):
-            md += f"- {i}. {assignment['title'][:100]} — {assignment['due_date']} (课程: {assignment.get('course','未知')}, 类型: {assignment.get('type','Unknown')})\n"
-        
-        md += "\n---\n*报告由 ManageBac Assignment Checker 自动生成*"
-        
+            md = f"""# 📚 ManageBac Assignment Report
+
+**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  
+**Student Email**: {data["student_email"]}  
+**ManageBac URL**: {self.config.url}
+
+## 📈 Overview Statistics
+
+| Metric | Count |
+|--------|-------|
+| 📋 Total Assignments | {analysis.get("total_assignments", 0)} |
+| 😨 Urgent Assignments | {analysis.get("urgent_count", 0)} |
+| 📚 Courses Involved | {len(analysis.get("by_course", {}))} |
+| 🔴 High Priority | {analysis.get("by_priority", {}).get("high", 0)} |
+| 🟡 Medium Priority | {analysis.get("by_priority", {}).get("medium", 0)} |
+| 🟢 Low Priority | {analysis.get("by_priority", {}).get("low", 0)} |
+
+"""
+
+        # Urgent assignments
+        urgent_assignments = [a for a in assignments if a.get("urgency") == "urgent"]
+        if urgent_assignments:
+            section_title = (
+                "## 🔥 紧急作业"
+                if self.language == "zh"
+                else "## 🔥 Urgent Assignments"
+            )
+            md += f"{section_title}\n\n"
+
+            for i, assignment in enumerate(urgent_assignments[:10], 1):
+                md += f"{i}. **{assignment['title']}**\n"
+                md += f"   - ⏰ {assignment['due_date']}\n"
+                md += f"   - 📚 {assignment['course']}\n"
+                md += f"   - 📊 {assignment['status']}\n\n"
+
+        # All assignments
+        section_title = (
+            "## 📋 所有作业详情"
+            if self.language == "zh"
+            else "## 📋 All Assignment Details"
+        )
+        md += f"{section_title}\n\n"
+
+        for i, assignment in enumerate(assignments, 1):
+            priority_emoji = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(
+                assignment.get("priority", "low"), "🟢"
+            )
+            urgency_emoji = {"urgent": "🔥", "soon": "⚠️", "later": "🟢"}.get(
+                assignment.get("urgency", "later"), "🟢"
+            )
+
+            md += f"{i}. {urgency_emoji} **{assignment['title']}**\n"
+            md += f"   - ⏰ {assignment['due_date']}\n"
+            md += f"   - 📚 {assignment['course']}\n"
+            md += f"   - 📊 {assignment['status']}\n"
+            md += (
+                f"   - {priority_emoji} {assignment.get('priority', 'low').upper()}\n\n"
+            )
+
+        # Course summary
+        if analysis.get("by_course"):
+            section_title = (
+                "## 📚 课程分布"
+                if self.language == "zh"
+                else "## 📚 Course Distribution"
+            )
+            md += f"{section_title}\n\n"
+
+            for course, count in sorted(
+                analysis["by_course"].items(), key=lambda x: x[1], reverse=True
+            ):
+                count_text = (
+                    f"{count} 个作业"
+                    if self.language == "zh"
+                    else f"{count} assignments"
+                )
+                md += f"- **{course}**: {count_text}\n"
+
+        footer_text = (
+            "🚀 ManageBac作业检查器 - 让作业管理更简单！"
+            if self.language == "zh"
+            else "🚀 ManageBac Assignment Checker - Making assignment management easier!"
+        )
+        md += f"\n---\n\n*{footer_text}*\n"
+
         return md
-    
+
     def _generate_console_report(self, data: Dict[str, Any]) -> str:
-        """生成控制台格式报告"""
-        return "console_output_handled_in_main_method"
-    
-    def _calculate_priority(self, assignment: Dict[str, Any]) -> str:
-        """计算作业优先级"""
-        title = assignment.get('title', '').lower()
-        status = assignment.get('status', '').lower()
-        
-        # 高优先级关键词
-        high_priority_keywords = ['summative', 'exam', 'test', 'project', 'essay', 'final']
-        if any(keyword in title or keyword in status for keyword in high_priority_keywords):
-            return 'high'
-        
-        # 中优先级关键词
-        medium_priority_keywords = ['homework', 'assignment', 'quiz']
-        if any(keyword in title or keyword in status for keyword in medium_priority_keywords):
-            return 'medium'
-        
-        return 'low'
-    
+        """Generate console format report."""
+        # This is handled by the checker class directly
+        return "Console report generated in real-time"
+
     def save_reports(self, reports: Dict[str, str]) -> Dict[str, str]:
-        """保存报告到文件"""
+        """
+        Save generated reports to files.
+        保存生成的报告到文件。
+        """
         saved_files = {}
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
+
         for format_type, content in reports.items():
-            if format_type == 'console':
-                continue
-                
-            file_extension = {
-                'json': 'json',
-                'html': 'html',
-                'markdown': 'md'
-            }.get(format_type, 'txt')
-            
-            filename = f"managebac_report_{timestamp}.{file_extension}"
+            if format_type == "console":
+                continue  # Skip console format for file saving
+
+            filename = f"managebac_report_{timestamp}.{format_type}"
             filepath = self.output_dir / filename
-            
+
             try:
-                with open(filepath, 'w', encoding='utf-8') as f:
+                with open(filepath, "w", encoding="utf-8") as f:
                     f.write(content)
+
                 saved_files[format_type] = str(filepath)
-                print(f"\n💾 {format_type.upper()}报告已保存: {filepath}")
+
+                if self.logger:
+                    self.logger.report_saved(str(filepath))
+
             except Exception as e:
-                print(f"\n⚠️  保存{format_type}报告失败: {e}")
-        
+                error_msg = (
+                    f"保存{format_type}报告失败: {e}"
+                    if self.language == "zh"
+                    else f"Failed to save {format_type} report: {e}"
+                )
+                if self.logger:
+                    self.logger.error_occurred(error_msg)
+
         return saved_files

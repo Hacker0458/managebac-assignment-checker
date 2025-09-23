@@ -16,8 +16,8 @@ from .reporter import ReportGenerator
 
 __all__ = [
     "ManageBacChecker",
-    "Config", 
+    "Config",
     "ManageBacScraper",
     "AssignmentAnalyzer",
-    "ReportGenerator"
+    "ReportGenerator",
 ]

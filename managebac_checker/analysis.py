@@ -8,7 +8,12 @@ from typing import Dict, Iterable, List, Tuple
 from .models import Assignment
 
 
-def analyse_assignments(assignments: Iterable[Assignment], priority_keywords: Iterable[str], *, days_ahead: int = 7) -> Dict[str, object]:
+def analyse_assignments(
+    assignments: Iterable[Assignment],
+    priority_keywords: Iterable[str],
+    *,
+    days_ahead: int = 7,
+) -> Dict[str, object]:
     assignments = list(assignments)
     priority_keywords = {kw.strip().lower() for kw in priority_keywords if kw.strip()}
 
@@ -18,7 +23,12 @@ def analyse_assignments(assignments: Iterable[Assignment], priority_keywords: It
         "by_course": {},
         "by_due_date": {},
         "by_type": {},
-        "grouped_by_status": {"submitted": [], "pending": [], "overdue": [], "unknown": []},
+        "grouped_by_status": {
+            "submitted": [],
+            "pending": [],
+            "overdue": [],
+            "unknown": [],
+        },
         "assignments_by_urgency": {"urgent": [], "soon": [], "later": []},
         "urgent_count": 0,
         "overdue_count": 0,
@@ -36,7 +46,9 @@ def analyse_assignments(assignments: Iterable[Assignment], priority_keywords: It
 
         analysis["by_priority"][assignment.priority] += 1
 
-        status_key = _normalise_status(assignment.status, assignment.submitted, assignment.overdue)
+        status_key = _normalise_status(
+            assignment.status, assignment.submitted, assignment.overdue
+        )
         analysis["grouped_by_status"][status_key].append(assignment)
         if status_key == "submitted":
             analysis["submitted_count"] += 1
@@ -73,7 +85,12 @@ def _normalise_status(status: str, submitted: bool, overdue: bool) -> str:
     return "unknown"
 
 
-def _classify_urgency(assignment: Assignment, now: datetime, urgent_cutoff: datetime, soon_cutoff: datetime) -> str:
+def _classify_urgency(
+    assignment: Assignment,
+    now: datetime,
+    urgent_cutoff: datetime,
+    soon_cutoff: datetime,
+) -> str:
     due_dt = _parse_due_date(assignment.due_date, reference=now)
     if not due_dt:
         return "later"
@@ -98,7 +115,9 @@ def _parse_due_date(raw: str, reference: datetime) -> datetime | None:
     }
     for keyword, offset in relative_map.items():
         if keyword in lowered:
-            return reference.replace(hour=23, minute=59, second=0, microsecond=0) + timedelta(days=offset)
+            return reference.replace(
+                hour=23, minute=59, second=0, microsecond=0
+            ) + timedelta(days=offset)
 
     weekday_map = {
         "monday": 0,

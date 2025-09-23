@@ -16,9 +16,13 @@ class ReportBuilder:
 
     def __init__(self, *, output_dir: Path, report_formats: List[str]) -> None:
         self.output_dir = output_dir
-        self.report_formats = [fmt.strip().lower() for fmt in report_formats if fmt.strip()]
+        self.report_formats = [
+            fmt.strip().lower() for fmt in report_formats if fmt.strip()
+        ]
 
-    def build(self, assignments: List[Assignment], analysis: Dict[str, object]) -> Dict[str, str]:
+    def build(
+        self, assignments: List[Assignment], analysis: Dict[str, object]
+    ) -> Dict[str, str]:
         generated_at = datetime.now(timezone.utc).isoformat()
         report_payload = {
             "assignments": [item.to_dict() for item in assignments],
@@ -31,11 +35,15 @@ class ReportBuilder:
             if fmt == "json":
                 reports["json"] = self._render_json(report_payload)
             elif fmt == "markdown":
-                reports["markdown"] = self._render_markdown(assignments, analysis, generated_at)
+                reports["markdown"] = self._render_markdown(
+                    assignments, analysis, generated_at
+                )
             elif fmt == "html":
                 reports["html"] = self._render_html(assignments, analysis, generated_at)
             elif fmt == "console":
-                reports["console"] = self._render_console(assignments, analysis, generated_at)
+                reports["console"] = self._render_console(
+                    assignments, analysis, generated_at
+                )
         return reports
 
     def persist(self, reports: Dict[str, str]) -> Dict[str, str]:
@@ -57,15 +65,24 @@ class ReportBuilder:
     def _render_json(self, payload: Dict[str, object]) -> str:
         return json.dumps(payload, ensure_ascii=False, indent=2)
 
-    def _render_console(self, assignments: List[Assignment], analysis: Dict[str, object], generated_at: str) -> str:
+    def _render_console(
+        self,
+        assignments: List[Assignment],
+        analysis: Dict[str, object],
+        generated_at: str,
+    ) -> str:
         lines: List[str] = []
         lines.append("=" * 80)
         lines.append(f"ManageBac 作业检查报告 - {generated_at}")
         lines.append("=" * 80)
-        lines.append(f"总任务: {analysis['total_assignments']} | 紧急: {analysis['urgent_count']} | 逾期: {analysis['overdue_count']}")
+        lines.append(
+            f"总任务: {analysis['total_assignments']} | 紧急: {analysis['urgent_count']} | 逾期: {analysis['overdue_count']}"
+        )
         lines.append("\n未提交任务:")
         for item in analysis["grouped_by_status"]["pending"][:10]:
-            lines.append(f" - {item.title} (due: {item.due_date}, course: {item.course})")
+            lines.append(
+                f" - {item.title} (due: {item.due_date}, course: {item.course})"
+            )
         if not analysis["grouped_by_status"]["pending"]:
             lines.append(" - 无")
         lines.append("\n逾期任务:")
@@ -75,7 +92,12 @@ class ReportBuilder:
             lines.append(" - 无")
         return "\n".join(lines)
 
-    def _render_markdown(self, assignments: List[Assignment], analysis: Dict[str, object], generated_at: str) -> str:
+    def _render_markdown(
+        self,
+        assignments: List[Assignment],
+        analysis: Dict[str, object],
+        generated_at: str,
+    ) -> str:
         lines: List[str] = []
         lines.append("# 📚 ManageBac 作业检查报告")
         lines.append("")
@@ -84,12 +106,16 @@ class ReportBuilder:
         lines.append("## 概览")
         lines.append(f"- 总任务: {analysis['total_assignments']}")
         lines.append(f"- 紧急任务: {analysis['urgent_count']}")
-        lines.append(f"- 未提交: {analysis['pending_count']} | 已提交: {analysis['submitted_count']} | 逾期: {analysis['overdue_count']}")
+        lines.append(
+            f"- 未提交: {analysis['pending_count']} | 已提交: {analysis['submitted_count']} | 逾期: {analysis['overdue_count']}"
+        )
         lines.append("")
         lines.append("## 未提交任务")
         if analysis["grouped_by_status"]["pending"]:
             for item in analysis["grouped_by_status"]["pending"]:
-                lines.append(f"- {item.title} — 截止: {item.due_date} （课程: {item.course}）")
+                lines.append(
+                    f"- {item.title} — 截止: {item.due_date} （课程: {item.course}）"
+                )
         else:
             lines.append("- 无")
 
@@ -117,12 +143,21 @@ class ReportBuilder:
         lines.append("由 ManageBac Assignment Checker 自动生成")
         return "\n".join(lines)
 
-    def _render_html(self, assignments: List[Assignment], analysis: Dict[str, object], generated_at: str) -> str:
+    def _render_html(
+        self,
+        assignments: List[Assignment],
+        analysis: Dict[str, object],
+        generated_at: str,
+    ) -> str:
         # Keep HTML inline for portability; it's intentionally simple to avoid extra deps.
         def _rows(items: List[Assignment]) -> str:
             cells = []
             for assignment in items:
-                link_html = f'<a href="{assignment.link}">{assignment.title}</a>' if assignment.link else assignment.title
+                link_html = (
+                    f'<a href="{assignment.link}">{assignment.title}</a>'
+                    if assignment.link
+                    else assignment.title
+                )
                 cells.append(
                     f"<tr><td>{link_html}</td><td>{assignment.course}</td><td>{assignment.due_date}</td><td>{assignment.status}</td><td>{assignment.priority}</td></tr>"
                 )
