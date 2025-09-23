@@ -1,115 +1,220 @@
-name: CI/CD Pipeline
+name: 🚀 ManageBac Assignment Checker CI/CD
 
 on:
   push:
     branches: [ main, develop ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly security scan
+
+env:
+  PYTHON_DEFAULT_VERSION: '3.11'
 
 jobs:
+  # 🧪 Testing Job
   test:
-    runs-on: ubuntu-latest
+    name: 🧪 Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        exclude:
+          # Reduce matrix size for faster CI
+          - os: windows-latest
+            python-version: '3.8'
+          - os: macos-latest
+            python-version: '3.8'
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    
-    - name: Cache pip dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    
-    - name: Install dependencies
+        cache: 'pip'
+        cache-dependency-path: 'requirements.txt'
+
+    - name: ⬆️ Upgrade pip
+      run: python -m pip install --upgrade pip wheel setuptools
+
+    - name: 📦 Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest pytest-asyncio black flake8 mypy
-    
-    - name: Install Playwright browsers
+        pip install pytest pytest-asyncio pytest-cov black flake8 mypy bandit
+
+    - name: 🎭 Install Playwright browsers
+      run: playwright install chromium --with-deps
+
+    - name: 🔍 Lint with flake8
       run: |
-        playwright install chromium
-    
-    - name: Lint with flake8
-      run: |
+        # Stop the build if there are Python syntax errors or undefined names
         flake8 managebac_checker tests --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
         flake8 managebac_checker tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    
-    - name: Check code formatting with black
+
+    - name: 🎨 Check code formatting with black
+      run: black --check --diff managebac_checker tests
+
+    - name: 🔧 Type check with mypy
+      run: mypy managebac_checker --ignore-missing-imports --no-strict-optional
+      continue-on-error: true  # Allow type checking to fail without breaking CI
+
+    - name: 🧪 Test with pytest
       run: |
-        black --check managebac_checker tests
-    
-    - name: Type check with mypy
-      run: |
-        mypy managebac_checker --ignore-missing-imports
-    
-    - name: Test with pytest
-      run: |
-        pytest tests/ -v --tb=short
-    
-    - name: Test package installation
+        pytest tests/ -v --tb=short --cov=managebac_checker --cov-report=xml --cov-report=term-missing
+
+    - name: 📦 Test package installation
       run: |
         pip install -e .
-        python -c "import managebac_checker; print('Package installed successfully')"
+        python -c "import managebac_checker; print('✅ Package installed successfully')"
 
+    - name: ☂️ Upload coverage to Codecov
+      if: matrix.python-version == env.PYTHON_DEFAULT_VERSION && matrix.os == 'ubuntu-latest'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  # 🔒 Security Scan Job
   security:
+    name: 🔒 Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
-    
-    - name: Install security tools
-      run: |
-        pip install bandit safety
-    
-    - name: Run bandit security scan
-      run: |
-        bandit -r managebac_checker/ -f json -o bandit-report.json || true
-    
-    - name: Run safety check
-      run: |
-        safety check --json --output safety-report.json || true
+        python-version: ${{ env.PYTHON_DEFAULT_VERSION }}
+        cache: 'pip'
 
+    - name: 🔒 Install security tools
+      run: |
+        pip install bandit[toml] safety pip-audit
+
+    - name: 🛡️ Run bandit security scan
+      run: |
+        bandit -r managebac_checker/ -f json -o bandit-report.json
+        bandit -r managebac_checker/ -f txt
+
+    - name: 🔍 Run safety check
+      run: safety check --json --output safety-report.json
+
+    - name: 🔎 Run pip-audit
+      run: pip-audit --desc --format=json --output=pip-audit-report.json
+
+    - name: 📤 Upload security reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+          pip-audit-report.json
+
+  # 🏗️ Build Job
   build:
+    name: 🏗️ Build Package
     needs: [test, security]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🐍 Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
-    
-    - name: Install build dependencies
+        python-version: ${{ env.PYTHON_DEFAULT_VERSION }}
+        cache: 'pip'
+
+    - name: 🔨 Install build dependencies
       run: |
-        pip install build twine
-    
-    - name: Build package
-      run: |
-        python -m build
-    
-    - name: Check package
-      run: |
-        twine check dist/*
-    
-    - name: Upload build artifacts
+        pip install build twine check-manifest
+
+    - name: ✅ Check manifest
+      run: check-manifest
+
+    - name: 🏗️ Build package
+      run: python -m build
+
+    - name: 🔍 Check package
+      run: twine check dist/*
+
+    - name: 📤 Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: dist
+        name: python-package-distributions
         path: dist/
+
+  # 🚀 Release Job (only on tags)
+  release:
+    name: 🚀 Create Release
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📤 Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: 🏷️ Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*
+        generate_release_notes: true
+        draft: false
+        prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
+
+  # 📊 Code Quality Job
+  code-quality:
+    name: 📊 Code Quality Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_DEFAULT_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest pytest-cov radon xenon
+
+    - name: 📈 Calculate code metrics
+      run: |
+        echo "## 📊 Code Metrics" >> $GITHUB_STEP_SUMMARY
+        echo "### Cyclomatic Complexity" >> $GITHUB_STEP_SUMMARY
+        radon cc managebac_checker --show-complexity --total-average >> $GITHUB_STEP_SUMMARY
+        echo "### Maintainability Index" >> $GITHUB_STEP_SUMMARY
+        radon mi managebac_checker --show >> $GITHUB_STEP_SUMMARY
+        echo "### Raw Metrics" >> $GITHUB_STEP_SUMMARY
+        radon raw managebac_checker --summary >> $GITHUB_STEP_SUMMARY

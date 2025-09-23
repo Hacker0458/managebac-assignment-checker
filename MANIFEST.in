@@ -1,0 +1,59 @@
+# ========================================
+# 🎓 ManageBac Assignment Checker | ManageBac作业检查器
+# Package Manifest | 包清单文件
+# ========================================
+
+# Documentation | 文档文件
+include README.md
+include LICENSE
+include CHANGELOG.md
+include MANIFEST.in
+
+# Configuration files | 配置文件
+include pyproject.toml
+include setup.py
+include requirements.txt
+include config.example.env
+
+# Source code | 源代码
+recursive-include managebac_checker *.py
+recursive-include managebac_checker *.pyi
+
+# Templates and static files | 模板和静态文件
+recursive-include managebac_checker/templates *.html
+recursive-include managebac_checker/templates *.css
+recursive-include managebac_checker/templates *.js
+recursive-include managebac_checker/static *.css
+recursive-include managebac_checker/static *.js
+recursive-include managebac_checker/static *.png
+recursive-include managebac_checker/static *.svg
+
+# Tests (for development) | 测试文件（开发用）
+recursive-include tests *.py
+
+# CI/CD configuration | CI/CD配置
+recursive-include .github *.yml
+recursive-include .github *.yaml
+
+# Exclude unnecessary files | 排除不必要的文件
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude *.egg-info
+global-exclude build
+global-exclude dist
+global-exclude .venv
+global-exclude venv
+global-exclude .env
+global-exclude *.log
+global-exclude reports
+global-exclude htmlcov
+global-exclude .coverage
+global-exclude .pytest_cache
+global-exclude .mypy_cache
+global-exclude *.tar.gz
+global-exclude *.zip

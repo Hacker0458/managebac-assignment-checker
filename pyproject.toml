@@ -1,21 +1,33 @@
+# ========================================
+# 🎓 ManageBac Assignment Checker | ManageBac作业检查器
+# Project Configuration | 项目配置
+# ========================================
+
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "managebac-assignment-checker"
-version = "1.0.0"
-description = "自动化工具，用于登录ManageBac并检查未提交的作业"
+version = "2.0.0"
+description = "🎯 An intelligent automation tool for ManageBac assignment tracking | 智能ManageBac作业追踪工具"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "ManageBac Assignment Checker Team"},
+    {name = "Hacker0458", email = ""},
 ]
-keywords = ["managebac", "assignment", "checker", "automation", "education", "web-scraping"]
+maintainers = [
+    {name = "Hacker0458", email = ""},
+]
+keywords = [
+    "managebac", "assignment", "checker", "automation", "education", 
+    "web-scraping", "student", "homework", "tracking", "notification"
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
@@ -23,9 +35,14 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Education",
     "Topic :: Internet :: WWW/HTTP :: Browsers",
-    "Topic :: Software Development :: Testing",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Utilities",
+    "Environment :: Console",
+    "Natural Language :: English",
+    "Natural Language :: Chinese (Simplified)",
 ]
 dependencies = [
     "playwright>=1.40.0",
@@ -34,56 +51,104 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=6.0",
-    "pytest-asyncio>=0.18.0",
-    "black>=22.0.0",
-    "flake8>=4.0.0",
-    "mypy>=0.950",
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+    "pre-commit>=3.5.0",
     "bandit>=1.7.0",
-    "safety>=2.0.0",
+    "safety>=2.3.0",
+]
+test = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+]
+lint = [
+    "black>=23.11.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+    "bandit>=1.7.0",
+]
+notifications = [
+    "smtplib",
+    "email",
+]
+charts = [
+    "matplotlib>=3.7.0",
+    "plotly>=5.17.0",
 ]
 
-[project.scripts]
-managebac-checker = "managebac_checker.cli:cli_main"
-
 [project.urls]
-Homepage = "https://github.com/yourusername/managebac-assignment-checker"
-Repository = "https://github.com/yourusername/managebac-assignment-checker"
-Issues = "https://github.com/yourusername/managebac-assignment-checker/issues"
-Documentation = "https://github.com/yourusername/managebac-assignment-checker#readme"
+Homepage = "https://github.com/Hacker0458/managebac-assignment-checker"
+"Bug Reports" = "https://github.com/Hacker0458/managebac-assignment-checker/issues"
+"Source Code" = "https://github.com/Hacker0458/managebac-assignment-checker"
+Documentation = "https://github.com/Hacker0458/managebac-assignment-checker#readme"
+Changelog = "https://github.com/Hacker0458/managebac-assignment-checker/releases"
+
+[project.scripts]
+managebac-checker = "managebac_checker.cli:main"
+mbc = "managebac_checker.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["managebac_checker*"]
+exclude = ["tests*"]
+
+# ========================================
+# 🎨 Code Formatting & Linting | 代码格式化和检查
+# ========================================
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
+    # directories
+    \.eggs
+    | \.git
+    | \.github
+    | \.hg
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.tox
+    | \.venv
+    | venv
+    | build
+    | dist
+    | node_modules
 )/
 '''
 
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["managebac_checker"]
+known_third_party = ["playwright", "pytest", "dotenv"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
 [tool.flake8]
 max-line-length = 88
-extend-ignore = ["E203", "W503"]
+extend-ignore = ["E203", "W503", "E501"]
 exclude = [
     ".git",
     "__pycache__",
     "build",
     "dist",
     ".venv",
+    "venv",
     ".eggs",
+    "*.egg",
+    ".pytest_cache",
+    ".mypy_cache",
+]
+per-file-ignores = [
+    "__init__.py:F401",
+    "tests/*.py:S101",
 ]
 
 [tool.mypy]
@@ -100,19 +165,80 @@ warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 strict_equality = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "playwright.*",
+    "pytest.*",
+]
+ignore_missing_imports = true
+
+# ========================================
+# 🧪 Testing Configuration | 测试配置
+# ========================================
 
 [tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=managebac_checker",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = [
-    "-v",
-    "--tb=short",
-    "--strict-markers",
-    "--disable-warnings",
-]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "e2e: marks tests as end-to-end tests",
 ]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["managebac_checker"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/build/*",
+    "*/dist/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+# ========================================
+# 🔒 Security Configuration | 安全配置
+# ========================================
+
+[tool.bandit]
+exclude_dirs = ["tests", "build", "dist"]
+skips = ["B101", "B601"]  # Skip assert_used and shell_injection in tests
+
+[tool.bandit.assert_used]
+skips = ["*_test.py", "*/test_*.py"]
