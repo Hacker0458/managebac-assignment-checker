@@ -54,6 +54,21 @@ Or you can enter credentials now (they will be saved to .env):""",
         "zh": "🌐 请输入您的ManageBac网址（回车使用默认值）: ",
     }
 
+    ENABLE_AI = {
+        "en": "🤖 Enable AI Assistant? (y/n, press Enter for no): ",
+        "zh": "🤖 是否启用AI助手？(y/n，回车默认否): ",
+    }
+
+    INPUT_API_KEY = {
+        "en": "🔑 Enter your OpenAI API Key: ",
+        "zh": "🔑 请输入您的OpenAI API密钥: ",
+    }
+
+    AI_MODEL_CHOICE = {
+        "en": "🎯 Choose AI model (1=gpt-3.5-turbo, 2=gpt-4, press Enter for default): ",
+        "zh": "🎯 选择AI模型（1=gpt-3.5-turbo, 2=gpt-4，回车使用默认）: ",
+    }
+
     SAVE_SUCCESS = {
         "en": "✅ Configuration saved successfully to .env file!",
         "zh": "✅ 配置已成功保存到.env文件！",
@@ -134,6 +149,13 @@ class Config:
         )
         self.min_days_before_due = int(os.getenv("MIN_DAYS_BEFORE_DUE", "0"))
 
+        # AI Assistant settings | AI助手设置
+        self.ai_enabled = os.getenv("AI_ENABLED", "false").lower() == "true"
+        self.openai_api_key = os.getenv("OPENAI_API_KEY", "")
+        self.ai_model = os.getenv("AI_MODEL", "gpt-3.5-turbo")
+        self.ai_temperature = float(os.getenv("AI_TEMPERATURE", "0.7"))
+        self.ai_max_tokens = int(os.getenv("AI_MAX_TOKENS", "500"))
+
         # Logging settings | 日志设置
         self.log_level = os.getenv("LOG_LEVEL", "INFO")
         self.log_file = os.getenv("LOG_FILE", "logs/managebac_checker.log")
@@ -185,6 +207,22 @@ class Config:
         if url_input:
             self.url = url_input
 
+        # Ask about AI Assistant
+        print()
+        ai_input = input(self.messages.ENABLE_AI[self.language]).strip().lower()
+        if ai_input == 'y' or ai_input == 'yes':
+            self.ai_enabled = True
+            # Get API key
+            self.openai_api_key = getpass.getpass(
+                self.messages.INPUT_API_KEY[self.language]
+            ).strip()
+            # Choose model
+            model_input = input(self.messages.AI_MODEL_CHOICE[self.language]).strip()
+            if model_input == '2':
+                self.ai_model = 'gpt-4'
+            else:
+                self.ai_model = 'gpt-3.5-turbo'
+
         # Save to .env file
         self._save_to_env()
         self._print_message("SAVE_SUCCESS")
@@ -232,6 +270,13 @@ LOG_FILE=logs/managebac_checker.log
 HTML_THEME=auto
 INCLUDE_CHARTS=true
 CHART_COLOR_SCHEME=default
+
+# 🤖 AI Assistant Settings | AI助手设置
+AI_ENABLED={str(self.ai_enabled).lower()}
+OPENAI_API_KEY={self.openai_api_key}
+AI_MODEL={self.ai_model}
+AI_TEMPERATURE=0.7
+AI_MAX_TOKENS=500
 """
 
         with open(".env", "w", encoding="utf-8") as f:

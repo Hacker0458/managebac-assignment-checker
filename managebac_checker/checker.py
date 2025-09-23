@@ -19,6 +19,7 @@ from .analyzer import AssignmentAnalyzer
 from .reporter import ReportGenerator
 from .notifications import NotificationManager
 from .logging_utils import BilingualLogger, setup_logging
+from .ai_assistant import AIAssistant
 
 
 class ManageBacChecker:
@@ -50,6 +51,16 @@ class ManageBacChecker:
         self.analyzer = AssignmentAnalyzer(self.config, self.logger)
         self.reporter = ReportGenerator(self.config, self.logger)
         self.notifications = NotificationManager(self.config, self.logger)
+        
+        # Initialize AI Assistant if enabled | 如果启用则初始化AI助手
+        self.ai_assistant = None
+        if self.config.ai_enabled:
+            self.ai_assistant = AIAssistant(
+                api_key=self.config.openai_api_key,
+                language=self.config.language,
+                enable_ai=True,
+                model=self.config.ai_model
+            )
 
     async def run(self) -> None:
         """
@@ -175,6 +186,18 @@ class ManageBacChecker:
         # Analyze assignments | 分析作业
         self.logger.analysis_start()
         analysis = self.analyzer.analyze_assignments(assignments)
+
+        # AI Analysis if enabled | 如果启用则进行AI分析
+        if self.ai_assistant:
+            self.logger.info("🤖 Running AI analysis... | 🤖 运行AI分析...")
+            ai_results = self.ai_assistant.analyze_assignments(assignments, analysis)
+            analysis['ai_analysis'] = ai_results
+            
+            # Add AI suggestions to individual assignments
+            for assignment in assignments:
+                suggestion = self.ai_assistant.get_quick_suggestion(assignment)
+                if suggestion:
+                    assignment.ai_suggestion = suggestion
 
         # Generate reports | 生成报告
         for format_type in self.config.get_report_formats():

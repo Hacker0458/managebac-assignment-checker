@@ -106,6 +106,18 @@ class BilingualCLI:
                     "en": "Disable email notifications",
                     "zh": "禁用邮件通知",
                 },
+                "ai_enabled": {
+                    "en": "Enable AI Assistant for intelligent analysis",
+                    "zh": "启用AI助手进行智能分析",
+                },
+                "ai_key": {
+                    "en": "OpenAI API Key for AI Assistant",
+                    "zh": "AI助手的OpenAI API密钥",
+                },
+                "ai_model": {
+                    "en": "AI model to use (gpt-3.5-turbo or gpt-4)",
+                    "zh": "使用的AI模型 (gpt-3.5-turbo 或 gpt-4)",
+                },
                 "version": {"en": "Show version information", "zh": "显示版本信息"},
             },
             "messages": {
@@ -218,6 +230,25 @@ class BilingualCLI:
             "--no-notifications",
             action="store_true",
             help=self.get_message("args", "no_notifications"),
+        )
+
+        # AI Assistant arguments | AI助手参数
+        parser.add_argument(
+            "--ai-enabled",
+            action="store_true",
+            help=self.get_message("args", "ai_enabled"),
+        )
+        parser.add_argument(
+            "--ai-key",
+            type=str,
+            help=self.get_message("args", "ai_key"),
+        )
+        parser.add_argument(
+            "--ai-model",
+            type=str,
+            choices=["gpt-3.5-turbo", "gpt-4"],
+            default="gpt-3.5-turbo",
+            help=self.get_message("args", "ai_model"),
         )
 
         # Version

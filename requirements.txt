@@ -9,6 +9,7 @@ python-dotenv>=1.0.0        # Environment variable management | 环境变量管�
 
 # Optional Dependencies | 可选依赖
 jinja2>=3.1.4              # HTML template engine | HTML模板引擎 (optional)
+openai>=1.0.0              # AI Assistant integration | AI助手集成 (optional)
 
 # Development Dependencies | 开发依赖
 pytest>=8.4.2              # Testing framework | 测试框架
