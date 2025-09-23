@@ -22,30 +22,62 @@
 
 ### 🌟 Features
 
-- 🤖 **AI Assistant**: Powered by OpenAI for intelligent assignment analysis and personalized recommendations
-- 🔐 **Secure Login**: Automated ManageBac authentication with credential protection
-- 📊 **Multi-format Reports**: Generate HTML, Markdown, JSON, and console reports
-- 🎯 **Smart Analysis**: AI-enhanced priority and urgency assessment with study planning
-- 💡 **Personalized Insights**: Get AI-powered suggestions for time management and study strategies
-- 📧 **Email Notifications**: Automated assignment reminders
-- 📈 **Visual Analytics**: Detailed statistics and data visualization
-- 🌐 **Bilingual Support**: Full English and Chinese interface
-- ⚙️ **Flexible Configuration**: Customizable settings via environment variables
+#### 🖥️ **Modern GUI Application**
+- 📱 **Beautiful Desktop Interface**: Modern, responsive GUI with intuitive design
+- 🎨 **Multiple Themes**: Light and Dark themes with smooth animations
+- 🔔 **System Tray Integration**: Minimize to tray with desktop notifications
+- 📊 **Interactive Assignment Cards**: Visual assignment management with filtering and search
+- ⚙️ **Comprehensive Settings**: Tabbed configuration dialog with all options
+- 🔄 **Auto-refresh**: Automatic background checking with customizable intervals
+
+#### 🤖 **AI Assistant Integration**
+- 💡 **Intelligent Analysis**: Powered by OpenAI for smart assignment insights
+- 📚 **Personalized Recommendations**: AI-powered study strategies and time management
+- 🎯 **Priority Assessment**: Smart urgency and importance evaluation
+- 📈 **Learning Analytics**: Detailed analysis of study patterns and progress
+
+#### 🔐 **Security & Authentication**
+- 🛡️ **Secure Login**: Automated ManageBac authentication with credential protection
+- 🔑 **Environment Variables**: Safe credential storage with .env files
+- 🌐 **Bilingual Support**: Full English and Chinese interface throughout
+
+#### 📊 **Advanced Reporting**
+- 📋 **Multi-format Reports**: Generate HTML, Markdown, JSON, and console reports
+- 📈 **Visual Analytics**: Interactive charts and detailed statistics
+- 📧 **Email Notifications**: Automated assignment reminders and updates
+- 🎨 **Beautiful HTML Reports**: Modern responsive design with Chart.js integration
+
+#### 🚀 **Easy Installation & Deployment**
+- 🎯 **One-click Installation**: Complete setup script with dependency management
+- 🔗 **Desktop Shortcuts**: Automatic shortcut creation for all platforms
+- 📦 **Cross-platform**: Windows, macOS, and Linux support
 - 🧪 **Full Test Coverage**: Comprehensive unit testing suite
 - 🚀 **CI/CD Ready**: GitHub Actions workflow included
 
 ### 🚀 Quick Start
 
-#### Installation
+#### 🎯 **One-Click GUI Installation (Recommended)**
 
-**🚀 Quick Install (One Command):**
 ```bash
-git clone https://github.com/Hacker0458/managebac-assignment-checker.git && cd managebac-assignment-checker && pip install -r requirements.txt && python main_new.py --interactive
+# Clone and install everything automatically
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git
+cd managebac-assignment-checker
+python install_complete.py
 ```
 
+This will:
+- ✅ Install all dependencies (including GUI libraries)
+- ✅ Set up Playwright browsers
+- ✅ Create desktop shortcuts
+- ✅ Configure environment
+- ✅ Test installation
+- 🚀 Optionally start the GUI application
+
+#### 🖥️ **Manual GUI Installation**
+
 **🎯 Auto Install Scripts:**
-- **Linux/macOS**: `./install.sh`
-- **Windows**: `install.bat`
+- **Linux/macOS**: `./start_gui.sh`
+- **Windows**: `start_gui.bat`
 
 **📋 Step by Step:**
 ```bash
@@ -53,11 +85,21 @@ git clone https://github.com/Hacker0458/managebac-assignment-checker.git && cd m
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git
 cd managebac-assignment-checker
 
-# Install dependencies
+# Install dependencies (including GUI)
 pip install -r requirements.txt
 
-# Or install as a package
-pip install -e .
+# Install Playwright browsers
+python -m playwright install chromium
+
+# Start the GUI application
+python gui_launcher.py
+```
+
+#### 📱 **Command Line Version**
+```bash
+# For CLI-only usage (no GUI)
+pip install playwright python-dotenv jinja2
+python main_new.py --interactive
 ```
 
 #### Configuration
@@ -174,30 +216,62 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ### 🌟 功能特性
 
-- 🤖 **AI助手**: 基于OpenAI的智能作业分析和个性化建议
-- 🔐 **安全登录**: 自动化ManageBac身份验证，保护凭据安全
-- 📊 **多格式报告**: 生成HTML、Markdown、JSON和控制台报告
-- 🎯 **智能分析**: AI增强的优先级和紧急程度评估，包含学习计划
-- 💡 **个性化洞察**: 获取AI驱动的时间管理和学习策略建议
-- 📧 **邮件通知**: 自动化作业提醒功能
-- 📈 **可视化分析**: 详细的统计数据和数据可视化
-- 🌐 **双语支持**: 完整的中英文界面
-- ⚙️ **灵活配置**: 通过环境变量自定义设置
+#### 🖥️ **现代化GUI应用程序**
+- 📱 **美观的桌面界面**: 现代化、响应式GUI，设计直观易用
+- 🎨 **多种主题**: 浅色和深色主题，支持流畅动画
+- 🔔 **系统托盘集成**: 最小化到托盘，支持桌面通知
+- 📊 **交互式作业卡片**: 可视化作业管理，支持筛选和搜索
+- ⚙️ **综合设置界面**: 标签式配置对话框，包含所有选项
+- 🔄 **自动刷新**: 后台自动检查，可自定义检查间隔
+
+#### 🤖 **AI助手集成**
+- 💡 **智能分析**: 基于OpenAI的智能作业洞察
+- 📚 **个性化建议**: AI驱动的学习策略和时间管理
+- 🎯 **优先级评估**: 智能的紧急程度和重要性评估
+- 📈 **学习分析**: 详细的学习模式和进度分析
+
+#### 🔐 **安全与身份验证**
+- 🛡️ **安全登录**: 自动化ManageBac身份验证，保护凭据安全
+- 🔑 **环境变量**: 使用.env文件安全存储凭据
+- 🌐 **双语支持**: 全程支持中英文界面
+
+#### 📊 **高级报告功能**
+- 📋 **多格式报告**: 生成HTML、Markdown、JSON和控制台报告
+- 📈 **可视化分析**: 交互式图表和详细统计信息
+- 📧 **邮件通知**: 自动化作业提醒和更新
+- 🎨 **美观的HTML报告**: 现代响应式设计，集成Chart.js
+
+#### 🚀 **简易安装与部署**
+- 🎯 **一键安装**: 完整的安装脚本，自动管理依赖
+- 🔗 **桌面快捷方式**: 自动为所有平台创建快捷方式
+- 📦 **跨平台**: 支持Windows、macOS和Linux
 - 🧪 **完整测试**: 全面的单元测试套件
 - 🚀 **CI/CD就绪**: 包含GitHub Actions工作流
 
 ### 🚀 快速开始
 
-#### 安装
+#### 🎯 **一键GUI安装（推荐）**
 
-**🚀 快速安装（一键命令）：**
 ```bash
-git clone https://github.com/Hacker0458/managebac-assignment-checker.git && cd managebac-assignment-checker && pip install -r requirements.txt && python main_new.py --interactive
+# 克隆并自动安装所有组件
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git
+cd managebac-assignment-checker
+python install_complete.py
 ```
 
+这将会：
+- ✅ 安装所有依赖（包括GUI库）
+- ✅ 设置Playwright浏览器
+- ✅ 创建桌面快捷方式
+- ✅ 配置环境
+- ✅ 测试安装
+- 🚀 可选择启动GUI应用程序
+
+#### 🖥️ **手动GUI安装**
+
 **🎯 自动安装脚本：**
-- **Linux/macOS**: `./install.sh`
-- **Windows**: `install.bat`
+- **Linux/macOS**: `./start_gui.sh`
+- **Windows**: `start_gui.bat`
 
 **📋 分步安装：**
 ```bash
@@ -205,11 +279,21 @@ git clone https://github.com/Hacker0458/managebac-assignment-checker.git && cd m
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git
 cd managebac-assignment-checker
 
-# 安装依赖
+# 安装依赖（包括GUI）
 pip install -r requirements.txt
 
-# 或者作为包安装
-pip install -e .
+# 安装Playwright浏览器
+python -m playwright install chromium
+
+# 启动GUI应用程序
+python gui_launcher.py
+```
+
+#### 📱 **命令行版本**
+```bash
+# 仅命令行使用（无GUI）
+pip install playwright python-dotenv jinja2
+python main_new.py --interactive
 ```
 
 #### 配置

@@ -1235,7 +1235,7 @@ class ManageBacGUI:
         # Initial message
         self.no_assignments_label = tk.Label(
             self.assignments_frame,
-            text="📝 No assignments loaded yet.\nClick 'Check Assignments' to get started!\n\n📝 尚未加载作业。\n点击"检查作业"开始使用！",
+            text="📝 No assignments loaded yet.\nClick 'Check Assignments' to get started!\n\n📝 尚未加载作业。\n点击\"检查作业\"开始使用！",
             font=('Segoe UI', 14),
             bg=self.theme.get_color('bg'),
             fg=self.theme.get_color('text_light'),
