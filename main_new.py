@@ -31,8 +31,10 @@ from managebac_checker.cli import main
 def welcome_message():
     """Display welcome message in bilingual format."""
     # Detect language from environment
-    lang = "zh" if os.getenv("LANG", "").startswith("zh") else "zh"  # Default to Chinese
-    
+    lang = (
+        "zh" if os.getenv("LANG", "").startswith("zh") else "zh"
+    )  # Default to Chinese
+
     if lang == "zh":
         print("🎓 欢迎使用 ManageBac作业检查器 v2.0.0")
         print("=" * 50)

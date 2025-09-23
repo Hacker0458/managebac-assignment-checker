@@ -12,6 +12,7 @@ License: MIT
 from setuptools import setup, find_packages
 import os
 
+
 # Read README file | 读取README文件
 def read_readme():
     try:
@@ -20,11 +21,14 @@ def read_readme():
     except FileNotFoundError:
         return "ManageBac Assignment Checker - An intelligent automation tool for assignment tracking."
 
+
 # Read requirements file | 读取requirements文件
 def read_requirements():
     try:
         with open("requirements.txt", "r", encoding="utf-8") as fh:
-            return [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+            return [
+                line.strip() for line in fh if line.strip() and not line.startswith("#")
+            ]
     except FileNotFoundError:
         return [
             "playwright>=1.40.0",
@@ -33,6 +37,7 @@ def read_requirements():
             "black>=23.11.0",
             "flake8>=6.1.0",
         ]
+
 
 setup(
     name="managebac-assignment-checker",
@@ -95,9 +100,21 @@ setup(
     include_package_data=True,
     zip_safe=False,
     keywords=[
-        "managebac", "assignment", "checker", "automation", "education", 
-        "web-scraping", "student", "homework", "tracking", "notification",
-        "report", "analysis", "productivity", "school", "academic"
+        "managebac",
+        "assignment",
+        "checker",
+        "automation",
+        "education",
+        "web-scraping",
+        "student",
+        "homework",
+        "tracking",
+        "notification",
+        "report",
+        "analysis",
+        "productivity",
+        "school",
+        "academic",
     ],
     project_urls={
         "Homepage": "https://github.com/Hacker0458/managebac-assignment-checker",
