@@ -22,11 +22,14 @@
 
 ### 🌟 Features
 
+- 🤖 **AI Assistant**: Powered by OpenAI for intelligent assignment analysis and personalized recommendations
 - 🔐 **Secure Login**: Automated ManageBac authentication with credential protection
 - 📊 **Multi-format Reports**: Generate HTML, Markdown, JSON, and console reports
-- 🎯 **Smart Analysis**: Intelligent priority and urgency assessment
+- 🎯 **Smart Analysis**: AI-enhanced priority and urgency assessment with study planning
+- 💡 **Personalized Insights**: Get AI-powered suggestions for time management and study strategies
 - 📧 **Email Notifications**: Automated assignment reminders
 - 📈 **Visual Analytics**: Detailed statistics and data visualization
+- 🌐 **Bilingual Support**: Full English and Chinese interface
 - ⚙️ **Flexible Configuration**: Customizable settings via environment variables
 - 🧪 **Full Test Coverage**: Comprehensive unit testing suite
 - 🚀 **CI/CD Ready**: GitHub Actions workflow included
@@ -61,15 +64,23 @@ pip install -e .
 
 1. **Copy environment template:**
    ```bash
-   cp .env.example .env
+   cp config.example.env .env
    ```
 
 2. **Edit `.env` file with your ManageBac credentials:**
    ```env
+   # Required | 必需
    MANAGEBAC_EMAIL=your_email@example.com
    MANAGEBAC_PASSWORD=your_password
    MANAGEBAC_URL=https://your-school.managebac.com
-   REPORT_FORMAT=html
+   
+   # Optional AI Features | 可选AI功能
+   AI_ENABLED=true
+   OPENAI_API_KEY=your_openai_api_key
+   AI_MODEL=gpt-3.5-turbo
+   
+   # Report Settings | 报告设置
+   REPORT_FORMAT=html,json
    OUTPUT_DIR=reports
    ```
 
@@ -163,11 +174,14 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ### 🌟 功能特性
 
+- 🤖 **AI助手**: 基于OpenAI的智能作业分析和个性化建议
 - 🔐 **安全登录**: 自动化ManageBac身份验证，保护凭据安全
 - 📊 **多格式报告**: 生成HTML、Markdown、JSON和控制台报告
-- 🎯 **智能分析**: 智能优先级和紧急程度评估
+- 🎯 **智能分析**: AI增强的优先级和紧急程度评估，包含学习计划
+- 💡 **个性化洞察**: 获取AI驱动的时间管理和学习策略建议
 - 📧 **邮件通知**: 自动化作业提醒功能
 - 📈 **可视化分析**: 详细的统计数据和数据可视化
+- 🌐 **双语支持**: 完整的中英文界面
 - ⚙️ **灵活配置**: 通过环境变量自定义设置
 - 🧪 **完整测试**: 全面的单元测试套件
 - 🚀 **CI/CD就绪**: 包含GitHub Actions工作流
@@ -202,15 +216,23 @@ pip install -e .
 
 1. **复制环境变量模板:**
    ```bash
-   cp .env.example .env
+   cp config.example.env .env
    ```
 
 2. **编辑 `.env` 文件，填入您的ManageBac凭据:**
    ```env
+   # 必需 | Required
    MANAGEBAC_EMAIL=your_email@example.com
    MANAGEBAC_PASSWORD=your_password
    MANAGEBAC_URL=https://your-school.managebac.com
-   REPORT_FORMAT=html
+   
+   # 可选AI功能 | Optional AI Features
+   AI_ENABLED=true
+   OPENAI_API_KEY=your_openai_api_key
+   AI_MODEL=gpt-3.5-turbo
+   
+   # 报告设置 | Report Settings
+   REPORT_FORMAT=html,json
    OUTPUT_DIR=reports
    ```
 
