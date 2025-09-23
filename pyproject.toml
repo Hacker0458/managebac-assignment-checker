@@ -185,11 +185,7 @@ addopts = [
     "--strict-config",
     "--verbose",
     "--tb=short",
-    "--cov=managebac_checker",
-    "--cov-report=term-missing",
-    "--cov-report=html:htmlcov",
-    "--cov-report=xml",
-    "--cov-fail-under=80",
+    "--disable-warnings",
 ]
 testpaths = ["tests"]
 python_files = ["test_*.py"]

@@ -1,0 +1,27 @@
+# ========================================
+# 🧪 Test Dependencies Only | 仅测试依赖
+# ========================================
+
+# Core Dependencies for Testing | 测试核心依赖
+playwright>=1.45.0
+python-dotenv>=1.1.1
+jinja2>=3.1.4
+
+# Testing Framework | 测试框架
+pytest>=8.4.2
+pytest-asyncio>=0.23.0
+pytest-cov>=5.0.0
+
+# Code Quality | 代码质量
+black>=24.4.0
+flake8>=7.1.0
+mypy>=1.10.0
+
+# Security | 安全检查
+bandit[toml]>=1.7.8
+safety>=3.0.1
+pip-audit>=2.7.0
+
+# Code Metrics | 代码度量
+radon>=6.0.0
+xenon>=0.9.0
