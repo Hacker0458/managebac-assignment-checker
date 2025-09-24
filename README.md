@@ -58,13 +58,25 @@
 
 #### 🎯 **One-Click Installation (Recommended)**
 
-**Option 1: Direct Download and Install**
+**🚀 Ultimate Installer (Best Experience)**
 ```bash
-# Download and run the installer
+# Download and run the ultimate installer with full features
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/ultimate_install.sh | bash
+```
+
+**⚡ Quick Installer (Fast Setup)**
+```bash
+# Download and run the quick installer
 curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/quick_install.sh | bash
 ```
 
-**Option 2: Clone and Install**
+**🔧 GitHub Installer (From Source)**
+```bash
+# Download and run the GitHub installer
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/install_github.sh | bash
+```
+
+**📦 Manual Installation**
 ```bash
 # Clone and install everything automatically
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git
@@ -259,13 +271,25 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 #### 🎯 **一键安装（推荐）**
 
-**选项1: 直接下载安装**
+**🚀 终极安装器（最佳体验）**
 ```bash
-# 下载并运行安装器
+# 下载并运行终极安装器，包含完整功能
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/ultimate_install.sh | bash
+```
+
+**⚡ 快速安装器（快速设置）**
+```bash
+# 下载并运行快速安装器
 curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/quick_install.sh | bash
 ```
 
-**选项2: 克隆并安装**
+**🔧 GitHub安装器（从源码）**
+```bash
+# 下载并运行GitHub安装器
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/install_github.sh | bash
+```
+
+**📦 手动安装**
 ```bash
 # 克隆并自动安装所有组件
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git

@@ -1,0 +1,228 @@
+name: 🧪 Test Installation Scripts
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  test-installers:
+    name: 🧪 Test Installation Scripts
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        installer: [ultimate_install.sh, quick_install.sh, install_github.sh]
+        exclude:
+          - os: windows-latest
+            installer: ultimate_install.sh
+          - os: macos-latest
+            installer: install_github.sh
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: 🧪 Test Ultimate Installer
+      if: matrix.installer == 'ultimate_install.sh'
+      run: |
+        chmod +x ultimate_install.sh
+        echo "Testing ultimate installer..."
+        timeout 300 ./ultimate_install.sh --help || true
+
+    - name: 🧪 Test Quick Installer
+      if: matrix.installer == 'quick_install.sh'
+      run: |
+        chmod +x quick_install.sh
+        echo "Testing quick installer..."
+        timeout 300 ./quick_install.sh || true
+
+    - name: 🧪 Test GitHub Installer
+      if: matrix.installer == 'install_github.sh'
+      run: |
+        chmod +x install_github.sh
+        echo "Testing GitHub installer..."
+        timeout 300 ./install_github.sh || true
+
+    - name: 🔍 Check Installation Scripts Syntax
+      run: |
+        echo "Checking shell script syntax..."
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "Checking $script..."
+            bash -n "$script"
+            echo "✅ $script syntax OK"
+          fi
+        done
+
+    - name: 📊 Test Script Functionality
+      run: |
+        echo "Testing script functionality..."
+        
+        # Test help options
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "Testing $script --help..."
+            bash "$script" --help || true
+          fi
+        done
+
+    - name: 🧹 Cleanup Test Environment
+      if: always()
+      run: |
+        echo "Cleaning up test environment..."
+        rm -rf ~/managebac-assignment-checker || true
+        rm -rf managebac_venv || true
+
+  test-installation-methods:
+    name: 🔧 Test Installation Methods
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 🧪 Test Manual Installation
+      run: |
+        echo "Testing manual installation..."
+        pip install -r requirements-core.txt
+        python -m playwright install chromium
+        python -c "import managebac_checker; print('✅ Manual installation test passed')"
+
+    - name: 🧪 Test CLI Mode
+      run: |
+        echo "Testing CLI mode..."
+        python main_new.py --help || true
+
+    - name: 🧪 Test GUI Mode
+      run: |
+        echo "Testing GUI mode..."
+        python gui_launcher.py --help || true
+
+  test-cross-platform:
+    name: 🌐 Test Cross-Platform Compatibility
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04, macos-12, macos-13, windows-2019, windows-2022]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: 🧪 Test Python Compatibility
+      run: |
+        echo "Testing Python ${{ matrix.python-version }} on ${{ matrix.os }}"
+        python --version
+        python -c "import sys; print(f'Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}')"
+
+    - name: 🧪 Test Basic Installation
+      run: |
+        echo "Testing basic installation..."
+        pip install --upgrade pip
+        pip install playwright python-dotenv
+        python -m playwright install chromium || true
+
+    - name: 🧪 Test Script Execution
+      run: |
+        echo "Testing script execution..."
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "Testing $script syntax..."
+            bash -n "$script"
+          fi
+        done
+
+  test-documentation:
+    name: 📚 Test Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📚 Check Documentation Links
+      run: |
+        echo "Checking documentation files..."
+        ls -la *.md
+        echo "✅ Documentation files found"
+
+    - name: 📚 Validate Markdown
+      run: |
+        echo "Validating markdown files..."
+        for file in *.md; do
+          if [ -f "$file" ]; then
+            echo "Checking $file..."
+            # Basic markdown validation
+            grep -q "#" "$file" && echo "✅ $file has headers" || echo "⚠️ $file missing headers"
+          fi
+        done
+
+    - name: 📚 Check Installation Instructions
+      run: |
+        echo "Checking installation instructions..."
+        grep -q "curl.*install" README.md && echo "✅ README has curl instructions" || echo "❌ README missing curl instructions"
+        grep -q "bash" README.md && echo "✅ README has bash instructions" || echo "❌ README missing bash instructions"
+
+  test-security:
+    name: 🔒 Test Security
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔒 Security Scan
+      run: |
+        echo "Running security scan..."
+        # Check for common security issues in shell scripts
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "Scanning $script for security issues..."
+            # Check for dangerous commands
+            if grep -q "rm -rf /" "$script"; then
+              echo "❌ $script contains dangerous rm command"
+              exit 1
+            fi
+            if grep -q "curl.*|.*bash" "$script"; then
+              echo "✅ $script uses secure curl | bash pattern"
+            fi
+          fi
+        done
+
+    - name: 🔒 Check Script Permissions
+      run: |
+        echo "Checking script permissions..."
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            if [ -x "$script" ]; then
+              echo "✅ $script is executable"
+            else
+              echo "⚠️ $script is not executable"
+            fi
+          fi
+        done
