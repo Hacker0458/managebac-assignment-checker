@@ -167,7 +167,9 @@ class ImprovedSystemTrayManager:
             # Page lines
             line_count = 6
             for i in range(line_count):
-                line_y = page_area[1] + (page_area[3] - page_area[1]) * (i + 1) / (line_count + 1)
+                line_y = page_area[1] + (page_area[3] - page_area[1]) * (i + 1) / (
+                    line_count + 1
+                )
                 draw.line(
                     [page_area[0] + 8, line_y, page_area[2] - 8, line_y],
                     fill=(149, 165, 166, 180),
@@ -217,7 +219,9 @@ class ImprovedSystemTrayManager:
         """Start system tray | 启动系统托盘"""
         if not TRAY_AVAILABLE:
             print("⚠️ System tray not available, using fallback notifications")
-            self.show_notification(self.get_message("app_name"), self.get_message("app_started"))
+            self.show_notification(
+                self.get_message("app_name"), self.get_message("app_started")
+            )
             return
 
         try:
@@ -233,7 +237,9 @@ class ImprovedSystemTrayManager:
             self.running = True
 
             # Show startup notification
-            self.show_notification(self.get_message("app_name"), self.get_message("app_started"))
+            self.show_notification(
+                self.get_message("app_name"), self.get_message("app_started")
+            )
 
             # Start tray in separate thread
             tray_thread = threading.Thread(target=self.icon.run, daemon=True)
@@ -322,7 +328,11 @@ class ImprovedSystemTrayManager:
         else:
             self.show_notification(
                 self.get_message("app_name"),
-                "Reports folder not found" if self.language == "en" else "未找到报告文件夹",
+                (
+                    "Reports folder not found"
+                    if self.language == "en"
+                    else "未找到报告文件夹"
+                ),
             )
 
     def show_settings(self, icon=None, item=None):
@@ -376,7 +386,11 @@ class ImprovedNotificationManager:
             self.send_notification(title, message, timeout=10)
 
         elif high_priority:
-            title = "🔥 High Priority Assignments" if self.language == "en" else "🔥 高优先级作业"
+            title = (
+                "🔥 High Priority Assignments"
+                if self.language == "en"
+                else "🔥 高优先级作业"
+            )
             message = (
                 f"You have {len(high_priority)} high priority assignments"
                 if self.language == "en"
@@ -406,7 +420,9 @@ class ImprovedNotificationManager:
     def notify_report_generated(self, report_path: str):
         """Notify when report is generated | 报告生成时通知"""
         title = "📊 Report Generated" if self.language == "en" else "📊 报告已生成"
-        message = f"Report saved successfully" if self.language == "en" else f"报告已成功保存"
+        message = (
+            f"Report saved successfully" if self.language == "en" else f"报告已成功保存"
+        )
         self.send_notification(title, message)
 
 

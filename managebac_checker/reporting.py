@@ -16,9 +16,13 @@ class ReportBuilder:
 
     def __init__(self, *, output_dir: Path, report_formats: List[str]) -> None:
         self.output_dir = output_dir
-        self.report_formats = [fmt.strip().lower() for fmt in report_formats if fmt.strip()]
+        self.report_formats = [
+            fmt.strip().lower() for fmt in report_formats if fmt.strip()
+        ]
 
-    def build(self, assignments: List[Assignment], analysis: Dict[str, object]) -> Dict[str, str]:
+    def build(
+        self, assignments: List[Assignment], analysis: Dict[str, object]
+    ) -> Dict[str, str]:
         generated_at = datetime.now(timezone.utc).isoformat()
         report_payload = {
             "assignments": [item.to_dict() for item in assignments],
@@ -31,11 +35,15 @@ class ReportBuilder:
             if fmt == "json":
                 reports["json"] = self._render_json(report_payload)
             elif fmt == "markdown":
-                reports["markdown"] = self._render_markdown(assignments, analysis, generated_at)
+                reports["markdown"] = self._render_markdown(
+                    assignments, analysis, generated_at
+                )
             elif fmt == "html":
                 reports["html"] = self._render_html(assignments, analysis, generated_at)
             elif fmt == "console":
-                reports["console"] = self._render_console(assignments, analysis, generated_at)
+                reports["console"] = self._render_console(
+                    assignments, analysis, generated_at
+                )
         return reports
 
     def persist(self, reports: Dict[str, str]) -> Dict[str, str]:
@@ -72,7 +80,9 @@ class ReportBuilder:
         )
         lines.append("\n未提交任务:")
         for item in analysis["grouped_by_status"]["pending"][:10]:
-            lines.append(f" - {item.title} (due: {item.due_date}, course: {item.course})")
+            lines.append(
+                f" - {item.title} (due: {item.due_date}, course: {item.course})"
+            )
         if not analysis["grouped_by_status"]["pending"]:
             lines.append(" - 无")
         lines.append("\n逾期任务:")
@@ -103,7 +113,9 @@ class ReportBuilder:
         lines.append("## 未提交任务")
         if analysis["grouped_by_status"]["pending"]:
             for item in analysis["grouped_by_status"]["pending"]:
-                lines.append(f"- {item.title} — 截止: {item.due_date} （课程: {item.course}）")
+                lines.append(
+                    f"- {item.title} — 截止: {item.due_date} （课程: {item.course}）"
+                )
         else:
             lines.append("- 无")
 

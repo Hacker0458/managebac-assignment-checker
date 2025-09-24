@@ -61,7 +61,9 @@ class ManageBacScraper:
 
     async def login(self, page: Page) -> bool:
         self.logger.info("Navigating to %s", self.config.url)
-        await page.goto(self.config.url, wait_until="domcontentloaded", timeout=self.config.timeout)
+        await page.goto(
+            self.config.url, wait_until="domcontentloaded", timeout=self.config.timeout
+        )
         await page.wait_for_timeout(500)
 
         email_selector = "input[type=email], input[name=email]"
@@ -82,7 +84,9 @@ class ManageBacScraper:
             except Exception:
                 continue
         else:
-            self.logger.warning("Could not locate login button, submitting form with Enter key")
+            self.logger.warning(
+                "Could not locate login button, submitting form with Enter key"
+            )
             await page.press(password_selector, "Enter")
 
         try:
@@ -114,9 +118,14 @@ class ManageBacScraper:
                     continue
                 self.logger.debug("Clicking navigation link: %s (%s)", label, selector)
                 await link.click()
-                await page.wait_for_load_state("domcontentloaded", timeout=self.config.timeout)
+                await page.wait_for_load_state(
+                    "domcontentloaded", timeout=self.config.timeout
+                )
                 await page.wait_for_timeout(1_000)
-                if any(keyword in page.url for keyword in ("tasks", "assignment", "homework")):
+                if any(
+                    keyword in page.url
+                    for keyword in ("tasks", "assignment", "homework")
+                ):
                     return
             except Exception as exc:
                 self.logger.debug("Navigation via %s failed: %s", selector, exc)
@@ -132,9 +141,14 @@ class ManageBacScraper:
             target = base + path
             self.logger.debug("Trying fallback navigation to %s", target)
             try:
-                await page.goto(target, wait_until="domcontentloaded", timeout=self.config.timeout)
+                await page.goto(
+                    target, wait_until="domcontentloaded", timeout=self.config.timeout
+                )
                 await page.wait_for_timeout(1_000)
-                if any(keyword in page.url for keyword in ("tasks", "assignment", "homework")):
+                if any(
+                    keyword in page.url
+                    for keyword in ("tasks", "assignment", "homework")
+                ):
                     return
             except Exception as exc:
                 self.logger.debug("Fallback navigation to %s failed: %s", target, exc)
@@ -189,9 +203,9 @@ class ManageBacScraper:
 
         course = await self._first_text(handle, self._COURSE_SELECTORS) or "未知课程"
         due_date = await self._first_text(handle, self._DUE_SELECTORS) or "无截止日期"
-        status = await self._first_text(handle, self._STATUS_SELECTORS) or self._infer_status(
-            raw_text
-        )
+        status = await self._first_text(
+            handle, self._STATUS_SELECTORS
+        ) or self._infer_status(raw_text)
         assignment_type = self._infer_type(raw_text)
         submitted, overdue = self._classify_state(status, raw_text)
         link = await self._first_attr(handle, "a", "href")
@@ -277,10 +291,14 @@ class ManageBacScraper:
 
     async def _text_fallback(self, page: Page) -> List[Assignment]:
         content = await page.inner_text("body")
-        blocks = [line.strip() for line in content.splitlines() if len(line.strip()) > 10]
+        blocks = [
+            line.strip() for line in content.splitlines() if len(line.strip()) > 10
+        ]
         assignments: List[Assignment] = []
         for block in blocks[:20]:
-            if not any(token in block.lower() for token in ("due", "截止", "submit", "提交")):
+            if not any(
+                token in block.lower() for token in ("due", "截止", "submit", "提交")
+            ):
                 continue
             identifier = block[:40].lower()
             # Try to extract date from text
@@ -347,7 +365,9 @@ async def run_scraper(config: Config, logger: logging.Logger) -> List[Assignment
             await page.wait_for_timeout(1_500)
             assignments = await scraper.collect_assignments(page)
             if config.fetch_details and assignments:
-                await _enrich_details(scraper, page, assignments, limit=config.details_limit)
+                await _enrich_details(
+                    scraper, page, assignments, limit=config.details_limit
+                )
             return assignments
         finally:
             await browser.close()
@@ -362,7 +382,9 @@ async def _enrich_details(
             continue
         try:
             await page.goto(
-                assignment.link, wait_until="domcontentloaded", timeout=scraper.config.timeout
+                assignment.link,
+                wait_until="domcontentloaded",
+                timeout=scraper.config.timeout,
             )
             await page.wait_for_timeout(600)
             description = await page.inner_text("main", timeout=2_000)

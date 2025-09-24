@@ -121,7 +121,7 @@ class ProfessionalTheme:
         # Map common color names to theme colors
         color_mapping = {
             "bg": "background",
-            "fg": "text_primary", 
+            "fg": "text_primary",
             "text": "text_primary",
             "button": "primary",
             "button_text": "text_primary",
@@ -133,16 +133,16 @@ class ProfessionalTheme:
             "success": "success",
             "warning": "warning",
             "error": "danger",
-            "info": "primary"
+            "info": "primary",
         }
-        
+
         mapped_name = color_mapping.get(name, name)
         return self.colors.get(mapped_name, "#000000")
 
     def get_font(self, style: str) -> tuple:
         """Get font for style | 获取样式字体"""
         return self.fonts.get(style, ("Arial", 12, "normal"))
-    
+
     def switch_theme(self, theme_name: str):
         """Switch to a different theme | 切换到不同主题"""
         if theme_name in self.THEMES:
@@ -155,7 +155,9 @@ class ProfessionalTheme:
 class ProfessionalButton(tk.Button):
     """Professional button with enhanced styling | 专业按钮，增强样式"""
 
-    def __init__(self, parent, theme: ProfessionalTheme, style: str = "primary", **kwargs):
+    def __init__(
+        self, parent, theme: ProfessionalTheme, style: str = "primary", **kwargs
+    ):
         self.theme = theme
         self.style = style
 
@@ -171,9 +173,21 @@ class ProfessionalButton(tk.Button):
                 "hover_bg": theme.get_color("border"),
                 "fg": theme.get_color("text_primary"),
             },
-            "success": {"bg": theme.get_color("success"), "hover_bg": "#047857", "fg": "white"},
-            "warning": {"bg": theme.get_color("warning"), "hover_bg": "#B45309", "fg": "white"},
-            "danger": {"bg": theme.get_color("danger"), "hover_bg": "#B91C1C", "fg": "white"},
+            "success": {
+                "bg": theme.get_color("success"),
+                "hover_bg": "#047857",
+                "fg": "white",
+            },
+            "warning": {
+                "bg": theme.get_color("warning"),
+                "hover_bg": "#B45309",
+                "fg": "white",
+            },
+            "danger": {
+                "bg": theme.get_color("danger"),
+                "hover_bg": "#B91C1C",
+                "fg": "white",
+            },
         }
 
         style_config = styles.get(style, styles["primary"])
@@ -214,13 +228,17 @@ class ProfessionalButton(tk.Button):
 class ProfessionalCard(tk.Frame):
     """Professional assignment card with enhanced design | 专业作业卡片，增强设计"""
 
-    def __init__(self, parent, theme: ProfessionalTheme, assignment_data: Dict[str, Any]):
+    def __init__(
+        self, parent, theme: ProfessionalTheme, assignment_data: Dict[str, Any]
+    ):
         super().__init__(parent, bg=theme.get_color("card"), relief="flat", bd=0)
         self.theme = theme
         self.assignment = assignment_data
 
         # Add subtle shadow effect
-        self.configure(highlightbackground=theme.get_color("border"), highlightthickness=1)
+        self.configure(
+            highlightbackground=theme.get_color("border"), highlightthickness=1
+        )
 
         self._create_widgets()
         self._setup_hover_effects()
@@ -294,7 +312,9 @@ class ProfessionalCard(tk.Frame):
             status_frame,
             text=status.upper().replace("_", " "),
             font=(
-                ("SF Pro Text", 9, "bold") if sys.platform == "darwin" else ("Segoe UI", 9, "bold")
+                ("SF Pro Text", 9, "bold")
+                if sys.platform == "darwin"
+                else ("Segoe UI", 9, "bold")
             ),
             bg=status_colors.get(status, self.theme.get_color("secondary")),
             fg="white",
@@ -314,7 +334,11 @@ class ProfessionalCard(tk.Frame):
         tk.Label(
             course_frame,
             text="📚",
-            font=("Apple Color Emoji", 14) if sys.platform == "darwin" else ("Segoe UI Emoji", 12),
+            font=(
+                ("Apple Color Emoji", 14)
+                if sys.platform == "darwin"
+                else ("Segoe UI Emoji", 12)
+            ),
             bg=self.theme.get_color("card"),
             fg=self.theme.get_color("text_secondary"),
         ).pack(side="left", padx=(0, 6))
@@ -334,7 +358,11 @@ class ProfessionalCard(tk.Frame):
         tk.Label(
             due_frame,
             text="📅",
-            font=("Apple Color Emoji", 14) if sys.platform == "darwin" else ("Segoe UI Emoji", 12),
+            font=(
+                ("Apple Color Emoji", 14)
+                if sys.platform == "darwin"
+                else ("Segoe UI Emoji", 12)
+            ),
             bg=self.theme.get_color("card"),
             fg=self.theme.get_color("text_secondary"),
         ).pack(side="left", padx=(0, 6))
@@ -387,7 +415,11 @@ class ProfessionalCard(tk.Frame):
         tk.Label(
             priority_container,
             text=priority_emoji,
-            font=("Apple Color Emoji", 14) if sys.platform == "darwin" else ("Segoe UI Emoji", 12),
+            font=(
+                ("Apple Color Emoji", 14)
+                if sys.platform == "darwin"
+                else ("Segoe UI Emoji", 12)
+            ),
             bg=self.theme.get_color("card"),
         ).pack(side="left", padx=(0, 6))
 
@@ -413,7 +445,9 @@ class ProfessionalCard(tk.Frame):
 
         # AI suggestion with better formatting
         if hasattr(self.assignment, "ai_suggestion") and self.assignment.ai_suggestion:
-            ai_frame = tk.Frame(main_frame, bg=self.theme.get_color("surface"), relief="flat")
+            ai_frame = tk.Frame(
+                main_frame, bg=self.theme.get_color("surface"), relief="flat"
+            )
             ai_frame.pack(fill="x", pady=(0, 12))
 
             # AI header
@@ -434,7 +468,11 @@ class ProfessionalCard(tk.Frame):
             tk.Label(
                 ai_header,
                 text="AI Suggestion | AI建议:",
-                font=(self.theme.get_font("small")[0], self.theme.get_font("small")[1], "bold"),
+                font=(
+                    self.theme.get_font("small")[0],
+                    self.theme.get_font("small")[1],
+                    "bold",
+                ),
                 bg=self.theme.get_color("surface"),
                 fg=self.theme.get_color("primary"),
             ).pack(side="left")
@@ -498,7 +536,9 @@ class ProfessionalCard(tk.Frame):
         details_window.geometry(f"600x500+{x}+{y}")
 
         # Header
-        header_frame = tk.Frame(details_window, bg=self.theme.get_color("primary"), height=60)
+        header_frame = tk.Frame(
+            details_window, bg=self.theme.get_color("primary"), height=60
+        )
         header_frame.pack(fill="x")
         header_frame.pack_propagate(False)
 
@@ -604,7 +644,8 @@ Fetched At: {self.assignment.get('fetched_at', 'Unknown')}
         if result:
             self.assignment["status"] = "completed"
             messagebox.showinfo(
-                "Success | 成功", "✅ Assignment marked as completed!\n✅ 作业已标记为完成！"
+                "Success | 成功",
+                "✅ Assignment marked as completed!\n✅ 作业已标记为完成！",
             )
 
             # Refresh the parent display
@@ -617,7 +658,9 @@ class ProfessionalStatusBar(tk.Frame):
     """Professional status bar with enhanced design | 专业状态栏，增强设计"""
 
     def __init__(self, parent, theme: ProfessionalTheme):
-        super().__init__(parent, bg=theme.get_color("surface"), height=40, relief="flat")
+        super().__init__(
+            parent, bg=theme.get_color("surface"), height=40, relief="flat"
+        )
         self.theme = theme
         self.pack_propagate(False)
 
@@ -628,7 +671,11 @@ class ProfessionalStatusBar(tk.Frame):
         self.status_icon = tk.Label(
             left_frame,
             text="🔄",
-            font=("Apple Color Emoji", 14) if sys.platform == "darwin" else ("Segoe UI Emoji", 12),
+            font=(
+                ("Apple Color Emoji", 14)
+                if sys.platform == "darwin"
+                else ("Segoe UI Emoji", 12)
+            ),
             bg=theme.get_color("surface"),
         )
         self.status_icon.pack(side="left", padx=(0, 8))
@@ -736,7 +783,9 @@ class ProfessionalManageBacGUI:
 
     def _setup_professional_window(self):
         """Setup professional window appearance | 设置专业窗口外观"""
-        self.root.title("🎓 ManageBac Assignment Checker Pro | ManageBac作业检查器专业版")
+        self.root.title(
+            "🎓 ManageBac Assignment Checker Pro | ManageBac作业检查器专业版"
+        )
 
         # Calculate optimal window size based on screen
         screen_width = self.root.winfo_screenwidth()
@@ -787,7 +836,9 @@ class ProfessionalManageBacGUI:
 
         # Configure notebook
         style.configure(
-            "Professional.TNotebook", background=self.theme.get_color("surface"), borderwidth=0
+            "Professional.TNotebook",
+            background=self.theme.get_color("surface"),
+            borderwidth=0,
         )
 
         style.configure(
@@ -819,7 +870,9 @@ class ProfessionalManageBacGUI:
     def _create_professional_menu(self):
         """Create professional menu bar | 创建专业菜单栏"""
         menubar = tk.Menu(
-            self.root, bg=self.theme.get_color("surface"), fg=self.theme.get_color("text_primary")
+            self.root,
+            bg=self.theme.get_color("surface"),
+            fg=self.theme.get_color("text_primary"),
         )
         self.root.config(menu=menubar)
 
@@ -857,14 +910,22 @@ class ProfessionalManageBacGUI:
         )
         menubar.add_cascade(label="✏️ Edit | 编辑", menu=edit_menu)
         edit_menu.add_command(
-            label="🔍 Find Assignments | 查找作业", command=self._focus_search, accelerator="Cmd+F"
+            label="🔍 Find Assignments | 查找作业",
+            command=self._focus_search,
+            accelerator="Cmd+F",
         )
         edit_menu.add_command(
-            label="🔄 Refresh | 刷新", command=self._refresh_assignments, accelerator="Cmd+R"
+            label="🔄 Refresh | 刷新",
+            command=self._refresh_assignments,
+            accelerator="Cmd+R",
         )
         edit_menu.add_separator()
-        edit_menu.add_command(label="✅ Mark All Read | 全部标记已读", command=self._mark_all_read)
-        edit_menu.add_command(label="🧹 Clear Cache | 清除缓存", command=self._clear_cache)
+        edit_menu.add_command(
+            label="✅ Mark All Read | 全部标记已读", command=self._mark_all_read
+        )
+        edit_menu.add_command(
+            label="🧹 Clear Cache | 清除缓存", command=self._clear_cache
+        )
 
         # Tools menu
         tools_menu = tk.Menu(
@@ -879,10 +940,14 @@ class ProfessionalManageBacGUI:
             command=self._check_assignments,
             accelerator="F5",
         )
-        tools_menu.add_command(label="🧪 Test Connection | 测试连接", command=self._test_connection)
+        tools_menu.add_command(
+            label="🧪 Test Connection | 测试连接", command=self._test_connection
+        )
         tools_menu.add_separator()
         tools_menu.add_command(
-            label="🤖 AI Analysis | AI分析", command=self._run_ai_analysis, accelerator="Cmd+A"
+            label="🤖 AI Analysis | AI分析",
+            command=self._run_ai_analysis,
+            accelerator="Cmd+A",
         )
         tools_menu.add_command(
             label="📊 Generate Report | 生成报告",
@@ -894,7 +959,9 @@ class ProfessionalManageBacGUI:
         )
         tools_menu.add_separator()
         tools_menu.add_command(
-            label="📈 Statistics | 统计", command=self._show_statistics, accelerator="Cmd+S"
+            label="📈 Statistics | 统计",
+            command=self._show_statistics,
+            accelerator="Cmd+S",
         )
 
         # View menu
@@ -914,14 +981,24 @@ class ProfessionalManageBacGUI:
             command=lambda: self._change_theme("professional_dark"),
         )
         view_menu.add_separator()
-        view_menu.add_command(label="📋 Show All | 显示全部", command=self._show_all_assignments)
-        view_menu.add_command(label="⚠️ Overdue Only | 仅逾期", command=self._show_overdue_only)
-        view_menu.add_command(label="🔥 High Priority | 高优先级", command=self._show_high_priority)
+        view_menu.add_command(
+            label="📋 Show All | 显示全部", command=self._show_all_assignments
+        )
+        view_menu.add_command(
+            label="⚠️ Overdue Only | 仅逾期", command=self._show_overdue_only
+        )
+        view_menu.add_command(
+            label="🔥 High Priority | 高优先级", command=self._show_high_priority
+        )
         view_menu.add_separator()
         view_menu.add_command(
-            label="🔍 Toggle Search | 切换搜索", command=self._toggle_search, accelerator="Cmd+F"
+            label="🔍 Toggle Search | 切换搜索",
+            command=self._toggle_search,
+            accelerator="Cmd+F",
         )
-        view_menu.add_command(label="📊 Toggle Sidebar | 切换侧边栏", command=self._toggle_sidebar)
+        view_menu.add_command(
+            label="📊 Toggle Sidebar | 切换侧边栏", command=self._toggle_sidebar
+        )
 
         # Help menu
         help_menu = tk.Menu(
@@ -931,16 +1008,24 @@ class ProfessionalManageBacGUI:
             fg=self.theme.get_color("text_primary"),
         )
         menubar.add_cascade(label="❓ Help | 帮助", menu=help_menu)
-        help_menu.add_command(label="📖 Documentation | 文档", command=self._open_documentation)
+        help_menu.add_command(
+            label="📖 Documentation | 文档", command=self._open_documentation
+        )
         help_menu.add_command(
             label="🎥 Video Tutorial | 视频教程", command=self._open_video_tutorial
         )
         help_menu.add_command(label="💬 Community | 社区", command=self._open_community)
         help_menu.add_separator()
-        help_menu.add_command(label="🐛 Report Bug | 报告错误", command=self._report_bug)
-        help_menu.add_command(label="💡 Feature Request | 功能请求", command=self._feature_request)
+        help_menu.add_command(
+            label="🐛 Report Bug | 报告错误", command=self._report_bug
+        )
+        help_menu.add_command(
+            label="💡 Feature Request | 功能请求", command=self._feature_request
+        )
         help_menu.add_separator()
-        help_menu.add_command(label="🔄 Check Updates | 检查更新", command=self._check_updates)
+        help_menu.add_command(
+            label="🔄 Check Updates | 检查更新", command=self._check_updates
+        )
         help_menu.add_command(label="ℹ️ About | 关于", command=self._show_about)
 
         # Bind keyboard shortcuts
@@ -985,7 +1070,9 @@ class ProfessionalManageBacGUI:
 
     def _create_professional_sidebar(self):
         """Create professional sidebar | 创建专业侧边栏"""
-        sidebar = tk.Frame(self.paned_window, bg=self.theme.get_color("sidebar"), width=350)
+        sidebar = tk.Frame(
+            self.paned_window, bg=self.theme.get_color("sidebar"), width=350
+        )
         self.paned_window.add(sidebar, minsize=300)
 
         # Sidebar header with gradient effect
@@ -1052,10 +1139,19 @@ class ProfessionalManageBacGUI:
         ]
 
         for emoji, label, value, var_name, row, col in stats_data:
-            self._create_professional_stat_card(stats_grid, emoji, label, value, var_name, row, col)
+            self._create_professional_stat_card(
+                stats_grid, emoji, label, value, var_name, row, col
+            )
 
     def _create_professional_stat_card(
-        self, parent, emoji: str, label: str, value: str, var_name: str, row: int, col: int
+        self,
+        parent,
+        emoji: str,
+        label: str,
+        value: str,
+        var_name: str,
+        row: int,
+        col: int,
     ):
         """Create a professional stat card | 创建专业统计卡片"""
         card_frame = tk.Frame(
@@ -1072,7 +1168,11 @@ class ProfessionalManageBacGUI:
         tk.Label(
             card_frame,
             text=emoji,
-            font=("Apple Color Emoji", 20) if sys.platform == "darwin" else ("Segoe UI Emoji", 16),
+            font=(
+                ("Apple Color Emoji", 20)
+                if sys.platform == "darwin"
+                else ("Segoe UI Emoji", 16)
+            ),
             bg=self.theme.get_color("card"),
         ).pack(pady=(12, 4))
 
@@ -1182,7 +1282,9 @@ class ProfessionalManageBacGUI:
 
     def _create_professional_content(self):
         """Create professional content area | 创建专业内容区域"""
-        content_frame = tk.Frame(self.paned_window, bg=self.theme.get_color("background"))
+        content_frame = tk.Frame(
+            self.paned_window, bg=self.theme.get_color("background")
+        )
         self.paned_window.add(content_frame, minsize=600)
 
         # Content header with search
@@ -1193,7 +1295,9 @@ class ProfessionalManageBacGUI:
 
     def _create_content_header(self, parent):
         """Create content header with search | 创建带搜索的内容头部"""
-        header_frame = tk.Frame(parent, bg=self.theme.get_color("background"), height=80)
+        header_frame = tk.Frame(
+            parent, bg=self.theme.get_color("background"), height=80
+        )
         header_frame.pack(fill="x", padx=30, pady=20)
         header_frame.pack_propagate(False)
 
@@ -1324,14 +1428,20 @@ class ProfessionalManageBacGUI:
 
     def _show_empty_state(self):
         """Show professional empty state | 显示专业空状态"""
-        empty_frame = tk.Frame(self.assignments_frame, bg=self.theme.get_color("background"))
+        empty_frame = tk.Frame(
+            self.assignments_frame, bg=self.theme.get_color("background")
+        )
         empty_frame.pack(expand=True, fill="both", pady=100)
 
         # Large icon
         tk.Label(
             empty_frame,
             text="📚",
-            font=("Apple Color Emoji", 64) if sys.platform == "darwin" else ("Segoe UI Emoji", 48),
+            font=(
+                ("Apple Color Emoji", 64)
+                if sys.platform == "darwin"
+                else ("Segoe UI Emoji", 48)
+            ),
             bg=self.theme.get_color("background"),
         ).pack()
 
@@ -1403,7 +1513,9 @@ class ProfessionalManageBacGUI:
             except Exception as e:
                 print(f"⚠️ Error loading preferences: {e}")
 
-    def _update_status(self, message: str, icon: str = "🔄", show_progress: bool = False):
+    def _update_status(
+        self, message: str, icon: str = "🔄", show_progress: bool = False
+    ):
         """Update status bar | 更新状态栏"""
         self.status_bar.set_status(message, icon, show_progress)
 
@@ -1414,9 +1526,15 @@ class ProfessionalManageBacGUI:
         else:
             stats = {
                 "total": len(self.assignments),
-                "overdue": len([a for a in self.assignments if a.get("status") == "overdue"]),
-                "high_priority": len([a for a in self.assignments if a.get("priority") == "high"]),
-                "completed": len([a for a in self.assignments if a.get("status") == "completed"]),
+                "overdue": len(
+                    [a for a in self.assignments if a.get("status") == "overdue"]
+                ),
+                "high_priority": len(
+                    [a for a in self.assignments if a.get("priority") == "high"]
+                ),
+                "completed": len(
+                    [a for a in self.assignments if a.get("status") == "completed"]
+                ),
             }
 
         # Update stat cards
@@ -1482,7 +1600,14 @@ class ProfessionalManageBacGUI:
             "History",
             "Computer Science",
         ]
-        assignment_types = ["Homework", "Lab Report", "Essay", "Project", "Quiz", "Presentation"]
+        assignment_types = [
+            "Homework",
+            "Lab Report",
+            "Essay",
+            "Project",
+            "Quiz",
+            "Presentation",
+        ]
 
         assignments = []
         for i in range(8):
@@ -1652,20 +1777,22 @@ class ProfessionalManageBacGUI:
         """Open professional settings dialog | 打开专业设置对话框"""
         try:
             from .gui import ConfigDialog
+
             dialog = ConfigDialog(self.root, self.theme, "zh")
             self.root.wait_window(dialog)
         except Exception as e:
             print(f"❌ Error opening settings: {e}")
             messagebox.showerror(
                 "Error | 错误",
-                f"Failed to open settings dialog.\n无法打开设置对话框。\n\nError: {e}"
+                f"Failed to open settings dialog.\n无法打开设置对话框。\n\nError: {e}",
             )
 
     def _generate_report(self):
         """Generate professional report | 生成专业报告"""
         if not self.assignments:
             messagebox.showwarning(
-                "No Data | 无数据", "⚠️ No assignments to generate report!\n⚠️ 没有作业可生成报告！"
+                "No Data | 无数据",
+                "⚠️ No assignments to generate report!\n⚠️ 没有作业可生成报告！",
             )
             return
 
@@ -1951,95 +2078,109 @@ class ProfessionalManageBacGUI:
             if not self.theme.switch_theme(theme_name):
                 messagebox.showerror("Error", f"Invalid theme: {theme_name}")
                 return
-            
+
             # Update root window
             self.root.configure(bg=self.theme.get_color("background"))
-            
+
             # Update all widgets recursively
             self._update_widget_theme(self.root)
-            
+
             # Update status bar
-            if hasattr(self, 'status_bar'):
+            if hasattr(self, "status_bar"):
                 self.status_bar.configure(bg=self.theme.get_color("surface"))
                 for widget in self.status_bar.winfo_children():
                     self._update_widget_theme(widget)
-            
+
             # Update assignment cards
-            if hasattr(self, 'assignment_cards_frame'):
+            if hasattr(self, "assignment_cards_frame"):
                 for widget in self.assignment_cards_frame.winfo_children():
                     self._update_widget_theme(widget)
-            
+
             # Update search and filter widgets
-            if hasattr(self, 'search_frame'):
+            if hasattr(self, "search_frame"):
                 for widget in self.search_frame.winfo_children():
                     self._update_widget_theme(widget)
-            
+
             # Save theme preference
             self._save_user_preferences()
-            
+
             messagebox.showinfo(
-                "Theme Changed | 主题已更改", 
-                f"🎨 Theme successfully changed to {theme_name}\n🎨 主题已成功更改为{theme_name}"
+                "Theme Changed | 主题已更改",
+                f"🎨 Theme successfully changed to {theme_name}\n🎨 主题已成功更改为{theme_name}",
             )
-            
+
         except Exception as e:
             messagebox.showerror("Error | 错误", f"Failed to change theme: {e}")
             print(f"❌ Theme change error: {e}")
-    
+
     def _update_widget_theme(self, widget):
         """Recursively update widget theme | 递归更新组件主题"""
         try:
             # Update widget colors based on type
             if isinstance(widget, (tk.Label, tk.Button)):
-                if hasattr(widget, 'cget'):
+                if hasattr(widget, "cget"):
                     try:
                         # Update background
-                        current_bg = widget.cget('bg')
-                        if current_bg in ['#F8FAFC', '#1E293B', '#FFFFFF', '#0F172A']:
-                            if self.theme.current_theme == 'professional_light':
+                        current_bg = widget.cget("bg")
+                        if current_bg in ["#F8FAFC", "#1E293B", "#FFFFFF", "#0F172A"]:
+                            if self.theme.current_theme == "professional_light":
                                 widget.configure(bg=self.theme.get_color("background"))
                             else:
                                 widget.configure(bg=self.theme.get_color("background"))
-                        
+
                         # Update foreground
-                        current_fg = widget.cget('fg')
-                        if current_fg in ['#0F172A', '#F8FAFC', '#475569', '#CBD5E1']:
+                        current_fg = widget.cget("fg")
+                        if current_fg in ["#0F172A", "#F8FAFC", "#475569", "#CBD5E1"]:
                             widget.configure(fg=self.theme.get_color("text_primary"))
-                            
+
                     except tk.TclError:
                         pass
-            
+
             # Update frame backgrounds
             elif isinstance(widget, tk.Frame):
                 try:
-                    current_bg = widget.cget('bg')
-                    if current_bg in ['#F8FAFC', '#1E293B', '#FFFFFF', '#0F172A', '#F1F5F9']:
+                    current_bg = widget.cget("bg")
+                    if current_bg in [
+                        "#F8FAFC",
+                        "#1E293B",
+                        "#FFFFFF",
+                        "#0F172A",
+                        "#F1F5F9",
+                    ]:
                         widget.configure(bg=self.theme.get_color("background"))
                 except tk.TclError:
                     pass
-            
+
             # Recursively update children
             for child in widget.winfo_children():
                 self._update_widget_theme(child)
-                
+
         except Exception as e:
             # Silently continue if widget can't be updated
             pass
 
     def _open_documentation(self):
-        webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker#readme")
+        webbrowser.open(
+            "https://github.com/Hacker0458/managebac-assignment-checker#readme"
+        )
 
     def _open_video_tutorial(self):
         webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker")
 
     def _open_community(self):
-        webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker/discussions")
+        webbrowser.open(
+            "https://github.com/Hacker0458/managebac-assignment-checker/discussions"
+        )
 
     def _report_bug(self):
-        webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker/issues/new")
+        webbrowser.open(
+            "https://github.com/Hacker0458/managebac-assignment-checker/issues/new"
+        )
 
     def _feature_request(self):
-        webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker/issues/new")
+        webbrowser.open(
+            "https://github.com/Hacker0458/managebac-assignment-checker/issues/new"
+        )
 
     def _check_updates(self):
         messagebox.showinfo("Updates", "🔄 Checking for updates | 检查更新")
@@ -2114,7 +2255,8 @@ class ProfessionalManageBacGUI:
             # Show welcome notification (non-blocking)
             try:
                 self.notification_manager.send_notification(
-                    "ManageBac检查器专业版", "应用程序已启动 - 享受专业级的作业管理体验！"
+                    "ManageBac检查器专业版",
+                    "应用程序已启动 - 享受专业级的作业管理体验！",
                 )
             except Exception as e:
                 print(f"⚠️ Notification failed: {e}")

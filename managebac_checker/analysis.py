@@ -46,7 +46,9 @@ def analyse_assignments(
 
         analysis["by_priority"][assignment.priority] += 1
 
-        status_key = _normalise_status(assignment.status, assignment.submitted, assignment.overdue)
+        status_key = _normalise_status(
+            assignment.status, assignment.submitted, assignment.overdue
+        )
         analysis["grouped_by_status"][status_key].append(assignment)
         if status_key == "submitted":
             analysis["submitted_count"] += 1
@@ -113,9 +115,9 @@ def _parse_due_date(raw: str, reference: datetime) -> datetime | None:
     }
     for keyword, offset in relative_map.items():
         if keyword in lowered:
-            return reference.replace(hour=23, minute=59, second=0, microsecond=0) + timedelta(
-                days=offset
-            )
+            return reference.replace(
+                hour=23, minute=59, second=0, microsecond=0
+            ) + timedelta(days=offset)
 
     weekday_map = {
         "monday": 0,

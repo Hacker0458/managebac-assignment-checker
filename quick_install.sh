@@ -45,7 +45,6 @@ cd "$PROJECT_DIR"
 echo -e "${BLUE}📦 Downloading project files...${NC}"
 
 # Download main files
-curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements-core.txt" -o requirements-core.txt
 curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements.txt" -o requirements.txt
 curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/config.example.env" -o config.example.env
 curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/gui_launcher.py" -o gui_launcher.py
@@ -79,9 +78,9 @@ echo -e "${GREEN}✅ Project files downloaded${NC}"
 echo -e "${BLUE}📦 Installing dependencies...${NC}"
 $PIP_CMD install --upgrade pip
 
-# Install core dependencies
-if [ -f "requirements-core.txt" ]; then
-    $PIP_CMD install -r requirements-core.txt
+# Install dependencies
+if [ -f "requirements.txt" ]; then
+    $PIP_CMD install -r requirements.txt
 else
     $PIP_CMD install playwright python-dotenv jinja2 openai pystray pillow
 fi

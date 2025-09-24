@@ -21,8 +21,12 @@ class ReportGenerator:
             report_formats=getattr(config, "report_formats", ["console", "json"]),
         )
 
-    def build_reports(self, assignments: Iterable[Any], analysis: Dict[str, Any]) -> Dict[str, str]:
-        assignment_objs: List[Assignment] = [_coerce_assignment(item) for item in assignments]
+    def build_reports(
+        self, assignments: Iterable[Any], analysis: Dict[str, Any]
+    ) -> Dict[str, str]:
+        assignment_objs: List[Assignment] = [
+            _coerce_assignment(item) for item in assignments
+        ]
         reports = self.builder.build(assignment_objs, analysis)
         if self.logger:
             for fmt in reports:

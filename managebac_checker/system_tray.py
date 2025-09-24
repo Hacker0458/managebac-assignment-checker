@@ -110,7 +110,11 @@ class SystemTrayManager:
         # Lines on the book
         for i in range(3):
             y = book_top + 12 + i * 8
-            draw.line([book_left + 8, y, book_right - 8, y], fill=(149, 165, 166, 255), width=1)
+            draw.line(
+                [book_left + 8, y, book_right - 8, y],
+                fill=(149, 165, 166, 255),
+                width=1,
+            )
 
         return image
 
@@ -145,7 +149,9 @@ class SystemTrayManager:
             self.running = True
 
             # Show startup notification
-            self.show_notification(self.get_message("app_name"), self.get_message("app_started"))
+            self.show_notification(
+                self.get_message("app_name"), self.get_message("app_started")
+            )
 
             # Start tray in separate thread
             tray_thread = threading.Thread(target=self.icon.run, daemon=True)
@@ -218,7 +224,11 @@ class SystemTrayManager:
         else:
             self.show_notification(
                 self.get_message("app_name"),
-                "Reports folder not found" if self.language == "en" else "未找到报告文件夹",
+                (
+                    "Reports folder not found"
+                    if self.language == "en"
+                    else "未找到报告文件夹"
+                ),
             )
 
     def show_settings(self, icon=None, item=None):
@@ -258,7 +268,10 @@ class NotificationManager:
 
         try:
             notification.notify(
-                title=title, message=message, timeout=timeout, app_name="ManageBac Checker"
+                title=title,
+                message=message,
+                timeout=timeout,
+                app_name="ManageBac Checker",
             )
         except Exception as e:
             print(f"❌ Failed to send notification: {e}")
@@ -281,7 +294,11 @@ class NotificationManager:
             self.send_notification(title, message, timeout=10)
 
         elif high_priority:
-            title = "🔥 High Priority Assignments" if self.language == "en" else "🔥 高优先级作业"
+            title = (
+                "🔥 High Priority Assignments"
+                if self.language == "en"
+                else "🔥 高优先级作业"
+            )
             message = (
                 f"You have {len(high_priority)} high priority assignments"
                 if self.language == "en"

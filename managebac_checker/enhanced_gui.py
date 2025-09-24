@@ -20,7 +20,14 @@ from tkinter import ttk, messagebox, filedialog, scrolledtext
 import tkinter.font as tkfont
 
 # Import our modules
-from .gui import ManageBacGUI, ModernTheme, ConfigDialog, AssignmentCard, StatusBar, AnimatedButton
+from .gui import (
+    ManageBacGUI,
+    ModernTheme,
+    ConfigDialog,
+    AssignmentCard,
+    StatusBar,
+    AnimatedButton,
+)
 from .system_tray import SystemTrayManager, NotificationManager
 from .config import Config
 from .checker import ManageBacChecker
@@ -166,8 +173,12 @@ class EnhancedManageBacGUI(ManageBacGUI):
 
         if self.auto_check_enabled:
             # Schedule next check
-            interval_ms = self.auto_check_interval * 60 * 1000  # Convert minutes to milliseconds
-            self.auto_check_timer = self.root.after(interval_ms, self._auto_check_assignments)
+            interval_ms = (
+                self.auto_check_interval * 60 * 1000
+            )  # Convert minutes to milliseconds
+            self.auto_check_timer = self.root.after(
+                interval_ms, self._auto_check_assignments
+            )
 
     def _auto_check_assignments(self):
         """Automatically check assignments | 自动检查作业"""
@@ -183,7 +194,9 @@ class EnhancedManageBacGUI(ManageBacGUI):
 
                 # Notify if new assignments found
                 if self.assignments:
-                    self.notification_manager.notify_assignment_reminder(self.assignments)
+                    self.notification_manager.notify_assignment_reminder(
+                        self.assignments
+                    )
 
             except Exception as e:
                 print(f"❌ Auto-check failed: {e}")
@@ -207,14 +220,19 @@ class EnhancedManageBacGUI(ManageBacGUI):
             label="⚙️ General Settings | 常规设置", command=self._show_preferences
         )
         prefs_menu.add_command(
-            label="🔔 Notifications | 通知设置", command=self._show_notification_settings
+            label="🔔 Notifications | 通知设置",
+            command=self._show_notification_settings,
         )
         prefs_menu.add_command(
             label="🎨 Appearance | 外观设置", command=self._show_appearance_settings
         )
         prefs_menu.add_separator()
-        prefs_menu.add_command(label="📱 System Tray | 系统托盘", command=self._toggle_system_tray)
-        prefs_menu.add_command(label="🔄 Auto Check | 自动检查", command=self._toggle_auto_check)
+        prefs_menu.add_command(
+            label="📱 System Tray | 系统托盘", command=self._toggle_system_tray
+        )
+        prefs_menu.add_command(
+            label="🔄 Auto Check | 自动检查", command=self._toggle_auto_check
+        )
 
     def _show_preferences(self):
         """Show general preferences dialog | 显示常规偏好设置对话框"""
@@ -320,7 +338,8 @@ class EnhancedManageBacGUI(ManageBacGUI):
             self._schedule_auto_check()
 
             messagebox.showinfo(
-                "Success | 成功", "✅ Preferences saved successfully!\n✅ 偏好设置保存成功！"
+                "Success | 成功",
+                "✅ Preferences saved successfully!\n✅ 偏好设置保存成功！",
             )
             prefs_window.destroy()
 
@@ -329,7 +348,10 @@ class EnhancedManageBacGUI(ManageBacGUI):
         ).pack(side="right", padx=(10, 0))
 
         AnimatedButton(
-            button_frame, self.theme, text="❌ Cancel | 取消", command=prefs_window.destroy
+            button_frame,
+            self.theme,
+            text="❌ Cancel | 取消",
+            command=prefs_window.destroy,
         ).pack(side="right")
 
     def _show_notification_settings(self):
@@ -416,12 +438,15 @@ class EnhancedManageBacGUI(ManageBacGUI):
 
             appearance_window.destroy()
 
-        AnimatedButton(button_frame, self.theme, text="🎨 Apply | 应用", command=apply_theme).pack(
-            side="right", padx=(10, 0)
-        )
+        AnimatedButton(
+            button_frame, self.theme, text="🎨 Apply | 应用", command=apply_theme
+        ).pack(side="right", padx=(10, 0))
 
         AnimatedButton(
-            button_frame, self.theme, text="❌ Cancel | 取消", command=appearance_window.destroy
+            button_frame,
+            self.theme,
+            text="❌ Cancel | 取消",
+            command=appearance_window.destroy,
         ).pack(side="right")
 
     def _toggle_system_tray(self):
@@ -476,8 +501,12 @@ class EnhancedManageBacGUI(ManageBacGUI):
 
             # Update tray with assignment count
             if self.tray_manager:
-                overdue_count = len([a for a in self.assignments if a.get("status") == "overdue"])
-                self.tray_manager.notify_assignments(len(self.assignments), overdue_count)
+                overdue_count = len(
+                    [a for a in self.assignments if a.get("status") == "overdue"]
+                )
+                self.tray_manager.notify_assignments(
+                    len(self.assignments), overdue_count
+                )
 
     def _on_report_generated(self, html_file: Path):
         """Override to add notification | 重写以添加通知"""

@@ -70,7 +70,7 @@ check_python() {
     fi
     
     # Check version
-    if ! python3 -c "import sys; exit(0 if sys.version_info >= (3, 8) else 1)" 2>/dev/null; then
+    if ! $PYTHON_CMD -c "import sys; exit(0 if sys.version_info >= (3, 8) else 1)" 2>/dev/null; then
         print_error "Python 3.8+ is required, but found $PYTHON_VERSION"
         print_error "需要Python 3.8+，但找到的是$PYTHON_VERSION"
         exit 1

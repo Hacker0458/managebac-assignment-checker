@@ -14,7 +14,9 @@ def _coerce_assignment(item: Any) -> Assignment:
         return item
     if isinstance(item, dict):
         identifier = (
-            item.get("identifier") or item.get("id") or item.get("title", "assignment").lower()
+            item.get("identifier")
+            or item.get("id")
+            or item.get("title", "assignment").lower()
         )
         return Assignment(
             identifier=identifier,
@@ -43,7 +45,9 @@ class AssignmentAnalyzer:
     def analyze_assignments(self, assignments: Iterable[Any]) -> Dict[str, Any]:
         if self.logger:
             self.logger.analysis_start()
-        assignment_objs: List[Assignment] = [_coerce_assignment(item) for item in assignments]
+        assignment_objs: List[Assignment] = [
+            _coerce_assignment(item) for item in assignments
+        ]
         result = analyse_assignments(
             assignment_objs,
             self.config.priority_keywords,

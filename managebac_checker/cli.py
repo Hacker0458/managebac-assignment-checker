@@ -21,15 +21,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--email", help="ManageBac 登录邮箱")
     parser.add_argument("--password", help="ManageBac 登录密码")
     parser.add_argument("--url", help="ManageBac 门户地址")
-    parser.add_argument("--headless", choices=["true", "false"], help="是否使用无头模式运行浏览器")
+    parser.add_argument(
+        "--headless", choices=["true", "false"], help="是否使用无头模式运行浏览器"
+    )
     parser.add_argument("--debug", action="store_true", help="启用调试日志")
-    parser.add_argument("--format", help="报告格式，逗号分隔：console,html,json,markdown")
+    parser.add_argument(
+        "--format", help="报告格式，逗号分隔：console,html,json,markdown"
+    )
     parser.add_argument("--output-dir", type=Path, help="报告输出目录")
-    parser.add_argument("--fetch-details", choices=["true", "false"], help="是否抓取作业详情页")
+    parser.add_argument(
+        "--fetch-details", choices=["true", "false"], help="是否抓取作业详情页"
+    )
     parser.add_argument("--details-limit", type=int, help="抓取作业详情的最大数量")
-    parser.add_argument("--notifications", choices=["true", "false"], help="是否启用邮件通知")
+    parser.add_argument(
+        "--notifications", choices=["true", "false"], help="是否启用邮件通知"
+    )
     parser.add_argument("--timeout", type=int, help="Playwright 超时时间 (毫秒)")
-    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {__version__}"
+    )
 
     return parser
 

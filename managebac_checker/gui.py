@@ -223,13 +223,17 @@ class ConfigDialog(tk.Toplevel):
         canvas.configure(yscrollcommand=scrollbar.set)
 
         # ManageBac credentials
-        self._create_section(scrollable_frame, "🔑 ManageBac Credentials | ManageBac凭据")
+        self._create_section(
+            scrollable_frame, "🔑 ManageBac Credentials | ManageBac凭据"
+        )
 
         self.email_var = tk.StringVar()
         self._create_entry(scrollable_frame, "📧 Email | 邮箱:", self.email_var)
 
         self.password_var = tk.StringVar()
-        self._create_entry(scrollable_frame, "🔒 Password | 密码:", self.password_var, show="*")
+        self._create_entry(
+            scrollable_frame, "🔒 Password | 密码:", self.password_var, show="*"
+        )
 
         self.url_var = tk.StringVar(value="https://shtcs.managebac.cn")
         self._create_entry(scrollable_frame, "🌐 URL | 网址:", self.url_var)
@@ -320,11 +324,15 @@ class ConfigDialog(tk.Toplevel):
         ).pack(anchor="w")
 
         # AI Settings container
-        self.ai_settings_frame = tk.Frame(scrollable_frame, bg=self.theme.get_color("bg"))
+        self.ai_settings_frame = tk.Frame(
+            scrollable_frame, bg=self.theme.get_color("bg")
+        )
         self.ai_settings_frame.pack(fill="x", pady=10)
 
         self.api_key_var = tk.StringVar()
-        self._create_entry(self.ai_settings_frame, "🔑 OpenAI API Key:", self.api_key_var, show="*")
+        self._create_entry(
+            self.ai_settings_frame, "🔑 OpenAI API Key:", self.api_key_var, show="*"
+        )
 
         self.ai_model_var = tk.StringVar(value="gpt-3.5-turbo")
         model_frame = tk.Frame(self.ai_settings_frame, bg=self.theme.get_color("bg"))
@@ -375,7 +383,9 @@ class ConfigDialog(tk.Toplevel):
         self.temp_scale.pack(fill="x", pady=(5, 0))
 
         self.max_tokens_var = tk.IntVar(value=500)
-        self._create_entry(self.ai_settings_frame, "📊 Max Tokens | 最大令牌:", self.max_tokens_var)
+        self._create_entry(
+            self.ai_settings_frame, "📊 Max Tokens | 最大令牌:", self.max_tokens_var
+        )
 
         # Get API Key button
         api_help_frame = tk.Frame(self.ai_settings_frame, bg=self.theme.get_color("bg"))
@@ -403,7 +413,9 @@ class ConfigDialog(tk.Toplevel):
 
         # Scrollable frame
         canvas = tk.Canvas(advanced_frame, bg=self.theme.get_color("bg"))
-        scrollbar = ttk.Scrollbar(advanced_frame, orient="vertical", command=canvas.yview)
+        scrollbar = ttk.Scrollbar(
+            advanced_frame, orient="vertical", command=canvas.yview
+        )
         scrollable_frame = tk.Frame(canvas, bg=self.theme.get_color("bg"))
 
         scrollable_frame.bind(
@@ -427,7 +439,9 @@ class ConfigDialog(tk.Toplevel):
         ).pack(anchor="w", pady=5)
 
         self.timeout_var = tk.IntVar(value=30000)
-        self._create_entry(scrollable_frame, "⏱️ Timeout (ms) | 超时时间:", self.timeout_var)
+        self._create_entry(
+            scrollable_frame, "⏱️ Timeout (ms) | 超时时间:", self.timeout_var
+        )
 
         # Email notifications
         self._create_section(scrollable_frame, "📧 Email Notifications | 邮件通知")
@@ -444,12 +458,16 @@ class ConfigDialog(tk.Toplevel):
         ).pack(anchor="w", pady=5)
 
         # Email settings container
-        self.email_settings_frame = tk.Frame(scrollable_frame, bg=self.theme.get_color("bg"))
+        self.email_settings_frame = tk.Frame(
+            scrollable_frame, bg=self.theme.get_color("bg")
+        )
         self.email_settings_frame.pack(fill="x", pady=10)
 
         self.smtp_server_var = tk.StringVar(value="smtp.gmail.com")
         self._create_entry(
-            self.email_settings_frame, "📮 SMTP Server | SMTP服务器:", self.smtp_server_var
+            self.email_settings_frame,
+            "📮 SMTP Server | SMTP服务器:",
+            self.smtp_server_var,
         )
 
         self.smtp_port_var = tk.IntVar(value=587)
@@ -459,7 +477,9 @@ class ConfigDialog(tk.Toplevel):
 
         self.smtp_username_var = tk.StringVar()
         self._create_entry(
-            self.email_settings_frame, "👤 SMTP Username | SMTP用户名:", self.smtp_username_var
+            self.email_settings_frame,
+            "👤 SMTP Username | SMTP用户名:",
+            self.smtp_username_var,
         )
 
         self.smtp_password_var = tk.StringVar()
@@ -533,7 +553,9 @@ class ConfigDialog(tk.Toplevel):
         separator = tk.Frame(section_frame, height=2, bg=self.theme.get_color("accent"))
         separator.pack(fill="x", pady=(5, 0))
 
-    def _create_entry(self, parent, label: str, variable, show: str = None, help_text: str = None):
+    def _create_entry(
+        self, parent, label: str, variable, show: str = None, help_text: str = None
+    ):
         entry_frame = tk.Frame(parent, bg=self.theme.get_color("bg"))
         entry_frame.pack(fill="x", pady=5)
 
@@ -586,7 +608,7 @@ class ConfigDialog(tk.Toplevel):
     def _set_widget_state(self, widget, state):
         try:
             widget.config(state=state)
-        except:
+        except (AttributeError, tk.TclError):
             pass
         for child in widget.winfo_children():
             self._set_widget_state(child, state)
@@ -610,13 +632,17 @@ class ConfigDialog(tk.Toplevel):
 
                 self.email_var.set(os.getenv("MANAGEBAC_EMAIL", ""))
                 self.password_var.set(os.getenv("MANAGEBAC_PASSWORD", ""))
-                self.url_var.set(os.getenv("MANAGEBAC_URL", "https://shtcs.managebac.cn"))
+                self.url_var.set(
+                    os.getenv("MANAGEBAC_URL", "https://shtcs.managebac.cn")
+                )
                 self.format_var.set(os.getenv("REPORT_FORMAT", "html,json,console"))
                 self.output_dir_var.set(os.getenv("OUTPUT_DIR", "reports"))
                 self.language_var.set(os.getenv("LANGUAGE", "zh"))
 
                 # AI settings
-                self.ai_enabled_var.set(os.getenv("AI_ENABLED", "false").lower() == "true")
+                self.ai_enabled_var.set(
+                    os.getenv("AI_ENABLED", "false").lower() == "true"
+                )
                 self.api_key_var.set(os.getenv("OPENAI_API_KEY", ""))
                 self.ai_model_var.set(os.getenv("AI_MODEL", "gpt-3.5-turbo"))
                 self.temperature_var.set(float(os.getenv("AI_TEMPERATURE", "0.7")))
@@ -703,20 +729,23 @@ LANGUAGE={self.language_var.get()}
 
             self.result = "saved"
             messagebox.showinfo(
-                "Success | 成功", "✅ Configuration saved successfully!\n✅ 配置保存成功！"
+                "Success | 成功",
+                "✅ Configuration saved successfully!\n✅ 配置保存成功！",
             )
             self.destroy()
 
         except Exception as e:
             messagebox.showerror(
-                "Error | 错误", f"❌ Failed to save configuration:\n❌ 保存配置失败：\n{str(e)}"
+                "Error | 错误",
+                f"❌ Failed to save configuration:\n❌ 保存配置失败：\n{str(e)}",
             )
 
     def _test_connection(self):
         """Test ManageBac connection | 测试ManageBac连接"""
         if not self.email_var.get() or not self.password_var.get():
             messagebox.showwarning(
-                "Warning | 警告", "⚠️ Please enter email and password first!\n⚠️ 请先输入邮箱和密码！"
+                "Warning | 警告",
+                "⚠️ Please enter email and password first!\n⚠️ 请先输入邮箱和密码！",
             )
             return
 
@@ -757,12 +786,14 @@ LANGUAGE={self.language_var.get()}
                 # Close test dialog and show result
                 test_dialog.after(0, lambda: test_dialog.destroy())
                 messagebox.showinfo(
-                    "Success | 成功", "✅ Connection test successful!\n✅ 连接测试成功！"
+                    "Success | 成功",
+                    "✅ Connection test successful!\n✅ 连接测试成功！",
                 )
             except Exception as e:
                 test_dialog.after(0, lambda: test_dialog.destroy())
                 messagebox.showerror(
-                    "Error | 错误", f"❌ Connection test failed:\n❌ 连接测试失败：\n{str(e)}"
+                    "Error | 错误",
+                    f"❌ Connection test failed:\n❌ 连接测试失败：\n{str(e)}",
                 )
 
         threading.Thread(target=test_connection_thread, daemon=True).start()
@@ -986,7 +1017,7 @@ class ManageBacGUI:
         # Set icon (if available)
         try:
             self.root.iconbitmap("icon.ico")
-        except:
+        except (tk.TclError, FileNotFoundError):
             pass
 
     def _create_widgets(self):
@@ -1010,7 +1041,8 @@ class ManageBacGUI:
         file_menu.add_command(label="⚙️ Settings | 设置", command=self._open_settings)
         file_menu.add_separator()
         file_menu.add_command(
-            label="📊 Open Reports Folder | 打开报告文件夹", command=self._open_reports_folder
+            label="📊 Open Reports Folder | 打开报告文件夹",
+            command=self._open_reports_folder,
         )
         file_menu.add_separator()
         file_menu.add_command(label="❌ Exit | 退出", command=self.root.quit)
@@ -1021,9 +1053,13 @@ class ManageBacGUI:
         tools_menu.add_command(
             label="🔄 Refresh Assignments | 刷新作业", command=self._refresh_assignments
         )
-        tools_menu.add_command(label="🧪 Test Connection | 测试连接", command=self._test_connection)
+        tools_menu.add_command(
+            label="🧪 Test Connection | 测试连接", command=self._test_connection
+        )
         tools_menu.add_separator()
-        tools_menu.add_command(label="🤖 AI Analysis | AI分析", command=self._run_ai_analysis)
+        tools_menu.add_command(
+            label="🤖 AI Analysis | AI分析", command=self._run_ai_analysis
+        )
         tools_menu.add_command(
             label="📧 Send Notifications | 发送通知", command=self._send_notifications
         )
@@ -1032,20 +1068,27 @@ class ManageBacGUI:
         view_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="👁️ View | 查看", menu=view_menu)
         view_menu.add_command(
-            label="🌞 Light Theme | 浅色主题", command=lambda: self._change_theme("light")
+            label="🌞 Light Theme | 浅色主题",
+            command=lambda: self._change_theme("light"),
         )
         view_menu.add_command(
             label="🌙 Dark Theme | 深色主题", command=lambda: self._change_theme("dark")
         )
         view_menu.add_separator()
-        view_menu.add_command(label="📈 Statistics | 统计信息", command=self._show_statistics)
+        view_menu.add_command(
+            label="📈 Statistics | 统计信息", command=self._show_statistics
+        )
         view_menu.add_command(label="📋 Logs | 日志", command=self._show_logs)
 
         # Help menu
         help_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="❓ Help | 帮助", menu=help_menu)
-        help_menu.add_command(label="📖 Documentation | 文档", command=self._open_documentation)
-        help_menu.add_command(label="🐛 Report Bug | 报告错误", command=self._report_bug)
+        help_menu.add_command(
+            label="📖 Documentation | 文档", command=self._open_documentation
+        )
+        help_menu.add_command(
+            label="🐛 Report Bug | 报告错误", command=self._report_bug
+        )
         help_menu.add_separator()
         help_menu.add_command(label="ℹ️ About | 关于", command=self._show_about)
 
@@ -1101,7 +1144,10 @@ class ManageBacGUI:
         self.check_button.pack(fill="x", pady=(0, 10))
 
         AnimatedButton(
-            button_frame, self.theme, text="⚙️ Settings\n设置", command=self._open_settings
+            button_frame,
+            self.theme,
+            text="⚙️ Settings\n设置",
+            command=self._open_settings,
         ).pack(fill="x", pady=(0, 10))
 
         AnimatedButton(
@@ -1221,7 +1267,9 @@ class ManageBacGUI:
 
         # Canvas and scrollbar for scrolling
         canvas = tk.Canvas(container_frame, bg=self.theme.get_color("bg"))
-        scrollbar = ttk.Scrollbar(container_frame, orient="vertical", command=canvas.yview)
+        scrollbar = ttk.Scrollbar(
+            container_frame, orient="vertical", command=canvas.yview
+        )
         self.assignments_frame = tk.Frame(canvas, bg=self.theme.get_color("bg"))
 
         self.assignments_frame.bind(
@@ -1271,9 +1319,15 @@ class ManageBacGUI:
         else:
             stats = {
                 "total": len(self.assignments),
-                "overdue": len([a for a in self.assignments if a.get("status") == "overdue"]),
-                "high_priority": len([a for a in self.assignments if a.get("priority") == "high"]),
-                "completed": len([a for a in self.assignments if a.get("status") == "completed"]),
+                "overdue": len(
+                    [a for a in self.assignments if a.get("status") == "overdue"]
+                ),
+                "high_priority": len(
+                    [a for a in self.assignments if a.get("priority") == "high"]
+                ),
+                "completed": len(
+                    [a for a in self.assignments if a.get("status") == "completed"]
+                ),
             }
 
         self.total_assignments_label.config(text=str(stats["total"]))
@@ -1438,7 +1492,8 @@ class ManageBacGUI:
         self.check_button.config(state="normal", text="🔍 Check Assignments\n检查作业")
 
         messagebox.showerror(
-            "Error | 错误", f"❌ Failed to check assignments:\n❌ 检查作业失败：\n{error_msg}"
+            "Error | 错误",
+            f"❌ Failed to check assignments:\n❌ 检查作业失败：\n{error_msg}",
         )
 
     def _open_settings(self):
@@ -1580,9 +1635,15 @@ class ManageBacGUI:
             "generated_at": datetime.now().isoformat(),
             "total_assignments": len(self.assignments),
             "statistics": {
-                "overdue": len([a for a in self.assignments if a.get("status") == "overdue"]),
-                "high_priority": len([a for a in self.assignments if a.get("priority") == "high"]),
-                "completed": len([a for a in self.assignments if a.get("status") == "completed"]),
+                "overdue": len(
+                    [a for a in self.assignments if a.get("status") == "overdue"]
+                ),
+                "high_priority": len(
+                    [a for a in self.assignments if a.get("priority") == "high"]
+                ),
+                "completed": len(
+                    [a for a in self.assignments if a.get("status") == "completed"]
+                ),
             },
             "assignments": self.assignments,
         }
@@ -1607,7 +1668,8 @@ class ManageBacGUI:
         self._update_status("❌ Report generation failed | 报告生成失败")
 
         messagebox.showerror(
-            "Error | 错误", f"❌ Failed to generate report:\n❌ 生成报告失败：\n{error_msg}"
+            "Error | 错误",
+            f"❌ Failed to generate report:\n❌ 生成报告失败：\n{error_msg}",
         )
 
     def _change_theme(self, theme_name: str):
@@ -1649,12 +1711,15 @@ class ManageBacGUI:
 
     def _on_test_success(self):
         self._update_status("✅ Connection test successful | 连接测试成功")
-        messagebox.showinfo("Success | 成功", "✅ Connection test successful!\n✅ 连接测试成功！")
+        messagebox.showinfo(
+            "Success | 成功", "✅ Connection test successful!\n✅ 连接测试成功！"
+        )
 
     def _on_test_error(self, error_msg: str):
         self._update_status("❌ Connection test failed | 连接测试失败")
         messagebox.showerror(
-            "Error | 错误", f"❌ Connection test failed:\n❌ 连接测试失败：\n{error_msg}"
+            "Error | 错误",
+            f"❌ Connection test failed:\n❌ 连接测试失败：\n{error_msg}",
         )
 
     def _run_ai_analysis(self):
@@ -1712,7 +1777,8 @@ class ManageBacGUI:
         """Send email notifications | 发送邮件通知"""
         if not self.assignments:
             messagebox.showwarning(
-                "Warning | 警告", "⚠️ No assignments to notify about!\n⚠️ 没有作业需要通知！"
+                "Warning | 警告",
+                "⚠️ No assignments to notify about!\n⚠️ 没有作业需要通知！",
             )
             return
 
@@ -1765,7 +1831,9 @@ class ManageBacGUI:
         # Generate statistics
         total = len(self.assignments)
         overdue = len([a for a in self.assignments if a.get("status") == "overdue"])
-        high_priority = len([a for a in self.assignments if a.get("priority") == "high"])
+        high_priority = len(
+            [a for a in self.assignments if a.get("priority") == "high"]
+        )
         completed = len([a for a in self.assignments if a.get("status") == "completed"])
 
         courses = {}
@@ -1809,7 +1877,9 @@ class ManageBacGUI:
         """Show application logs | 显示应用日志"""
         log_file = Path("logs/managebac_checker.log")
         if not log_file.exists():
-            messagebox.showinfo("Logs | 日志", "📋 No log file found!\n📋 未找到日志文件！")
+            messagebox.showinfo(
+                "Logs | 日志", "📋 No log file found!\n📋 未找到日志文件！"
+            )
             return
 
         logs_window = tk.Toplevel(self.root)
@@ -1842,11 +1912,15 @@ class ManageBacGUI:
 
     def _open_documentation(self):
         """Open documentation | 打开文档"""
-        webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker#readme")
+        webbrowser.open(
+            "https://github.com/Hacker0458/managebac-assignment-checker#readme"
+        )
 
     def _report_bug(self):
         """Report a bug | 报告错误"""
-        webbrowser.open("https://github.com/Hacker0458/managebac-assignment-checker/issues/new")
+        webbrowser.open(
+            "https://github.com/Hacker0458/managebac-assignment-checker/issues/new"
+        )
 
     def _show_about(self):
         """Show about dialog | 显示关于对话框"""

@@ -136,11 +136,8 @@ install_python_deps() {
     # Upgrade pip first
     $PIP_CMD install --upgrade pip
     
-    # Install core dependencies
-    if [ -f "requirements-core.txt" ]; then
-        $PIP_CMD install -r requirements-core.txt
-        print_success "Core dependencies installed | 核心依赖已安装"
-    elif [ -f "requirements.txt" ]; then
+    # Install dependencies
+    if [ -f "requirements.txt" ]; then
         $PIP_CMD install -r requirements.txt
         print_success "Dependencies installed | 依赖已安装"
     else
@@ -216,7 +213,6 @@ download_project_files() {
     
     # Download essential files
     print_status "Downloading requirements files... | 正在下载依赖文件..."
-    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements-core.txt" -o requirements-core.txt
     curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements.txt" -o requirements.txt
     curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/config.example.env" -o config.example.env
     curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/gui_launcher.py" -o gui_launcher.py

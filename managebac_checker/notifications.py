@@ -73,7 +73,9 @@ class NotificationManager:
                     status=getattr(assignment, "status", "Unknown"),
                     due_date=getattr(assignment, "due_date", "无截止日期"),
                     assignment_type=getattr(
-                        assignment, "assignment_type", getattr(assignment, "type", "Unknown")
+                        assignment,
+                        "assignment_type",
+                        getattr(assignment, "type", "Unknown"),
                     ),
                     priority=getattr(assignment, "priority", "low"),
                     submitted=getattr(assignment, "submitted", False),

@@ -119,13 +119,17 @@ class AIAssistant:
             self._log("analyzing")
 
             # Prepare assignment data for AI | 为AI准备作业数据
-            assignment_summary = self._prepare_assignment_summary(assignments, analysis_data)
+            assignment_summary = self._prepare_assignment_summary(
+                assignments, analysis_data
+            )
 
             # Generate AI insights | 生成AI洞察
             insights = self._generate_insights(assignment_summary)
 
             # Generate study recommendations | 生成学习建议
-            recommendations = self._generate_recommendations(assignment_summary, insights)
+            recommendations = self._generate_recommendations(
+                assignment_summary, insights
+            )
 
             # Generate time management plan | 生成时间管理计划
             time_plan = self._generate_time_plan(assignments, analysis_data)
@@ -170,7 +174,9 @@ class AIAssistant:
         # Add assignment details | 添加作业详情
         summary.append("\nAssignment details:")
         for assignment in assignments[:10]:  # Limit to first 10 for API
-            summary.append(f"- {assignment.title} ({assignment.course}): Due {assignment.due_date}")
+            summary.append(
+                f"- {assignment.title} ({assignment.course}): Due {assignment.due_date}"
+            )
 
         return "\n".join(summary)
 
@@ -212,7 +218,7 @@ class AIAssistant:
             # Try to parse JSON response | 尝试解析JSON响应
             try:
                 return json.loads(content)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 return {"analysis": content}
 
         except Exception as e:
@@ -254,7 +260,7 @@ class AIAssistant:
 
             try:
                 return json.loads(content)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 return [content]
 
         except Exception as e:
@@ -313,14 +319,16 @@ class AIAssistant:
 
             try:
                 return json.loads(content)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 return {"plan": content}
 
         except Exception as e:
             logger.error(f"Failed to generate time plan: {e}")
             return {}
 
-    def _generate_summary(self, insights: Dict[str, str], recommendations: List[str]) -> str:
+    def _generate_summary(
+        self, insights: Dict[str, str], recommendations: List[str]
+    ) -> str:
         """Generate executive summary | 生成执行摘要"""
         if self.language == "zh":
             summary = "🤖 AI助手分析摘要\n\n"

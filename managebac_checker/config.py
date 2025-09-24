@@ -42,7 +42,7 @@ def _as_list(value: Optional[str], default: Iterable[str]) -> List[str]:
     return items or list(default)
 
 
-@dataclass(slots=True)
+@dataclass(frozen=True)
 class Config:
     email: str = ""
     password: str = ""
@@ -90,20 +90,26 @@ class Config:
         if not email or not password:
             raise ValueError("必须提供 MANAGEBAC_EMAIL 和 MANAGEBAC_PASSWORD")
 
-        url = overrides.get("url") or env.get("MANAGEBAC_URL", "https://shtcs.managebac.cn")
-        headless = (
+        url = overrides.get("url") or env.get(
+            "MANAGEBAC_URL", "https://shtcs.managebac.cn"
+        )
+        headless = bool(
             overrides.get("headless")
             if "headless" in overrides
             else _as_bool(env.get("HEADLESS"), True)
         )
         timeout = overrides.get("timeout") or _as_int(env.get("TIMEOUT"), 30_000)
-        debug = (
-            overrides.get("debug") if "debug" in overrides else _as_bool(env.get("DEBUG"), False)
+        debug = bool(
+            overrides.get("debug")
+            if "debug" in overrides
+            else _as_bool(env.get("DEBUG"), False)
         )
         language = overrides.get("language") or env.get("LANGUAGE", "zh")
         log_level = overrides.get("log_level") or env.get("LOG_LEVEL", "INFO")
-        log_file = overrides.get("log_file") or env.get("LOG_FILE", "managebac_checker.log")
-        interactive = (
+        log_file = overrides.get("log_file") or env.get(
+            "LOG_FILE", "managebac_checker.log"
+        )
+        interactive = bool(
             overrides.get("interactive")
             if "interactive" in overrides
             else _as_bool(env.get("INTERACTIVE"), False)
@@ -119,7 +125,7 @@ class Config:
             overrides.get("output_dir") or env.get("OUTPUT_DIR", "./reports")
         ).expanduser()
 
-        enable_notifications = (
+        enable_notifications = bool(
             overrides.get("enable_notifications")
             if "enable_notifications" in overrides
             else _as_bool(env.get("ENABLE_NOTIFICATIONS"), False)
@@ -127,7 +133,9 @@ class Config:
         smtp_server = overrides.get("smtp_server") or env.get("SMTP_SERVER", "")
         smtp_port = overrides.get("smtp_port") or _as_int(env.get("SMTP_PORT"), 587)
         email_user = overrides.get("email_user") or env.get("EMAIL_USER", "")
-        email_password = overrides.get("email_password") or env.get("EMAIL_PASSWORD", "")
+        email_password = overrides.get("email_password") or env.get(
+            "EMAIL_PASSWORD", ""
+        )
         notification_email = overrides.get("notification_email") or env.get(
             "NOTIFICATION_EMAIL", ""
         )
@@ -136,34 +144,44 @@ class Config:
         priority_keywords = overrides.get("priority_keywords") or _as_list(
             env.get("PRIORITY_KEYWORDS"), ["exam", "test", "project", "essay"]
         )
-        fetch_details = (
+        fetch_details = bool(
             overrides.get("fetch_details")
             if "fetch_details" in overrides
             else _as_bool(env.get("FETCH_DETAILS"), False)
         )
-        details_limit = overrides.get("details_limit") or _as_int(env.get("DETAILS_LIMIT"), 8)
+        details_limit = overrides.get("details_limit") or _as_int(
+            env.get("DETAILS_LIMIT"), 8
+        )
         max_retries = overrides.get("max_retries") or _as_int(env.get("MAX_RETRIES"), 3)
-        retry_delay_ms = overrides.get("retry_delay") or _as_int(env.get("RETRY_DELAY"), 2000)
+        retry_delay_ms = overrides.get("retry_delay") or _as_int(
+            env.get("RETRY_DELAY"), 2000
+        )
 
         browser_args_value = overrides.get("browser_args") or env.get("BROWSER_ARGS")
         if isinstance(browser_args_value, str):
-            browser_args = _as_list(browser_args_value, ["--no-sandbox", "--disable-dev-shm-usage"])
+            browser_args = _as_list(
+                browser_args_value, ["--no-sandbox", "--disable-dev-shm-usage"]
+            )
         elif browser_args_value is None:
             browser_args = ["--no-sandbox", "--disable-dev-shm-usage"]
         else:
             browser_args = list(browser_args_value)
 
-        ai_enabled = (
+        ai_enabled = bool(
             overrides.get("ai_enabled")
             if "ai_enabled" in overrides
             else _as_bool(env.get("AI_ENABLED"), False)
         )
-        openai_api_key = overrides.get("openai_api_key") or env.get("OPENAI_API_KEY", "")
+        openai_api_key = overrides.get("openai_api_key") or env.get(
+            "OPENAI_API_KEY", ""
+        )
         ai_model = overrides.get("ai_model") or env.get("AI_MODEL", "gpt-3.5-turbo")
         ai_temperature = overrides.get("ai_temperature") or _as_float(
             env.get("AI_TEMPERATURE"), 0.7
         )
-        ai_max_tokens = overrides.get("ai_max_tokens") or _as_int(env.get("AI_MAX_TOKENS"), 500)
+        ai_max_tokens = overrides.get("ai_max_tokens") or _as_int(
+            env.get("AI_MAX_TOKENS"), 500
+        )
         user_agent = overrides.get("user_agent") or env.get("USER_AGENT", "")
 
         config = cls(
