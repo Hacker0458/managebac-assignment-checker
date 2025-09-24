@@ -56,8 +56,15 @@
 
 ### 🚀 Quick Start
 
-#### 🎯 **One-Click GUI Installation (Recommended)**
+#### 🎯 **One-Click Installation (Recommended)**
 
+**Option 1: Direct Download and Install**
+```bash
+# Download and run the installer
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/quick_install.sh | bash
+```
+
+**Option 2: Clone and Install**
 ```bash
 # Clone and install everything automatically
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git
@@ -250,8 +257,15 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ### 🚀 快速开始
 
-#### 🎯 **一键GUI安装（推荐）**
+#### 🎯 **一键安装（推荐）**
 
+**选项1: 直接下载安装**
+```bash
+# 下载并运行安装器
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/quick_install.sh | bash
+```
+
+**选项2: 克隆并安装**
 ```bash
 # 克隆并自动安装所有组件
 git clone https://github.com/Hacker0458/managebac-assignment-checker.git
