@@ -1,652 +1,372 @@
-"""
-🎓 ManageBac Assignment Checker Scraper | ManageBac作业检查器爬虫模块
-======================================================================
+"""基于 Playwright 的 ManageBac 作业抓取器。"""
 
-Web scraping functionality for ManageBac Assignment Checker.
-ManageBac作业检查器的网页抓取功能模块。
-"""
+from __future__ import annotations
 
-import re
-from datetime import datetime
-from typing import List, Dict, Any, Optional
-from playwright.async_api import Page, Browser
+import logging
+from typing import Iterable, List, Optional, Tuple
 
-from .logging_utils import BilingualLogger
+from playwright.async_api import Browser, Page
+
+from .config import Config
+from .models import Assignment
 
 
 class ManageBacScraper:
-    """
-    Handles web scraping operations for ManageBac.
-    处理ManageBac的网页抓取操作。
-    """
+    """封装登录、导航及作业信息提取的逻辑。"""
 
-    def __init__(self, config, logger: Optional[BilingualLogger] = None):
-        """
-        Initialize scraper with configuration.
-        使用配置初始化爬虫。
+    _ASSIGNMENT_CONTAINER_SELECTORS = [
+        "div.assignment",
+        "div.assignment-card",
+        "div.task-item",
+        "li.assignment",
+        "li.assignment-item",
+        "tr.assignment",
+        "tr.task",
+        "div[data-assignment-id]",
+    ]
 
-        Args:
-            config: Configuration instance
-            logger: Logger instance
-        """
+    _TITLE_SELECTORS = [
+        "a.assignment-title",
+        "a.title",
+        "h3",
+        "h4",
+        "h5",
+        "strong",
+    ]
+
+    _COURSE_SELECTORS = [
+        "span.course",
+        "div.course",
+        "span.subject",
+        "div.subject",
+    ]
+
+    _DUE_SELECTORS = [
+        "span.due",
+        "span.due-date",
+        "td.due",
+        "div.due-date",
+        "time",
+    ]
+
+    _STATUS_SELECTORS = [
+        "span.status",
+        "span.badge",
+        "div.status",
+    ]
+
+    def __init__(self, config: Config, logger: logging.Logger) -> None:
         self.config = config
         self.logger = logger
-        self.timeout = getattr(config, "timeout", 30000)
-        self.debug = config.debug
 
     async def login(self, page: Page) -> bool:
-        """
-        Log into ManageBac with provided credentials.
-        使用提供的凭据登录ManageBac。
+        self.logger.info("Navigating to %s", self.config.url)
+        await page.goto(self.config.url, wait_until="domcontentloaded", timeout=self.config.timeout)
+        await page.wait_for_timeout(500)
 
-        Args:
-            page: The Playwright page instance
+        email_selector = "input[type=email], input[name=email]"
+        password_selector = "input[type=password], input[name=password]"
+        await page.fill(email_selector, self.config.email)
+        await page.fill(password_selector, self.config.password)
 
-        Returns:
-            bool: True if login successful, False otherwise
-        """
-        try:
-            nav_msg = (
-                f"导航到 {self.config.url}..."
-                if self.config.language == "zh"
-                else f"Navigating to {self.config.url}..."
-            )
-            if self.logger:
-                self.logger.debug(nav_msg)
-            else:
-                print(nav_msg)
-
-            await page.goto(self.config.url, wait_until="domcontentloaded")
-
-            # Wait for login form to load
-            wait_msg = (
-                "等待登录表单加载..."
-                if self.config.language == "zh"
-                else "Waiting for login form..."
-            )
-            if self.logger:
-                self.logger.debug(wait_msg)
-            else:
-                print(wait_msg)
-
-            await page.wait_for_selector(
-                'input[type="email"], input[name="email"]', timeout=self.timeout
-            )
-
-            # Fill in email
-            email_selector = 'input[type="email"], input[name="email"]'
-            await page.fill(email_selector, self.config.email)
-
-            email_msg = (
-                f"已填入邮箱: {self.config.email}"
-                if self.config.language == "zh"
-                else f"Filled email: {self.config.email}"
-            )
-            if self.logger:
-                self.logger.debug(email_msg)
-            else:
-                print(email_msg)
-
-            # Fill in password
-            password_selector = 'input[type="password"], input[name="password"]'
-            await page.fill(password_selector, self.config.password)
-
-            pwd_msg = (
-                "已填入密码" if self.config.language == "zh" else "Filled password"
-            )
-            if self.logger:
-                self.logger.debug(pwd_msg)
-            else:
-                print(pwd_msg)
-
-            # Click login button
-            login_button_selectors = [
-                'button[type="submit"]',
-                'input[type="submit"]',
-                'button:has-text("Login")',
-                'button:has-text("Sign in")',
-                ".btn-primary",
-            ]
-
-            login_clicked = False
-            for selector in login_button_selectors:
-                try:
-                    await page.click(selector, timeout=2000)
-                    print(f"Clicked login button with selector: {selector}")
-                    login_clicked = True
-                    break
-                except:
-                    continue
-
-            if not login_clicked:
-                print("Warning: Could not find login button, trying form submission...")
-                await page.press(password_selector, "Enter")
-
-            # Wait for navigation or error message
-            print("Waiting for login to complete...")
-
+        login_buttons = [
+            "button[type=submit]",
+            "input[type=submit]",
+            "button:has-text('Login')",
+            "button:has-text('Sign in')",
+        ]
+        for selector in login_buttons:
             try:
-                # Wait for either successful navigation or error message
-                await page.wait_for_load_state("domcontentloaded", timeout=self.timeout)
+                await page.click(selector, timeout=1_500)
+                break
+            except Exception:
+                continue
+        else:
+            self.logger.warning("Could not locate login button, submitting form with Enter key")
+            await page.press(password_selector, "Enter")
 
-                # Check if we're still on login page (login failed)
-                current_url = page.url
-                if "login" in current_url.lower() or "signin" in current_url.lower():
-                    # Look for error messages
-                    error_elements = await page.query_selector_all(
-                        '.error, .alert-danger, [class*="error"]'
-                    )
-                    if error_elements:
-                        error_text = await error_elements[0].text_content()
-                        print(f"Login failed: {error_text}")
-                        return False
-                    else:
-                        print("Login may have failed (still on login page)")
-                        return False
+        try:
+            await page.wait_for_load_state("networkidle", timeout=self.config.timeout)
+        except Exception:
+            self.logger.debug("networkidle wait timed out; continuing")
 
-                print(f"Login successful! Current URL: {current_url}")
-                return True
-
-            except Exception as e:
-                print(f"Error during login: {e}")
-                return False
-
-        except Exception as e:
-            print(f"Error during login process: {e}")
+        current_url = page.url.lower()
+        if "login" in current_url or "signin" in current_url:
+            self.logger.error("Login appears to have failed (%s)", current_url)
             return False
 
-    async def explore_page_structure(self, page: Page) -> None:
-        """Explore current page structure for debugging."""
-        try:
-            print("\n=== 页面结构探索 ===")
-            print(f"当前URL: {page.url}")
+        self.logger.info("Login successful")
+        return True
 
-            # Get page title
-            title = await page.title()
-            print(f"页面标题: {title}")
-
-            # Find possible navigation links
-            nav_selectors = [
-                "nav a",
-                ".nav a",
-                ".navbar a",
-                ".menu a",
-                '[href*="assignment"]',
-                '[href*="homework"]',
-                '[href*="task"]',
-                '[href*="student"]',
-                '[href*="dashboard"]',
-                '[href*="class"]',
-            ]
-
-            print("\n找到的导航链接:")
-            for selector in nav_selectors:
-                try:
-                    elements = await page.query_selector_all(selector)
-                    for element in elements[:10]:  # Limit to first 10
-                        href = await element.get_attribute("href")
-                        text = await element.text_content()
-                        if href and text and text.strip():
-                            print(f"  - {text.strip()}: {href}")
-                except:
-                    continue
-
-            # Find possible content areas
-            content_selectors = [
-                ".content",
-                ".main-content",
-                ".dashboard",
-                ".student-dashboard",
-                ".assignments",
-                ".homework",
-                ".tasks",
-                ".todo",
-                ".pending",
-            ]
-
-            print("\n找到的内容区域:")
-            for selector in content_selectors:
-                try:
-                    elements = await page.query_selector_all(selector)
-                    if elements:
-                        print(f"  - {selector}: {len(elements)} 个元素")
-                except:
-                    continue
-
-        except Exception as e:
-            print(f"页面结构探索出错: {e}")
-
-    async def navigate_to_assignments(self, page: Page) -> bool:
-        """Navigate to assignments page."""
-        try:
-            print("\n=== 尝试导航到作业页面 ===")
-
-            # Look for assignment-related links
-            assignment_link_selectors = [
-                'a[href*="tasks_and_deadlines"]',
-                'a:has-text("Tasks & Deadlines")',
-                'a:has-text("Deadlines")',
-                'a[href*="assignment"]',
-                'a[href*="homework"]',
-                'a[href*="task"]',
-                'a:has-text("Assignment")',
-                'a:has-text("Homework")',
-                'a:has-text("Tasks")',
-                'a:has-text("作业")',
-                'a:has-text("待办")',
-                '.nav a:has-text("Assignment")',
-                '.menu a:has-text("Assignment")',
-            ]
-
-            for selector in assignment_link_selectors:
-                try:
-                    element = await page.query_selector(selector)
-                    if element:
-                        href = await element.get_attribute("href")
-                        text = (await element.text_content() or "").strip()
-                        print(f"找到作业链接: {text}\n -> {href}")
-                        await element.click()
-                        print(f"点击了作业链接: {text}")
-                        await page.wait_for_load_state("domcontentloaded")
-                        await page.wait_for_timeout(1500)
-                        break
-                except Exception as e:
-                    if self.debug:
-                        print(f"尝试选择器 {selector} 失败: {e}")
-                    continue
-
-            # If still not on task page, try direct access
-            current_url = page.url
-            if not any(
-                key in current_url for key in ["tasks", "assignment", "homework"]
-            ):
-                print("未找到明确的作业链接，尝试其他导航方式...")
-                assignment_paths = [
-                    "/student/tasks_and_deadlines",
-                    "/assignments",
-                    "/student/assignments",
-                    "/homework",
-                    "/tasks",
-                    "/dashboard/assignments",
-                    "/student/dashboard/assignments",
-                ]
-                base_url = self.config.url.rstrip("/")
-                for path in assignment_paths:
-                    try:
-                        assignment_url = base_url + path
-                        print(f"尝试直接访问: {assignment_url}")
-                        await page.goto(assignment_url, wait_until="domcontentloaded")
-                        await page.wait_for_timeout(1500)
-                        break
-                    except Exception as e:
-                        if self.debug:
-                            print(f"访问 {assignment_url} 失败: {e}")
-                        continue
-
-            # Switch to "All" filter
-            await self._switch_to_all_filter(page)
-
-            print(f"导航后的URL: {page.url}")
-            return True
-        except Exception as e:
-            print(f"导航到作业页面时出错: {e}")
-            return False
-
-    async def _switch_to_all_filter(self, page: Page) -> None:
-        """Switch to 'All' filter to show all tasks."""
-        try:
-            filter_selectors = [
-                'a:has-text("All")',
-                'button:has-text("All")',
-                'a:has-text("全部")',
-                'button:has-text("全部")',
-                'a[href$="/tasks_and_deadlines"]',
-            ]
-            for selector in filter_selectors:
-                try:
-                    el = await page.query_selector(selector)
-                    if el:
-                        await el.click()
-                        await page.wait_for_timeout(800)
-                        break
-                except:
-                    continue
-        except Exception as e:
-            if self.debug:
-                print(f"切换到全部视图失败: {e}")
-
-    async def get_all_assignments(
-        self, page: Page, browser: Optional[Browser] = None
-    ) -> List[Dict[str, Any]]:
-        """Scrape all assignments including submitted and unsubmitted."""
-        assignments: List[Dict[str, Any]] = []
-
-        try:
-            print("\n=== 抓取全部作业（包含已提交/未提交）===")
-            print(f"当前页面: {page.url}")
-
-            # Comprehensive selector collection
-            item_selectors = [
-                ".assignment",
-                ".assignment-item",
-                ".task-item",
-                ".homework-item",
-                'li[class*="assignment"]',
-                ".assignment-list li",
-                ".homework-list li",
-                'tr[class*="assignment"], tr[class*="task"], tr[class*="homework"]',
-                '.card:has([class*="due"])',
-                'div:has([class*="due"]), div:has([class*="status"])',
-            ]
-
-            status_keywords = {
-                "submitted": ["submitted", "已提交", "turned in", "已上交"],
-                "pending": [
-                    "pending",
-                    "not submitted",
-                    "unsubmitted",
-                    "未提交",
-                    "待提交",
-                    "未上交",
-                ],
-                "overdue": ["overdue", "逾期", "迟交", "late"],
-            }
-
-            type_keywords = {
-                "summative": ["summative", "总结性"],
-                "formative": ["formative", "形成性"],
-            }
-
-            found_elements = []
-            for sel in item_selectors:
-                try:
-                    els = await page.query_selector_all(sel)
-                    if els and len(els) > len(found_elements):
-                        found_elements = els
-                except:
-                    continue
-
-            if not found_elements:
-                print("未找到结构化列表，回退到基于due类选择：")
-                found_elements = await page.query_selector_all(
-                    '[class*="due"], [class*="status"]'
-                )
-
-            print(f"找到潜在任务元素: {len(found_elements)}")
-
-            # Process each element
-            for idx, el in enumerate(found_elements):
-                try:
-                    text = (await el.text_content() or "").strip()
-                    if not text or len(text) < 6:
-                        continue
-                    low = text.lower()
-
-                    # Extract title
-                    title = None
-                    for tsel in [
-                        ".title",
-                        ".assignment-title",
-                        ".homework-title",
-                        "h1",
-                        "h2",
-                        "h3",
-                        "h4",
-                        "a",
-                    ]:
-                        try:
-                            tnode = await el.query_selector(tsel)
-                            if tnode:
-                                ttext = (await tnode.text_content() or "").strip()
-                                if ttext and len(ttext) > 2:
-                                    title = ttext
-                                    break
-                        except:
-                            continue
-                    if not title:
-                        title = text[:100]
-
-                    # Extract due date
-                    due_text = None
-                    for dsel in [".due-date", '[class*="due"]', ".date", ".deadline"]:
-                        try:
-                            dnode = await el.query_selector(dsel)
-                            if dnode:
-                                dtext = (await dnode.text_content() or "").strip()
-                                if dtext:
-                                    due_text = dtext
-                                    break
-                        except:
-                            continue
-                    if not due_text:
-                        m = re.search(
-                            r"\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b[^\n]{0,40}",
-                            text,
-                            re.I,
-                        )
-                        if m:
-                            due_text = m.group(0).strip()
-                        else:
-                            due_text = "无截止日期"
-
-                    # Determine status
-                    status = "未知"
-                    submitted = False
-                    overdue = False
-                    for key, keys in status_keywords.items():
-                        if any(k in low for k in keys):
-                            if key == "submitted":
-                                status = "Submitted"
-                                submitted = True
-                            elif key == "pending":
-                                status = "Pending"
-                            elif key == "overdue":
-                                status = "Overdue"
-                                overdue = True
-
-                    # Determine type
-                    a_type = "Unknown"
-                    for tkey, tkeys in type_keywords.items():
-                        if any(k in low for k in tkeys):
-                            a_type = "Summative" if tkey == "summative" else "Formative"
-                            break
-
-                    # Extract course name
-                    course = self._extract_course_name(text)
-
-                    # Extract link
-                    link = None
-                    for lsel in [
-                        'a[href*="core_tasks"]',
-                        'a[href*="/tasks/"], a[href*="/assignment"]',
-                        "a",
-                    ]:
-                        try:
-                            lnode = await el.query_selector(lsel)
-                            if lnode:
-                                href = await lnode.get_attribute("href")
-                                if href and not href.startswith("javascript"):
-                                    link = href
-                                    break
-                        except:
-                            continue
-
-                    assignment = {
-                        "title": title,
-                        "course": course,
-                        "type": a_type,
-                        "due_date": due_text,
-                        "status": status,
-                        "submitted": submitted,
-                        "overdue": overdue,
-                        "link": link,
-                        "selector_used": "auto",
-                        "element_index": idx,
-                        "full_text_preview": text[:300]
-                        + ("..." if len(text) > 300 else ""),
-                        "found_at": datetime.now().isoformat(),
-                    }
-                    assignments.append(assignment)
-                except Exception as e:
-                    if self.debug:
-                        print(f"解析元素 {idx} 失败: {e}")
-                    continue
-
-            # Optional: fetch details
-            if self.config.fetch_details and browser and assignments:
-                await self._enrich_assignments_details(assignments, browser)
-
-            # Remove duplicates
-            if len(assignments) > 1:
-                assignments = self._remove_duplicate_assignments(assignments)
-
-            # Filter noise
-            clean = []
-            for a in assignments:
-                if (
-                    len(a.get("title", "").strip()) < 3
-                    and a.get("status", "未知") == "未知"
-                    and not a.get("course")
-                ):
-                    continue
-                clean.append(a)
-            assignments = clean
-
-            print(f"完成抓取：{len(assignments)} 条")
-            return assignments
-        except Exception as e:
-            print(f"抓取全部作业时出错: {e}")
-            return assignments
-
-    async def _enrich_assignments_details(
-        self, assignments: List[Dict[str, Any]], browser: Browser
-    ) -> None:
-        """Open assignment detail pages to extract more fields."""
-        try:
-            count = 0
-            for a in assignments:
-                if count >= self.config.details_limit:
-                    break
-                link = a.get("link")
+    async def navigate_to_assignments(self, page: Page) -> None:
+        candidates = [
+            ("a:has-text('Tasks & Deadlines')", "Tasks & Deadlines"),
+            ("a:has-text('Assignments')", "Assignments"),
+            ("a:has-text('Tasks')", "Tasks"),
+            ("a:has-text('作业')", "作业"),
+            ("a[href*='tasks']", "href tasks"),
+            ("a[href*='assignments']", "href assignments"),
+        ]
+        for selector, label in candidates:
+            try:
+                link = await page.query_selector(selector)
                 if not link:
                     continue
+                self.logger.debug("Clicking navigation link: %s (%s)", label, selector)
+                await link.click()
+                await page.wait_for_load_state("domcontentloaded", timeout=self.config.timeout)
+                await page.wait_for_timeout(1_000)
+                if any(keyword in page.url for keyword in ("tasks", "assignment", "homework")):
+                    return
+            except Exception as exc:
+                self.logger.debug("Navigation via %s failed: %s", selector, exc)
 
-                url = link
-                if link.startswith("/"):
-                    url = self.config.url.rstrip("/") + link
-
-                page = await browser.new_page()
-                try:
-                    await page.goto(url, wait_until="domcontentloaded")
-                    await page.wait_for_timeout(800)
-
-                    desc = await self._safe_inner_text(
-                        page,
-                        [
-                            ".description",
-                            ".assignment-description",
-                            ".content",
-                            ".instructions",
-                        ],
-                    )
-                    teacher = await self._safe_inner_text(
-                        page, [".teacher", ".author", 'a[href*="/teachers/"]']
-                    )
-                    created = await self._safe_inner_text(
-                        page, [".created-at", '[class*="created"]']
-                    )
-                    updated = await self._safe_inner_text(
-                        page, [".updated-at", '[class*="updated"]']
-                    )
-                    attachments = await self._collect_links(
-                        page, ['a[href*="/files/"], a:has-text("Download")']
-                    )
-
-                    a["details"] = {
-                        "description": desc,
-                        "teacher": teacher,
-                        "created_at": created,
-                        "updated_at": updated,
-                        "attachments": attachments,
-                    }
-                    count += 1
-                except Exception as e:
-                    if self.debug:
-                        print(f"详情抓取失败 {url}: {e}")
-                finally:
-                    await page.close()
-        except Exception as e:
-            if self.debug:
-                print(f"批量详情抓取失败: {e}")
-
-    async def _safe_inner_text(self, page: Page, selectors: List[str]) -> Optional[str]:
-        """Safely get text content from selectors."""
-        for sel in selectors:
+        base = self.config.url.rstrip("/")
+        fallback_paths = [
+            "/student/tasks_and_deadlines",
+            "/student/assignments",
+            "/assignments",
+            "/tasks",
+        ]
+        for path in fallback_paths:
+            target = base + path
+            self.logger.debug("Trying fallback navigation to %s", target)
             try:
-                el = await page.query_selector(sel)
-                if el:
-                    t = await el.text_content()
-                    if t and t.strip():
-                        return t.strip()
-            except:
+                await page.goto(target, wait_until="domcontentloaded", timeout=self.config.timeout)
+                await page.wait_for_timeout(1_000)
+                if any(keyword in page.url for keyword in ("tasks", "assignment", "homework")):
+                    return
+            except Exception as exc:
+                self.logger.debug("Fallback navigation to %s failed: %s", target, exc)
+
+        self.logger.warning(
+            "Unable to confirm assignment page navigation; continuing with current page"
+        )
+
+    async def collect_assignments(self, page: Page) -> List[Assignment]:
+        assignments: List[Assignment] = []
+        seen_ids: set[str] = set()
+
+        for selector in self._ASSIGNMENT_CONTAINER_SELECTORS:
+            try:
+                handles = await page.query_selector_all(selector)
+            except Exception:
+                handles = []
+            if not handles:
                 continue
+
+            self.logger.debug("Selector %s yielded %d elements", selector, len(handles))
+            for handle in handles:
+                assignment = await self._extract_assignment(handle)
+                if not assignment:
+                    continue
+                if assignment.identifier in seen_ids:
+                    continue
+                seen_ids.add(assignment.identifier)
+                assignments.append(assignment)
+
+            if assignments:
+                break
+
+        if not assignments:
+            self.logger.info("Falling back to text-based scan")
+            assignments = await self._text_fallback(page)
+
+        assignments.sort(key=lambda a: (a.due_date or "", a.title))
+        return assignments
+
+    async def _extract_assignment(self, handle) -> Optional[Assignment]:
+        try:
+            raw_text = (await handle.inner_text()).strip()
+        except Exception:
+            return None
+        if len(raw_text) < 5:
+            return None
+
+        title = await self._first_text(handle, self._TITLE_SELECTORS)
+        if not title:
+            title = raw_text.splitlines()[0].strip()
+
+        course = await self._first_text(handle, self._COURSE_SELECTORS) or "未知课程"
+        due_date = await self._first_text(handle, self._DUE_SELECTORS) or "无截止日期"
+        status = await self._first_text(handle, self._STATUS_SELECTORS) or self._infer_status(
+            raw_text
+        )
+        assignment_type = self._infer_type(raw_text)
+        submitted, overdue = self._classify_state(status, raw_text)
+        link = await self._first_attr(handle, "a", "href")
+        identifier = f"{title.lower()}::{due_date.lower()}"
+        priority = self._priority_from_text(title, raw_text)
+
+        return Assignment(
+            identifier=identifier,
+            title=title.strip(),
+            course=course.strip(),
+            status=status.strip(),
+            due_date=due_date.strip(),
+            assignment_type=assignment_type,
+            priority=priority,
+            submitted=submitted,
+            overdue=overdue,
+            link=link,
+            raw_text=raw_text,
+        )
+
+    async def _first_text(self, handle, selectors: Iterable[str]) -> Optional[str]:
+        for selector in selectors:
+            try:
+                element = await handle.query_selector(selector)
+            except Exception:
+                element = None
+            if element:
+                try:
+                    text = await element.text_content()
+                except Exception:
+                    text = None
+                if text and text.strip():
+                    return text.strip()
         return None
 
-    async def _collect_links(
-        self, page: Page, selectors: List[str]
-    ) -> List[Dict[str, str]]:
-        """Collect links from selectors."""
-        items = []
-        for sel in selectors:
-            try:
-                els = await page.query_selector_all(sel)
-                for el in els[:10]:
-                    href = await el.get_attribute("href")
-                    text = (await el.text_content() or "").strip()
-                    if href and not href.startswith("javascript"):
-                        items.append({"text": text, "href": href})
-            except:
+    async def _first_attr(self, handle, selector: str, attr: str) -> Optional[str]:
+        try:
+            element = await handle.query_selector(selector)
+        except Exception:
+            return None
+        if not element:
+            return None
+        try:
+            value = await element.get_attribute(attr)
+        except Exception:
+            return None
+        return value
+
+    def _infer_status(self, raw_text: str) -> str:
+        lowered = raw_text.lower()
+        if any(token in lowered for token in ("submitted", "turned in", "已提交")):
+            return "Submitted"
+        if any(token in lowered for token in ("overdue", "late", "逾期")):
+            return "Overdue"
+        if any(token in lowered for token in ("pending", "未提交", "待")):
+            return "Pending"
+        return "Unknown"
+
+    def _classify_state(self, status: str, raw_text: str) -> Tuple[bool, bool]:
+        text = f"{status} {raw_text}".lower()
+        submitted = any(token in text for token in ("submitted", "turned in", "已提交"))
+        overdue = any(token in text for token in ("overdue", "late", "逾期"))
+        return submitted, overdue
+
+    def _infer_type(self, raw_text: str) -> str:
+        lowered = raw_text.lower()
+        if "summative" in lowered or "总结" in lowered:
+            return "Summative"
+        if "formative" in lowered or "形成" in lowered:
+            return "Formative"
+        if "essay" in lowered:
+            return "Essay"
+        return "Unknown"
+
+    def _priority_from_text(self, title: str, raw_text: str) -> str:
+        text = f"{title} {raw_text}".lower()
+        for keyword in self.config.priority_keywords:
+            if keyword.lower() in text:
+                return "high"
+        if any(token in text for token in ("quiz", "assignment", "homework")):
+            return "medium"
+        return "low"
+
+    async def _text_fallback(self, page: Page) -> List[Assignment]:
+        content = await page.inner_text("body")
+        blocks = [line.strip() for line in content.splitlines() if len(line.strip()) > 10]
+        assignments: List[Assignment] = []
+        for block in blocks[:20]:
+            if not any(token in block.lower() for token in ("due", "截止", "submit", "提交")):
                 continue
-        return items
+            identifier = block[:40].lower()
+            # Try to extract date from text
+            due_date = "无截止日期"
+            import re
 
-    def _extract_course_name(self, title: str) -> str:
-        """Extract course name from assignment title."""
-        # Try to extract AP course names
-        ap_match = re.search(r"AP\s+([^\n(]+)", title)
-        if ap_match:
-            return f"AP {ap_match.group(1).strip()}"
+            date_patterns = [
+                r"(\d{4}-\d{2}-\d{2})",  # YYYY-MM-DD
+                r"(\d{2}/\d{2}/\d{4})",  # MM/DD/YYYY
+                r"(\d{2}-\d{2}-\d{4})",  # MM-DD-YYYY
+                r"(\d{1,2}/\d{1,2}/\d{2,4})",  # M/D/YY or MM/DD/YYYY
+            ]
 
-        # Look for course-related keywords
-        course_keywords = {
-            "Computer Science": ["CS", "Computer", "Programming"],
-            "Mathematics": ["Math", "Calculus", "Algebra", "BC"],
-            "Economics": ["Economics", "Macro", "Micro"],
-            "History": ["History", "US History"],
-            "Psychology": ["Psychology", "Psych"],
-            "English": ["English", "Literature", "Writing"],
-        }
+            for pattern in date_patterns:
+                match = re.search(pattern, block)
+                if match:
+                    due_date = match.group(1)
+                    break
 
-        title_lower = title.lower()
-        for course, keywords in course_keywords.items():
-            if any(keyword.lower() in title_lower for keyword in keywords):
-                return course
+            # Try to extract course name
+            course = "未知课程"
+            course_patterns = [
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",  # Course names
+                r"(数学|物理|化学|生物|英语|语文|历史|地理|政治)",  # Chinese subjects
+                r"(Math|Physics|Chemistry|Biology|English|History|Geography)",  # English subjects
+            ]
 
-        return "未知课程"
+            for pattern in course_patterns:
+                match = re.search(pattern, block)
+                if match:
+                    course = match.group(1)
+                    break
 
-    def _remove_duplicate_assignments(
-        self, assignments: List[Dict[str, Any]]
-    ) -> List[Dict[str, Any]]:
-        """Remove duplicate assignment entries."""
-        seen_titles = set()
-        unique_assignments = []
+            assignments.append(
+                Assignment(
+                    identifier=identifier,
+                    title=block[:80],
+                    course=course,
+                    status="Pending",
+                    due_date=due_date,
+                    raw_text=block,
+                    assignment_type="Unknown",
+                    priority=self._priority_from_text(block, block),
+                )
+            )
+        return assignments
 
-        for assignment in assignments:
-            title_key = assignment["title"][:50].lower().strip()
-            if title_key not in seen_titles:
-                seen_titles.add(title_key)
-                unique_assignments.append(assignment)
 
-        if len(assignments) != len(unique_assignments):
-            print(f"去重后：{len(assignments)} -> {len(unique_assignments)} 个作业")
+async def run_scraper(config: Config, logger: logging.Logger) -> List[Assignment]:
+    from playwright.async_api import async_playwright
 
-        return unique_assignments
+    async with async_playwright() as p:
+        browser: Browser = await p.chromium.launch(
+            headless=config.headless, args=config.browser_args
+        )
+        page: Page = await browser.new_page()
+        page.set_default_timeout(config.timeout)
+
+        scraper = ManageBacScraper(config, logger)
+        try:
+            if not await scraper.login(page):
+                return []
+            await scraper.navigate_to_assignments(page)
+            await page.wait_for_timeout(1_500)
+            assignments = await scraper.collect_assignments(page)
+            if config.fetch_details and assignments:
+                await _enrich_details(scraper, page, assignments, limit=config.details_limit)
+            return assignments
+        finally:
+            await browser.close()
+
+
+async def _enrich_details(
+    scraper: ManageBacScraper, page: Page, assignments: List[Assignment], *, limit: int
+) -> None:
+    enriched = 0
+    for assignment in assignments:
+        if enriched >= limit or not assignment.link:
+            continue
+        try:
+            await page.goto(
+                assignment.link, wait_until="domcontentloaded", timeout=scraper.config.timeout
+            )
+            await page.wait_for_timeout(600)
+            description = await page.inner_text("main", timeout=2_000)
+            assignment.description = description.strip()
+            enriched += 1
+        except Exception as exc:
+            scraper.logger.debug("Failed to enrich %s: %s", assignment.title, exc)

@@ -1,0 +1,207 @@
+# ========================================
+# 🎓 ManageBac Assignment Checker - Pre-commit Configuration
+# 🎓 ManageBac作业检查器 - 预提交配置
+# ========================================
+
+repos:
+  # ========================================
+  # 🔧 General Hooks | 通用钩子
+  # ========================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: 🧹 Remove trailing whitespace
+        description: Remove trailing whitespace from files
+      - id: end-of-file-fixer
+        name: 📄 Ensure files end with newline
+        description: Ensure files end with a newline
+      - id: check-yaml
+        name: 📋 Check YAML syntax
+        description: Check YAML files for syntax errors
+      - id: check-json
+        name: 📋 Check JSON syntax
+        description: Check JSON files for syntax errors
+      - id: check-toml
+        name: 📋 Check TOML syntax
+        description: Check TOML files for syntax errors
+      - id: check-merge-conflict
+        name: 🔀 Check for merge conflicts
+        description: Check for merge conflict markers
+      - id: check-added-large-files
+        name: 📦 Check for large files
+        description: Check for large files being added
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+        name: 📁 Check for case conflicts
+        description: Check for case conflicts in filenames
+      - id: check-merge-conflict
+        name: 🔀 Check for merge conflicts
+        description: Check for merge conflict markers
+
+  # ========================================
+  # 🐍 Python Hooks | Python钩子
+  # ========================================
+  - repo: https://github.com/psf/black
+    rev: 24.4.0
+    hooks:
+      - id: black
+        name: 🎨 Format code with Black
+        description: Format Python code with Black
+        language_version: python3
+        args: [--line-length=88]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.0
+    hooks:
+      - id: isort
+        name: 📦 Sort imports with isort
+        description: Sort Python imports with isort
+        args: [--profile=black, --line-length=88]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.0
+    hooks:
+      - id: flake8
+        name: 🔍 Lint with flake8
+        description: Lint Python code with flake8
+        args: [--max-line-length=88, --extend-ignore=E203,W503,E501]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        name: 🏷️ Type check with mypy
+        description: Type check Python code with mypy
+        additional_dependencies: [types-requests, types-PyYAML]
+        args: [--ignore-missing-imports]
+
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.8
+    hooks:
+      - id: bandit
+        name: 🔒 Security check with bandit
+        description: Security check Python code with bandit
+        args: [-r, managebac_checker/, -f, json, -o, bandit-report.json]
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.2
+    hooks:
+      - id: python-safety-dependencies-check
+        name: 🔒 Check dependencies with safety
+        description: Check Python dependencies for security vulnerabilities
+
+  # ========================================
+  # 📝 Documentation Hooks | 文档钩子
+  # ========================================
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        name: 📚 Check docstrings
+        description: Check Python docstrings with pydocstyle
+        args: [--convention=google]
+
+  # ========================================
+  # 🧪 Testing Hooks | 测试钩子
+  # ========================================
+  - repo: local
+    hooks:
+      - id: pytest
+        name: 🧪 Run pytest
+        description: Run pytest tests
+        entry: pytest
+        language: system
+        args: [tests/, -v, --tb=short]
+        pass_filenames: false
+        always_run: true
+
+  # ========================================
+  # 📊 Performance Hooks | 性能钩子
+  # ========================================
+  - repo: https://github.com/pycqa/radon
+    rev: 6.0.0
+    hooks:
+      - id: radon-cc
+        name: 📊 Check cyclomatic complexity
+        description: Check cyclomatic complexity with radon
+        args: [--min=B, --show-complexity]
+
+  - repo: https://github.com/rubik/radon
+    rev: 6.0.0
+    hooks:
+      - id: xenon
+        name: 📊 Check code complexity
+        description: Check code complexity with xenon
+        args: [--max-absolute=B, --max-modules=A, --max-average=A]
+
+  # ========================================
+  # 🗑️ Dead Code Detection | 死代码检测
+  # ========================================
+  - repo: https://github.com/jendrikseipp/vulture
+    rev: 2.10
+    hooks:
+      - id: vulture
+        name: 🗑️ Detect dead code
+        description: Detect dead code with vulture
+        args: [--min-confidence=80]
+
+  # ========================================
+  # 📋 Commit Message Hooks | 提交消息钩子
+  # ========================================
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.13.0
+    hooks:
+      - id: commitizen
+        name: 📝 Check commit message
+        description: Check commit message format with commitizen
+
+  # ========================================
+  # 🔧 Custom Hooks | 自定义钩子
+  # ========================================
+  - repo: local
+    hooks:
+      - id: check-requirements
+        name: 📦 Check requirements files
+        description: Check requirements files for consistency
+        entry: python scripts/check_requirements.py
+        language: system
+        files: requirements.*\.txt$
+        pass_filenames: false
+
+      - id: check-version-consistency
+        name: 🏷️ Check version consistency
+        description: Check version consistency across files
+        entry: python scripts/check_version.py
+        language: system
+        pass_filenames: false
+
+      - id: generate-changelog
+        name: 📝 Generate changelog
+        description: Generate changelog from git commits
+        entry: python scripts/generate_changelog.py
+        language: system
+        pass_filenames: false
+        always_run: true
+
+# ========================================
+# 🔧 Configuration | 配置
+# ========================================
+default_language_version:
+  python: python3
+
+default_stages: [commit, push]
+
+ci:
+  autofix_commit_msg: |
+    🎨 Auto-fix: {msg}
+
+    This commit was automatically fixed by pre-commit hooks.
+    Original commit message: {original_msg}
+
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] auto fixes from pre-commit.com hooks'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

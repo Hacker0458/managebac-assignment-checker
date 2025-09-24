@@ -23,9 +23,9 @@ from .scraper import run_scraper
 
 
 class Runner:
-    def __init__(self, overrides: Optional[Dict] = None) -> None:
+    def __init__(self, overrides: Optional[Dict] = None, config: Optional[Config] = None) -> None:
         load_dotenv()
-        self.config = Config.from_environment(overrides or {})
+        self.config = config or Config.from_environment(overrides or {})
         self.logger = setup_logging(self.config.debug)
 
     async def execute(self) -> Dict[str, object]:
@@ -65,9 +65,7 @@ class Runner:
     ) -> None:
         urgent = analysis["assignments_by_urgency"]["urgent"]
         if not urgent:
-            self.logger.info(
-                "Email notifications enabled but no urgent assignments detected"
-            )
+            self.logger.info("Email notifications enabled but no urgent assignments detected")
             return
 
         try:
@@ -81,9 +79,7 @@ class Runner:
                 urgent_assignments=urgent,
                 total_count=analysis["total_assignments"],
             )
-            self.logger.info(
-                "Email notification sent to %s", self.config.notification_email
-            )
+            self.logger.info("Email notification sent to %s", self.config.notification_email)
         except Exception as exc:
             self.logger.error("Failed to send notification: %s", exc)
 

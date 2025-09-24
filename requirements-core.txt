@@ -1,0 +1,16 @@
+# ========================================
+# 🎓 ManageBac Assignment Checker - Core Dependencies
+# 🎓 ManageBac作业检查器 - 核心依赖
+# ========================================
+
+# Essential Dependencies | 必需依赖
+playwright>=1.45.0          # Web automation and scraping | 网页自动化和抓取
+python-dotenv>=1.0.0        # Environment variable management | 环境变量管理
+
+# Optional Dependencies | 可选依赖
+jinja2>=3.1.4              # HTML template engine | HTML模板引擎
+openai>=1.0.0              # AI Assistant integration | AI助手集成
+
+# GUI Dependencies | GUI依赖
+pystray>=0.19.0            # System tray integration | 系统托盘集成
+pillow>=10.0.0             # Image processing for icons | 图标图像处理

@@ -17,7 +17,9 @@ def check_dependencies():
         'playwright',
         'python-dotenv',
         'jinja2',
-        'openai'
+        'openai',
+        'pystray',  # For system tray
+        'pillow'    # For system tray icons
     ]
     
     missing_packages = []

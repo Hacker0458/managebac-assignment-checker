@@ -82,10 +82,6 @@ setup(
             "mypy>=1.7.0",
             "pre-commit>=3.5.0",
         ],
-        "notifications": [
-            "smtplib",
-            "email",
-        ],
         "charts": [
             "matplotlib>=3.7.0",
             "plotly>=5.17.0",

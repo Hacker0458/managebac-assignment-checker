@@ -1,274 +1,105 @@
-"""
-🎓 ManageBac Assignment Checker Logging | ManageBac作业检查器日志系统
-========================================================================
+"""日志工具，为旧有接口提供兼容支持。"""
 
-Bilingual logging utilities for ManageBac Assignment Checker.
-ManageBac作业检查器的双语日志工具。
-"""
+from __future__ import annotations
 
 import logging
-import sys
-from datetime import datetime
 from pathlib import Path
-from typing import Optional, Dict, Any
-
-
-class BilingualFormatter(logging.Formatter):
-    """
-    Custom formatter for bilingual logging.
-    双语日志的自定义格式化器。
-    """
-
-    def __init__(self, language: str = "zh", *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.language = language
-
-        # Bilingual level names | 双语级别名称
-        self.level_names = {
-            "en": {
-                logging.DEBUG: "DEBUG",
-                logging.INFO: "INFO",
-                logging.WARNING: "WARNING",
-                logging.ERROR: "ERROR",
-                logging.CRITICAL: "CRITICAL",
-            },
-            "zh": {
-                logging.DEBUG: "调试",
-                logging.INFO: "信息",
-                logging.WARNING: "警告",
-                logging.ERROR: "错误",
-                logging.CRITICAL: "严重",
-            },
-        }
-
-    def format(self, record):
-        """Format log record with bilingual support."""
-        # Get localized level name
-        level_name = self.level_names.get(self.language, self.level_names["en"]).get(
-            record.levelno, record.levelname
-        )
-
-        # Create formatted message
-        timestamp = datetime.fromtimestamp(record.created).strftime("%Y-%m-%d %H:%M:%S")
-
-        if self.language == "zh":
-            formatted_msg = (
-                f"[{timestamp}] [{level_name}] {record.name}: {record.getMessage()}"
-            )
-        else:
-            formatted_msg = (
-                f"[{timestamp}] [{level_name}] {record.name}: {record.getMessage()}"
-            )
-
-        return formatted_msg
+from typing import Optional
 
 
 class BilingualLogger:
-    """
-    Bilingual logger wrapper.
-    双语日志包装器。
-    """
+    """轻量级双语记录器包装，兼容旧接口。"""
 
-    def __init__(self, name: str, language: str = "zh"):
-        self.name = name
+    def __init__(self, logger: logging.Logger, language: str = "zh") -> None:
+        self.logger = logger
         self.language = language
-        self.logger = logging.getLogger(name)
 
-        # Message templates | 消息模板
-        self.templates = {
-            "startup": {
-                "en": "🚀 ManageBac Assignment Checker started",
-                "zh": "🚀 ManageBac作业检查器已启动",
-            },
-            "config_loaded": {
-                "en": "⚙️ Configuration loaded successfully",
-                "zh": "⚙️ 配置加载成功",
-            },
-            "login_start": {
-                "en": "🔐 Starting ManageBac login...",
-                "zh": "🔐 开始登录ManageBac...",
-            },
-            "login_success": {
-                "en": "✅ Successfully logged into ManageBac",
-                "zh": "✅ 成功登录ManageBac",
-            },
-            "scraping_start": {
-                "en": "🔍 Starting assignment scraping...",
-                "zh": "🔍 开始抓取作业信息...",
-            },
-            "assignments_found": {
-                "en": "📚 Found {count} assignments",
-                "zh": "📚 发现 {count} 个作业",
-            },
-            "analysis_start": {
-                "en": "📊 Starting assignment analysis...",
-                "zh": "📊 开始分析作业...",
-            },
-            "report_generation": {
-                "en": "📝 Generating {format} report...",
-                "zh": "📝 生成 {format} 报告...",
-            },
-            "report_saved": {
-                "en": "💾 Report saved to: {path}",
-                "zh": "💾 报告已保存至: {path}",
-            },
-            "notification_sent": {
-                "en": "📧 Email notification sent to {recipients}",
-                "zh": "📧 邮件通知已发送至 {recipients}",
-            },
-            "error_occurred": {
-                "en": "❌ Error occurred: {error}",
-                "zh": "❌ 发生错误: {error}",
-            },
-            "completion": {
-                "en": "🎉 Assignment check completed successfully!",
-                "zh": "🎉 作业检查完成！",
-            },
-        }
+    # 旧接口使用的语义化方法
+    def startup(self) -> None:
+        self.logger.info("🚀 ManageBac 作业检查器启动")
 
-    def _format_message(self, template_key: str, **kwargs) -> str:
-        """Format message using template and language."""
-        template = self.templates.get(template_key, {})
-        message = template.get(self.language, template.get("en", template_key))
-        return message.format(**kwargs) if kwargs else message
+    def config_loaded(self) -> None:
+        self.logger.info("⚙️ 配置加载完成")
 
-    def startup(self):
-        """Log startup message."""
-        self.logger.info(self._format_message("startup"))
+    def login_start(self) -> None:
+        self.logger.info("🔐 正在登录 ManageBac")
 
-    def config_loaded(self):
-        """Log configuration loaded message."""
-        self.logger.info(self._format_message("config_loaded"))
+    def login_success(self) -> None:
+        self.logger.info("✅ 登录成功")
 
-    def login_start(self):
-        """Log login start message."""
-        self.logger.info(self._format_message("login_start"))
+    def scraping_start(self) -> None:
+        self.logger.info("🔍 开始抓取作业数据")
 
-    def login_success(self):
-        """Log successful login message."""
-        self.logger.info(self._format_message("login_success"))
+    def assignments_found(self, count: int) -> None:
+        self.logger.info("📚 共发现 %s 个作业", count)
 
-    def scraping_start(self):
-        """Log scraping start message."""
-        self.logger.info(self._format_message("scraping_start"))
+    def analysis_start(self) -> None:
+        self.logger.info("📊 开始分析作业数据")
 
-    def assignments_found(self, count: int):
-        """Log assignments found message."""
-        self.logger.info(self._format_message("assignments_found", count=count))
+    def report_generation(self, format_type: str) -> None:
+        self.logger.info("📝 正在生成 %s 报告", format_type)
 
-    def analysis_start(self):
-        """Log analysis start message."""
-        self.logger.info(self._format_message("analysis_start"))
+    def report_saved(self, path: str) -> None:
+        self.logger.info("💾 报告已保存至 %s", path)
 
-    def report_generation(self, format_type: str):
-        """Log report generation message."""
-        self.logger.info(self._format_message("report_generation", format=format_type))
+    def notification_sent(self, recipients: str) -> None:
+        self.logger.info("📧 通知邮件已发送至 %s", recipients)
 
-    def report_saved(self, path: str):
-        """Log report saved message."""
-        self.logger.info(self._format_message("report_saved", path=path))
+    def error_occurred(self, error: str) -> None:
+        self.logger.error("❌ 发生错误: %s", error)
 
-    def notification_sent(self, recipients: str):
-        """Log notification sent message."""
-        self.logger.info(
-            self._format_message("notification_sent", recipients=recipients)
-        )
+    def completion(self) -> None:
+        self.logger.info("🎉 作业检查完成")
 
-    def error_occurred(self, error: str):
-        """Log error message."""
-        self.logger.error(self._format_message("error_occurred", error=error))
+    # 透传常用方法
+    def debug(self, message: str, *args, **kwargs) -> None:
+        self.logger.debug(message, *args, **kwargs)
 
-    def completion(self):
-        """Log completion message."""
-        self.logger.info(self._format_message("completion"))
+    def info(self, message: str, *args, **kwargs) -> None:
+        self.logger.info(message, *args, **kwargs)
 
-    # Standard logging methods
-    def debug(self, message: str):
-        """Log debug message."""
-        self.logger.debug(message)
+    def warning(self, message: str, *args, **kwargs) -> None:
+        self.logger.warning(message, *args, **kwargs)
 
-    def info(self, message: str):
-        """Log info message."""
-        self.logger.info(message)
+    def error(self, message: str, *args, **kwargs) -> None:
+        self.logger.error(message, *args, **kwargs)
 
-    def warning(self, message: str):
-        """Log warning message."""
-        self.logger.warning(message)
+    def critical(self, message: str, *args, **kwargs) -> None:
+        self.logger.critical(message, *args, **kwargs)
 
-    def error(self, message: str):
-        """Log error message."""
-        self.logger.error(message)
 
-    def critical(self, message: str):
-        """Log critical message."""
-        self.logger.critical(message)
+def get_logger(name: str) -> logging.Logger:
+    """Get a logger instance | 获取日志记录器实例"""
+    return logging.getLogger(name)
 
 
 def setup_logging(
-    level: str = "INFO",
+    level: str | int = "INFO",
     log_file: Optional[str] = None,
     language: str = "zh",
-    format_string: Optional[str] = None,
 ) -> BilingualLogger:
-    """
-    Set up bilingual logging configuration.
-    设置双语日志配置。
+    """配置日志并返回兼容旧接口的记录器。"""
+    if isinstance(level, bool):
+        numeric_level = logging.DEBUG if level else logging.INFO
+    elif isinstance(level, str):
+        numeric_level = getattr(logging, level.upper(), logging.INFO)
+    else:
+        numeric_level = int(level)
 
-    Args:
-        level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-        log_file: Optional log file path
-        language: Interface language ('en' or 'zh')
-        format_string: Optional custom format string
+    log_dir = Path("./logs")
+    log_dir.mkdir(exist_ok=True)
 
-    Returns:
-        Configured bilingual logger instance
-    """
-    # Convert string level to logging constant
-    numeric_level = getattr(logging, level.upper(), logging.INFO)
+    handlers = [logging.StreamHandler()]
+    file_target = log_dir / (log_file or "managebac_checker.log")
+    handlers.append(logging.FileHandler(file_target))
 
-    # Create bilingual formatter
-    formatter = BilingualFormatter(language=language)
+    logging.basicConfig(
+        level=numeric_level,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        handlers=handlers,
+        force=True,
+    )
 
-    # Get root logger
-    root_logger = logging.getLogger("managebac_checker")
-    root_logger.setLevel(numeric_level)
-
-    # Remove existing handlers to avoid duplicates
-    for handler in root_logger.handlers[:]:
-        root_logger.removeHandler(handler)
-
-    # Console handler
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(numeric_level)
-    console_handler.setFormatter(formatter)
-    root_logger.addHandler(console_handler)
-
-    # File handler (if specified)
-    if log_file:
-        log_path = Path(log_file)
-        log_path.parent.mkdir(parents=True, exist_ok=True)
-
-        file_handler = logging.FileHandler(log_path, encoding="utf-8")
-        file_handler.setLevel(numeric_level)
-        file_handler.setFormatter(formatter)
-        root_logger.addHandler(file_handler)
-
-    # Return bilingual logger wrapper
-    return BilingualLogger("managebac_checker", language=language)
-
-
-def get_logger(
-    name: str = "managebac_checker", language: str = "zh"
-) -> BilingualLogger:
-    """
-    Get a bilingual logger instance.
-    获取双语日志实例。
-
-    Args:
-        name: Logger name
-        language: Interface language ('en' or 'zh')
-
-    Returns:
-        Bilingual logger instance
-    """
-    return BilingualLogger(name, language=language)
+    base_logger = logging.getLogger("managebac_checker")
+    base_logger.debug("Logging configured (level=%s)", numeric_level)
+    return BilingualLogger(base_logger, language=language)

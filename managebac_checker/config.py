@@ -1,361 +1,215 @@
-"""
-🎓 ManageBac Assignment Checker Configuration | ManageBac作业检查器配置管理
-=============================================================================
+"""配置加载与验证工具。"""
 
-Configuration management for ManageBac Assignment Checker.
-ManageBac作业检查器的配置管理模块。
-"""
+from __future__ import annotations
 
-import os
-import sys
-import getpass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional, Dict, Any
-from dotenv import load_dotenv
+from typing import Iterable, List, Optional
+import os
 
 
-class ConfigMessages:
-    """Bilingual configuration messages | 双语配置消息."""
-
-    ERROR_MISSING_CREDENTIALS = {
-        "en": "❌ Error: ManageBac credentials are required!",
-        "zh": "❌ 错误：需要ManageBac登录凭据！",
-    }
-
-    SETUP_INSTRUCTIONS = {
-        "en": """
-🔧 Setup Instructions:
-1. Copy config.example.env to .env: cp config.example.env .env
-2. Edit .env file with your ManageBac credentials
-3. Run the program again
-
-Or you can enter credentials now (they will be saved to .env):""",
-        "zh": """
-🔧 配置说明：
-1. 复制配置模板：cp config.example.env .env
-2. 编辑.env文件，填入您的ManageBac凭据
-3. 重新运行程序
-
-或者您可以现在输入凭据（将保存到.env文件）：""",
-    }
-
-    INPUT_EMAIL = {
-        "en": "📧 Enter your ManageBac email: ",
-        "zh": "📧 请输入您的ManageBac邮箱: ",
-    }
-
-    INPUT_PASSWORD = {
-        "en": "🔒 Enter your ManageBac password: ",
-        "zh": "🔒 请输入您的ManageBac密码: ",
-    }
-
-    INPUT_URL = {
-        "en": "🌐 Enter your ManageBac URL (press Enter for default): ",
-        "zh": "🌐 请输入您的ManageBac网址（回车使用默认值）: ",
-    }
-
-    ENABLE_AI = {
-        "en": "🤖 Enable AI Assistant? (y/n, press Enter for no): ",
-        "zh": "🤖 是否启用AI助手？(y/n，回车默认否): ",
-    }
-
-    INPUT_API_KEY = {
-        "en": "🔑 Enter your OpenAI API Key: ",
-        "zh": "🔑 请输入您的OpenAI API密钥: ",
-    }
-
-    AI_MODEL_CHOICE = {
-        "en": "🎯 Choose AI model (1=gpt-3.5-turbo, 2=gpt-4, press Enter for default): ",
-        "zh": "🎯 选择AI模型（1=gpt-3.5-turbo, 2=gpt-4，回车使用默认）: ",
-    }
-
-    SAVE_SUCCESS = {
-        "en": "✅ Configuration saved successfully to .env file!",
-        "zh": "✅ 配置已成功保存到.env文件！",
-    }
-
-    CONFIG_LOADED = {
-        "en": "✅ Configuration loaded successfully",
-        "zh": "✅ 配置加载成功",
-    }
+_TRUE_VALUES = {"1", "true", "t", "yes", "y", "on"}
 
 
+def _as_bool(value: Optional[str], default: bool) -> bool:
+    if value is None:
+        return default
+    return value.strip().lower() in _TRUE_VALUES
+
+
+def _as_int(value: Optional[str], default: int) -> int:
+    if value is None:
+        return default
+    try:
+        return int(value.strip())
+    except ValueError:
+        return default
+
+
+def _as_float(value: Optional[str], default: float) -> float:
+    if value is None:
+        return default
+    try:
+        return float(value.strip())
+    except ValueError:
+        return default
+
+
+def _as_list(value: Optional[str], default: Iterable[str]) -> List[str]:
+    if value is None:
+        return list(default)
+    items = [item.strip() for item in value.split(",") if item.strip()]
+    return items or list(default)
+
+
+@dataclass(slots=True)
 class Config:
-    """
-    Configuration class for ManageBac Assignment Checker.
-    ManageBac作业检查器配置类。
-    """
+    email: str = ""
+    password: str = ""
+    url: str = "https://shtcs.managebac.cn"
+    headless: bool = True
+    timeout: int = 30_000
+    debug: bool = False
+    report_formats: List[str] = field(default_factory=lambda: ["console", "json"])
+    output_dir: Path = Path("./reports")
+    enable_notifications: bool = False
+    smtp_server: str = ""
+    smtp_port: int = 587
+    email_user: str = ""
+    email_password: str = ""
+    notification_email: str = ""
+    days_ahead: int = 7
+    priority_keywords: List[str] = field(
+        default_factory=lambda: ["exam", "test", "project", "essay"]
+    )
+    fetch_details: bool = False
+    details_limit: int = 8
+    max_retries: int = 3
+    retry_delay_ms: int = 2000
+    browser_args: List[str] = field(
+        default_factory=lambda: ["--no-sandbox", "--disable-dev-shm-usage"]
+    )
+    language: str = "zh"
+    log_level: str = "INFO"
+    log_file: str = "managebac_checker.log"
+    interactive: bool = False
+    ai_enabled: bool = False
+    openai_api_key: str = ""
+    ai_model: str = "gpt-3.5-turbo"
+    ai_temperature: float = 0.7
+    ai_max_tokens: int = 500
+    user_agent: str = ""
 
-    def __init__(self, language: str = "zh", interactive: bool = True):
-        """
-        Initialize configuration from environment variables.
-        从环境变量初始化配置。
+    @classmethod
+    def from_environment(cls, overrides: Optional[dict] = None) -> "Config":
+        overrides = overrides or {}
+        env = os.environ
 
-        Args:
-            language: Interface language ('en' or 'zh')
-            interactive: Allow interactive credential input
-        """
-        self.language = language
-        self.interactive = interactive
-        self.messages = ConfigMessages()
+        email = overrides.get("email") or env.get("MANAGEBAC_EMAIL")
+        password = overrides.get("password") or env.get("MANAGEBAC_PASSWORD")
+        if not email or not password:
+            raise ValueError("必须提供 MANAGEBAC_EMAIL 和 MANAGEBAC_PASSWORD")
 
-        # Load environment variables
-        load_dotenv()
-
-        # Try to load from .env first, then from config.example.env
-        if not os.path.exists(".env") and os.path.exists("config.example.env"):
-            load_dotenv("config.example.env")
-
-        # Required credentials
-        self.email = os.getenv("MANAGEBAC_EMAIL")
-        self.password = os.getenv("MANAGEBAC_PASSWORD")
-        self.url = os.getenv("MANAGEBAC_URL", "https://shtcs.managebac.cn")
-
-        # Browser settings | 浏览器设置
-        self.headless = os.getenv("HEADLESS", "true").lower() == "true"
-        self.timeout = int(os.getenv("BROWSER_TIMEOUT", "30000"))
-        self.debug = os.getenv("DEBUG", "false").lower() == "true"
-
-        # Report settings | 报告设置
-        self.report_format = os.getenv("REPORT_FORMAT", "html,json,console").split(",")
-        self.output_dir = Path(os.getenv("OUTPUT_DIR", "./reports"))
-
-        # UI Settings | 界面设置
-        self.html_theme = os.getenv("HTML_THEME", "auto")
-        self.include_charts = os.getenv("INCLUDE_CHARTS", "true").lower() == "true"
-        self.chart_color_scheme = os.getenv("CHART_COLOR_SCHEME", "default")
-
-        # Email notification settings | 邮件通知设置
-        self.enable_notifications = (
-            os.getenv("ENABLE_EMAIL_NOTIFICATIONS", "false").lower() == "true"
+        url = overrides.get("url") or env.get("MANAGEBAC_URL", "https://shtcs.managebac.cn")
+        headless = (
+            overrides.get("headless")
+            if "headless" in overrides
+            else _as_bool(env.get("HEADLESS"), True)
         )
-        self.smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-        self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
-        self.smtp_username = os.getenv("SMTP_USERNAME", "")
-        self.smtp_password = os.getenv("SMTP_PASSWORD", "")
-        self.smtp_use_tls = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
-        self.notification_recipients = os.getenv("NOTIFICATION_RECIPIENTS", "").split(
-            ","
+        timeout = overrides.get("timeout") or _as_int(env.get("TIMEOUT"), 30_000)
+        debug = (
+            overrides.get("debug") if "debug" in overrides else _as_bool(env.get("DEBUG"), False)
+        )
+        language = overrides.get("language") or env.get("LANGUAGE", "zh")
+        log_level = overrides.get("log_level") or env.get("LOG_LEVEL", "INFO")
+        log_file = overrides.get("log_file") or env.get("LOG_FILE", "managebac_checker.log")
+        interactive = (
+            overrides.get("interactive")
+            if "interactive" in overrides
+            else _as_bool(env.get("INTERACTIVE"), False)
         )
 
-        # Analysis settings | 分析设置
-        self.fetch_details = os.getenv("FETCH_DETAILS", "true").lower() == "true"
-        self.details_limit = int(os.getenv("DETAILS_LIMIT", "50"))
-        self.show_overdue_only = (
-            os.getenv("SHOW_OVERDUE_ONLY", "false").lower() == "true"
+        report_formats = overrides.get("report_format")
+        if report_formats is None:
+            report_formats = _as_list(env.get("REPORT_FORMAT"), ["console", "json"])
+        elif isinstance(report_formats, str):
+            report_formats = _as_list(report_formats, ["console", "json"])
+
+        output_dir = Path(
+            overrides.get("output_dir") or env.get("OUTPUT_DIR", "./reports")
+        ).expanduser()
+
+        enable_notifications = (
+            overrides.get("enable_notifications")
+            if "enable_notifications" in overrides
+            else _as_bool(env.get("ENABLE_NOTIFICATIONS"), False)
         )
-        self.show_high_priority_only = (
-            os.getenv("SHOW_HIGH_PRIORITY_ONLY", "false").lower() == "true"
+        smtp_server = overrides.get("smtp_server") or env.get("SMTP_SERVER", "")
+        smtp_port = overrides.get("smtp_port") or _as_int(env.get("SMTP_PORT"), 587)
+        email_user = overrides.get("email_user") or env.get("EMAIL_USER", "")
+        email_password = overrides.get("email_password") or env.get("EMAIL_PASSWORD", "")
+        notification_email = overrides.get("notification_email") or env.get(
+            "NOTIFICATION_EMAIL", ""
         )
-        self.min_days_before_due = int(os.getenv("MIN_DAYS_BEFORE_DUE", "0"))
 
-        # AI Assistant settings | AI助手设置
-        self.ai_enabled = os.getenv("AI_ENABLED", "false").lower() == "true"
-        self.openai_api_key = os.getenv("OPENAI_API_KEY", "")
-        self.ai_model = os.getenv("AI_MODEL", "gpt-3.5-turbo")
-        self.ai_temperature = float(os.getenv("AI_TEMPERATURE", "0.7"))
-        self.ai_max_tokens = int(os.getenv("AI_MAX_TOKENS", "500"))
+        days_ahead = overrides.get("days_ahead") or _as_int(env.get("DAYS_AHEAD"), 7)
+        priority_keywords = overrides.get("priority_keywords") or _as_list(
+            env.get("PRIORITY_KEYWORDS"), ["exam", "test", "project", "essay"]
+        )
+        fetch_details = (
+            overrides.get("fetch_details")
+            if "fetch_details" in overrides
+            else _as_bool(env.get("FETCH_DETAILS"), False)
+        )
+        details_limit = overrides.get("details_limit") or _as_int(env.get("DETAILS_LIMIT"), 8)
+        max_retries = overrides.get("max_retries") or _as_int(env.get("MAX_RETRIES"), 3)
+        retry_delay_ms = overrides.get("retry_delay") or _as_int(env.get("RETRY_DELAY"), 2000)
 
-        # Logging settings | 日志设置
-        self.log_level = os.getenv("LOG_LEVEL", "INFO")
-        self.log_file = os.getenv("LOG_FILE", "logs/managebac_checker.log")
+        browser_args_value = overrides.get("browser_args") or env.get("BROWSER_ARGS")
+        if isinstance(browser_args_value, str):
+            browser_args = _as_list(browser_args_value, ["--no-sandbox", "--disable-dev-shm-usage"])
+        elif browser_args_value is None:
+            browser_args = ["--no-sandbox", "--disable-dev-shm-usage"]
+        else:
+            browser_args = list(browser_args_value)
 
-        # Create necessary directories | 创建必要目录
+        ai_enabled = (
+            overrides.get("ai_enabled")
+            if "ai_enabled" in overrides
+            else _as_bool(env.get("AI_ENABLED"), False)
+        )
+        openai_api_key = overrides.get("openai_api_key") or env.get("OPENAI_API_KEY", "")
+        ai_model = overrides.get("ai_model") or env.get("AI_MODEL", "gpt-3.5-turbo")
+        ai_temperature = overrides.get("ai_temperature") or _as_float(
+            env.get("AI_TEMPERATURE"), 0.7
+        )
+        ai_max_tokens = overrides.get("ai_max_tokens") or _as_int(env.get("AI_MAX_TOKENS"), 500)
+        user_agent = overrides.get("user_agent") or env.get("USER_AGENT", "")
+
+        config = cls(
+            email=email,
+            password=password,
+            url=url,
+            headless=headless,
+            timeout=timeout,
+            debug=debug,
+            report_formats=report_formats,
+            output_dir=output_dir,
+            enable_notifications=enable_notifications,
+            smtp_server=smtp_server,
+            smtp_port=smtp_port,
+            email_user=email_user,
+            email_password=email_password,
+            notification_email=notification_email,
+            days_ahead=days_ahead,
+            priority_keywords=priority_keywords,
+            fetch_details=fetch_details,
+            details_limit=details_limit,
+            max_retries=max_retries,
+            retry_delay_ms=retry_delay_ms,
+            browser_args=browser_args,
+            language=language,
+            log_level=log_level,
+            log_file=log_file,
+            interactive=interactive,
+            ai_enabled=ai_enabled,
+            openai_api_key=openai_api_key,
+            ai_model=ai_model,
+            ai_temperature=ai_temperature,
+            ai_max_tokens=ai_max_tokens,
+            user_agent=user_agent,
+        )
+
+        config.ensure_directories()
+        return config
+
+    def ensure_directories(self) -> None:
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        Path("./logs").mkdir(exist_ok=True)
         Path(self.log_file).parent.mkdir(parents=True, exist_ok=True)
 
-        # Validate and setup credentials | 验证并设置凭据
-        self._validate_and_setup()
-
-    def _validate_and_setup(self) -> None:
-        """
-        Validate required configuration and setup if needed.
-        验证必需配置并在需要时进行设置。
-        """
-        if not self.email or not self.password:
-            if self.interactive:
-                self._interactive_setup()
-            else:
-                self._print_error_and_exit()
-        else:
-            self._print_message("CONFIG_LOADED")
-
-    def _interactive_setup(self) -> None:
-        """
-        Interactive setup for missing credentials.
-        交互式设置缺失的凭据。
-        """
-        self._print_message("ERROR_MISSING_CREDENTIALS")
-        self._print_message("SETUP_INSTRUCTIONS")
-
-        print()
-
-        # Get email
-        if not self.email:
-            self.email = input(self.messages.INPUT_EMAIL[self.language]).strip()
-
-        # Get password
-        if not self.password:
-            self.password = getpass.getpass(
-                self.messages.INPUT_PASSWORD[self.language]
-            ).strip()
-
-        # Get URL (optional)
-        url_input = input(
-            f"{self.messages.INPUT_URL[self.language]}[{self.url}]: "
-        ).strip()
-        if url_input:
-            self.url = url_input
-
-        # Ask about AI Assistant
-        print()
-        ai_input = input(self.messages.ENABLE_AI[self.language]).strip().lower()
-        if ai_input == 'y' or ai_input == 'yes':
-            self.ai_enabled = True
-            # Get API key
-            self.openai_api_key = getpass.getpass(
-                self.messages.INPUT_API_KEY[self.language]
-            ).strip()
-            # Choose model
-            model_input = input(self.messages.AI_MODEL_CHOICE[self.language]).strip()
-            if model_input == '2':
-                self.ai_model = 'gpt-4'
-            else:
-                self.ai_model = 'gpt-3.5-turbo'
-
-        # Save to .env file
-        self._save_to_env()
-        self._print_message("SAVE_SUCCESS")
-
-    def _save_to_env(self) -> None:
-        """
-        Save configuration to .env file.
-        保存配置到.env文件。
-        """
-        env_content = f"""# ========================================
-# ManageBac Assignment Checker Configuration
-# ManageBac作业检查器配置文件
-# ========================================
-
-# 🔐 ManageBac Credentials | ManageBac凭据
-MANAGEBAC_EMAIL={self.email}
-MANAGEBAC_PASSWORD={self.password}
-MANAGEBAC_URL={self.url}
-
-# 📊 Report Settings | 报告设置
-REPORT_FORMAT=html,json,console
-OUTPUT_DIR=reports
-FETCH_DETAILS=true
-DETAILS_LIMIT=50
-
-# 📧 Email Notification Settings | 邮件通知设置
-ENABLE_EMAIL_NOTIFICATIONS=false
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USERNAME=
-SMTP_PASSWORD=
-SMTP_USE_TLS=true
-NOTIFICATION_RECIPIENTS=
-
-# 🔧 Browser Settings | 浏览器设置
-HEADLESS=true
-BROWSER_TIMEOUT=30000
-
-# 🐛 Debug Settings | 调试设置
-DEBUG=false
-LOG_LEVEL=INFO
-LOG_FILE=logs/managebac_checker.log
-
-# 🎨 UI Settings | 界面设置
-HTML_THEME=auto
-INCLUDE_CHARTS=true
-CHART_COLOR_SCHEME=default
-
-# 🤖 AI Assistant Settings | AI助手设置
-AI_ENABLED={str(self.ai_enabled).lower()}
-OPENAI_API_KEY={self.openai_api_key}
-AI_MODEL={self.ai_model}
-AI_TEMPERATURE=0.7
-AI_MAX_TOKENS=500
-"""
-
-        with open(".env", "w", encoding="utf-8") as f:
-            f.write(env_content)
-
-    def _print_error_and_exit(self) -> None:
-        """
-        Print error message and exit.
-        打印错误消息并退出。
-        """
-        self._print_message("ERROR_MISSING_CREDENTIALS")
-        self._print_message("SETUP_INSTRUCTIONS")
-        sys.exit(1)
-
-    def _print_message(self, key: str) -> None:
-        """
-        Print bilingual message.
-        打印双语消息。
-        """
-        message = getattr(self.messages, key, {})
-        if isinstance(message, dict):
-            print(message.get(self.language, message.get("en", key)))
-
     def get_report_formats(self) -> List[str]:
-        """
-        Get list of report formats to generate.
-        获取要生成的报告格式列表。
-        """
-        return [fmt.strip().lower() for fmt in self.report_format if fmt.strip()]
+        return self.report_formats
 
     def is_notification_enabled(self) -> bool:
-        """
-        Check if email notifications are properly configured.
-        检查邮件通知是否正确配置。
-        """
-        return (
-            self.enable_notifications
-            and self.smtp_server
-            and self.smtp_username
-            and self.smtp_password
-            and self.notification_recipients
-            and any(email.strip() for email in self.notification_recipients)
-        )
-
-    def get_notification_recipients(self) -> List[str]:
-        """
-        Get list of notification email recipients.
-        获取通知邮件收件人列表。
-        """
-        return [
-            email.strip() for email in self.notification_recipients if email.strip()
-        ]
-
-    def to_dict(self) -> Dict[str, Any]:
-        """
-        Convert configuration to dictionary (without sensitive data).
-        将配置转换为字典（不包含敏感数据）。
-        """
-        return {
-            "email": self.email,
-            "url": self.url,
-            "language": self.language,
-            "headless": self.headless,
-            "debug": self.debug,
-            "report_formats": self.get_report_formats(),
-            "output_dir": str(self.output_dir),
-            "fetch_details": self.fetch_details,
-            "details_limit": self.details_limit,
-            "notifications_enabled": self.is_notification_enabled(),
-            "log_level": self.log_level,
-        }
-
-    def __repr__(self) -> str:
-        """
-        String representation of config (without sensitive data).
-        配置的字符串表示（不包含敏感数据）。
-        """
-        return (
-            f"Config(email={self.email}, url={self.url}, "
-            f"language={self.language}, headless={self.headless}, "
-            f"debug={self.debug})"
-        )
+        return self.enable_notifications
