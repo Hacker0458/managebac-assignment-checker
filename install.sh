@@ -205,21 +205,60 @@ test_installation() {
     fi
 }
 
+# Function to download project files | 下载项目文件函数
+download_project_files() {
+    print_status "Downloading project files... | 正在下载项目文件..."
+    
+    # Create project directory
+    PROJECT_DIR="$HOME/managebac-assignment-checker"
+    mkdir -p "$PROJECT_DIR"
+    cd "$PROJECT_DIR"
+    
+    # Download essential files
+    print_status "Downloading requirements files... | 正在下载依赖文件..."
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements-core.txt" -o requirements-core.txt
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements.txt" -o requirements.txt
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/config.example.env" -o config.example.env
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/gui_launcher.py" -o gui_launcher.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/main_new.py" -o main_new.py
+    
+    # Download package files
+    print_status "Downloading package files... | 正在下载包文件..."
+    mkdir -p managebac_checker
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/__init__.py" -o managebac_checker/__init__.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/config.py" -o managebac_checker/config.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/checker.py" -o managebac_checker/checker.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/professional_gui.py" -o managebac_checker/professional_gui.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/gui.py" -o managebac_checker/gui.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/scraper.py" -o managebac_checker/scraper.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/analysis.py" -o managebac_checker/analysis.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/reporter.py" -o managebac_checker/reporter.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/notifications.py" -o managebac_checker/notifications.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/cli.py" -o managebac_checker/cli.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/runner.py" -o managebac_checker/runner.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/analyzer.py" -o managebac_checker/analyzer.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/logging_utils.py" -o managebac_checker/logging_utils.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/models.py" -o managebac_checker/models.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/reporting.py" -o managebac_checker/reporting.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/ai_assistant.py" -o managebac_checker/ai_assistant.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/enhanced_gui.py" -o managebac_checker/enhanced_gui.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/system_tray.py" -o managebac_checker/system_tray.py
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/managebac_checker/improved_system_tray.py" -o managebac_checker/improved_system_tray.py
+    
+    print_success "Project files downloaded to $PROJECT_DIR"
+    print_success "项目文件已下载到 $PROJECT_DIR"
+}
+
 # Main installation process | 主安装过程
 main() {
     print_header "ManageBac Assignment Checker Quick Install"
     print_header "ManageBac作业检查器快速安装"
     echo "========================================================"
     
-    # Check if we're in the right directory
+    # Check if we're in the right directory, if not download files
     if [ ! -f "managebac_checker/__init__.py" ] && [ ! -f "main.py" ]; then
-        print_error "This script should be run from the project root directory"
-        print_error "此脚本应在项目根目录中运行"
-        print_status "Please clone the repository first:"
-        print_status "请先克隆仓库："
-        echo "git clone https://github.com/Hacker0458/managebac-assignment-checker.git"
-        echo "cd managebac-assignment-checker"
-        exit 1
+        print_status "Not in project directory, downloading files... | 不在项目目录中，正在下载文件..."
+        download_project_files
     fi
     
     # Check Python installation | 检查Python安装
@@ -291,16 +330,20 @@ main() {
     echo -e "${YELLOW}1. ${NC}Edit .env file with your ManageBac credentials"
     echo -e "${YELLOW}1. ${NC}编辑.env文件，填入您的ManageBac凭据"
     echo ""
-    echo -e "${YELLOW}2. ${NC}Run the program:"
-    echo -e "${YELLOW}2. ${NC}运行程序："
+    echo -e "${YELLOW}2. ${NC}Navigate to the installation directory:"
+    echo -e "${YELLOW}2. ${NC}导航到安装目录："
+    echo -e "   ${COMPUTER} cd $HOME/managebac-assignment-checker"
+    echo ""
+    echo -e "${YELLOW}3. ${NC}Run the program:"
+    echo -e "${YELLOW}3. ${NC}运行程序："
     if [ -d "managebac_venv" ]; then
         echo -e "   ${COMPUTER} source managebac_venv/bin/activate && $PYTHON_CMD gui_launcher.py"
     else
         echo -e "   ${COMPUTER} $PYTHON_CMD gui_launcher.py"
     fi
     echo ""
-    echo -e "${YELLOW}3. ${NC}Or use command line mode:"
-    echo -e "${YELLOW}3. ${NC}或使用命令行模式："
+    echo -e "${YELLOW}4. ${NC}Or use command line mode:"
+    echo -e "${YELLOW}4. ${NC}或使用命令行模式："
     if [ -d "managebac_venv" ]; then
         echo -e "   ${COMPUTER} source managebac_venv/bin/activate && $PYTHON_CMD main_new.py"
     else
