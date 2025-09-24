@@ -136,14 +136,26 @@ install_python_deps() {
     # Upgrade pip first
     $PIP_CMD install --upgrade pip
     
-    # Install dependencies
-    if [ -f "requirements.txt" ]; then
-        $PIP_CMD install -r requirements.txt
-        print_success "Dependencies installed | 依赖已安装"
+    # Install dependencies with error checking
+    if [ -f "requirements.txt" ] && [ -s "requirements.txt" ]; then
+        if $PIP_CMD install -r requirements.txt; then
+            print_success "Dependencies installed | 依赖已安装"
+        else
+            print_error "Failed to install dependencies | 依赖安装失败"
+            exit 1
+        fi
     else
-        # Fallback: install essential packages
-        $PIP_CMD install playwright python-dotenv jinja2 openai pystray pillow
-        print_success "Essential dependencies installed | 基本依赖已安装"
+        print_warning "requirements.txt not found, installing essential packages | 未找到requirements.txt，安装基本包"
+        # Install essential packages one by one
+        ESSENTIAL_PACKAGES=("playwright>=1.45.0" "python-dotenv>=1.0.0" "jinja2" "openai" "pystray" "pillow")
+        for package in "${ESSENTIAL_PACKAGES[@]}"; do
+            if $PIP_CMD install "$package"; then
+                print_success "Installed: $package | 已安装: $package"
+            else
+                print_warning "Failed to install: $package | 安装失败: $package"
+            fi
+        done
+        print_success "Essential dependencies installation completed | 基本依赖安装完成"
     fi
 }
 
@@ -213,10 +225,26 @@ download_project_files() {
     
     # Download essential files
     print_status "Downloading requirements files... | 正在下载依赖文件..."
-    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements.txt" -o requirements.txt
-    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/config.example.env" -o config.example.env
-    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/gui_launcher.py" -o gui_launcher.py
-    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/main_new.py" -o main_new.py
+
+    # Download requirements.txt with verification
+    if curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/requirements.txt" -o requirements.txt && [ -s requirements.txt ]; then
+        print_success "requirements.txt downloaded | requirements.txt 已下载"
+    else
+        print_warning "Failed to download requirements.txt, creating fallback | requirements.txt下载失败，创建后备文件"
+        cat > requirements.txt << 'EOF'
+# ManageBac Assignment Checker - Core Dependencies
+playwright>=1.45.0
+python-dotenv>=1.0.0
+jinja2>=3.1.4
+openai>=1.0.0
+pystray>=0.19.0
+pillow>=10.0.0
+EOF
+    fi
+
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/config.example.env" -o config.example.env || print_warning "config.example.env download failed"
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/gui_launcher.py" -o gui_launcher.py || print_warning "gui_launcher.py download failed"
+    curl -s -L "https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/main_new.py" -o main_new.py || print_warning "main_new.py download failed"
     
     # Download package files
     print_status "Downloading package files... | 正在下载包文件..."
