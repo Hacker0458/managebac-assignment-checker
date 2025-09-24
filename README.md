@@ -58,15 +58,30 @@
 
 #### 🎯 **One-Click Installation (Recommended)**
 
-**🚀 Ultimate Installer (Best Experience)**
+**🚀 Main Installer (Fixed & Stable)**
 ```bash
-# Download and run the ultimate installer with full features
-curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/ultimate_install.sh | bash
+# Download and run the main installer (FIXED for requirements.txt issue)
+curl -sSL https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/install.sh | bash
 ```
 
-**⚡ Quick Installer (Fast Setup)**
+**💪 Robust Installer (Most Stable)**
 ```bash
-# Download and run the quick installer
+# Download and run the most robust installer with multiple fallbacks
+curl -sSL https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/install_robust.sh | bash
+```
+
+**🔧 Quick Fix (If Installation Failed)**
+```bash
+# If you encountered installation issues, use this fix script
+curl -sSL https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/fix_installation.sh | bash
+```
+
+**⚡ Alternative Installers**
+```bash
+# Ultimate installer with full features
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/ultimate_install.sh | bash
+
+# Quick installer for minimal setup
 curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/quick_install.sh | bash
 ```
 
@@ -271,15 +286,30 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 #### 🎯 **一键安装（推荐）**
 
-**🚀 终极安装器（最佳体验）**
+**🚀 主安装器（修复且稳定）**
 ```bash
-# 下载并运行终极安装器，包含完整功能
-curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/ultimate_install.sh | bash
+# 下载并运行主安装器（已修复requirements.txt问题）
+curl -sSL https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/install.sh | bash
 ```
 
-**⚡ 快速安装器（快速设置）**
+**💪 稳定安装器（最稳定）**
 ```bash
-# 下载并运行快速安装器
+# 下载并运行最稳定的安装器，包含多重后备方案
+curl -sSL https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/install_robust.sh | bash
+```
+
+**🔧 快速修复（如果安装失败）**
+```bash
+# 如果遇到安装问题，使用此修复脚本
+curl -sSL https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/fix_installation.sh | bash
+```
+
+**⚡ 其他安装器**
+```bash
+# 终极安装器，包含完整功能
+curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/ultimate_install.sh | bash
+
+# 快速安装器，最小化设置
 curl -L https://raw.githubusercontent.com/Hacker0458/managebac-assignment-checker/main/quick_install.sh | bash
 ```
 
