@@ -1,0 +1,50 @@
+# ========================================
+# 🎓 ManageBac Assignment Checker Dependencies
+# 🎓 ManageBac作业检查器依赖包
+# ========================================
+
+# Core Dependencies | 核心依赖
+playwright>=1.45.0          # Web automation and scraping | 网页自动化和抓取
+python-dotenv>=1.0.0        # Environment variable management | 环境变量管理
+
+# Optional Dependencies | 可选依赖
+jinja2>=3.1.4              # HTML template engine | HTML模板引擎 (optional)
+openai>=1.0.0              # AI Assistant integration | AI助手集成 (optional)
+
+# GUI Dependencies | GUI依赖 (optional)
+pystray>=0.19.0            # System tray integration | 系统托盘集成 (optional)
+pillow>=10.0.0             # Image processing for icons | 图标图像处理 (optional)
+plyer>=2.1.0               # Desktop notifications | 桌面通知 (optional)
+
+# Development Dependencies | 开发依赖
+pytest>=8.4.2              # Testing framework | 测试框架
+pytest-asyncio>=0.23.0     # Async testing support | 异步测试支持
+pytest-cov>=5.0.0          # Coverage reporting | 覆盖率报告
+black>=24.4.0               # Code formatter | 代码格式化
+flake8>=7.1.0               # Linting | 代码检查
+mypy>=1.10.0                # Type checking | 类型检查
+bandit[toml]>=1.7.8         # Security linting | 安全检查
+safety>=3.0.1               # Dependency vulnerability scanner | 依赖漏洞扫描
+pip-audit>=2.7.0            # Additional dependency security | 额外依赖安全检查
+
+# Code Quality | 代码质量
+radon>=6.0.0                # Code complexity analysis | 代码复杂度分析
+xenon>=0.9.0                # Code quality metrics | 代码质量指标
+
+# Build and Distribution | 构建和分发
+build>=1.2.1                # Build system | 构建系统
+twine>=5.1.1                # Package upload | 包上传
+check-manifest>=0.49        # Manifest checker | 清单检查器
+
+# Pre-commit Hooks | 预提交钩子
+pre-commit>=3.7.0           # Pre-commit framework | 预提交框架
+
+# Optional Chart Dependencies | 可选图表依赖
+# Uncomment if you want chart generation | 如果需要图表生成请取消注释
+# matplotlib>=3.9.0
+# plotly>=5.22.0
+
+# Optional Email Dependencies | 可选邮件依赖
+# These are built-in Python modules | 这些是Python内置模块
+# smtplib (built-in)
+# email (built-in)
