@@ -56,6 +56,33 @@ python install_complete.py
 ```
 
 ### Running the Application
+
+#### 🎯 For Novice Users (Zero Configuration)
+```bash
+# Double-click these files to start (recommended for beginners)
+./START.sh           # macOS/Linux
+START.bat            # Windows
+
+# One-click Python launcher (fully automated)
+python one_click_run.py
+
+# Quick start script
+./quick_start.sh
+```
+
+#### 🤖 Intelligent Launchers
+```bash
+# Smart launcher - auto-detects best startup method
+python smart_launcher.py
+
+# User-friendly launcher with GUI options
+python run_app.py
+
+# Launch helper for post-setup options
+python launch_helper.py
+```
+
+#### 🎨 Traditional Methods
 ```bash
 # GUI application (recommended)
 python gui_launcher.py
@@ -105,6 +132,15 @@ The project follows a modular architecture with separation of concerns:
 - `enhanced_gui.py` - Enhanced GUI features
 - `system_tray.py` - System tray integration
 - `gui_launcher.py` - GUI launcher script
+
+**Novice User Experience**:
+- `one_click_run.py` - Zero-configuration startup script with full automation
+- `smart_launcher.py` - Intelligent launcher with environment detection
+- `run_app.py` - User-friendly launcher with GUI dialogs
+- `launch_helper.py` - Post-setup launch options assistant
+- `start.py` - Fool-proof startup script with animations
+- `create_desktop_shortcut.py` - Cross-platform desktop integration
+- `START.sh` / `START.bat` - Double-click startup scripts
 
 **AI Integration**:
 - `ai_assistant.py` - OpenAI integration for intelligent assignment analysis
