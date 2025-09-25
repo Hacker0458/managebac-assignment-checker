@@ -38,6 +38,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--timeout", type=int, help="Playwright 超时时间 (毫秒)")
     parser.add_argument(
+        "--test-config", action="store_true", help="测试配置设置并退出"
+    )
+    parser.add_argument(
         "--version", action="version", version=f"%(prog)s {__version__}"
     )
 
@@ -71,11 +74,54 @@ def parse_args(argv: Optional[List[str]] = None) -> Dict:
         overrides["enable_notifications"] = args.notifications.lower() == "true"
     if args.timeout is not None:
         overrides["timeout"] = args.timeout
+
+    # Special handling for test-config
+    overrides["test_config"] = getattr(args, 'test_config', False)
+
     return overrides
+
+
+async def run_config_test() -> None:
+    """Run configuration test"""
+    try:
+        # Import here to avoid dependency issues
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from test_config import run_quick_test
+
+        print("🧪 Running configuration test...")
+        print("🧪 正在运行配置测试...")
+        print()
+
+        success = await run_quick_test()
+        if success:
+            print("\n✅ Configuration test passed!")
+            print("✅ 配置测试通过！")
+        else:
+            print("\n❌ Configuration test failed!")
+            print("❌ 配置测试失败！")
+            raise SystemExit(1)
+
+    except ImportError:
+        print("❌ Configuration test unavailable - test_config.py not found")
+        print("❌ 配置测试不可用 - 找不到test_config.py")
+        raise SystemExit(1)
+    except Exception as e:
+        print(f"❌ Configuration test error: {e}")
+        print(f"❌ 配置测试错误：{e}")
+        raise SystemExit(1)
 
 
 def main(argv: Optional[List[str]] = None) -> None:
     overrides = parse_args(argv)
+
+    # Handle test-config option
+    if overrides.get("test_config", False):
+        try:
+            asyncio.run(run_config_test())
+            return
+        except SystemExit:
+            raise
+
     try:
         runner = Runner(overrides)
     except ValueError as exc:

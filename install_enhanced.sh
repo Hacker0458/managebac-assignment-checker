@@ -1,7 +1,7 @@
 #!/bin/bash
 # ========================================
-# 🚀 ManageBac Assignment Checker - Smart Install Script with Interactive Setup
-# 🚀 ManageBac作业检查器 - 智能安装脚本（交互式配置）
+# 🚀 ManageBac Assignment Checker - Enhanced Install Script with Smart Setup
+# 🚀 ManageBac作业检查器 - 增强版安装脚本（智能配置）
 # ========================================
 
 set -e  # Exit on any error
@@ -53,6 +53,11 @@ elif command -v python &> /dev/null && python --version 2>&1 | grep -q "Python 3
 else
     print_error "Python 3 not found! Please install Python 3.9+ first."
     print_error "未找到Python 3！请先安装Python 3.9+。"
+    echo ""
+    echo -e "${CYAN}📋 Installation guides | 安装指南:${NC}"
+    echo "  • macOS: brew install python3"
+    echo "  • Ubuntu: sudo apt install python3 python3-pip"
+    echo "  • Windows: https://python.org/downloads"
     exit 1
 fi
 
@@ -108,13 +113,8 @@ fi
 # Download essential files | 下载必要文件
 print_status "Downloading project files... | 下载项目文件..."
 
-# Download setup wizard and configuration files
+# Download setup wizard
 curl -sL "$REPO_URL/setup_wizard.py" -o setup_wizard.py && print_success "Setup wizard downloaded" || print_warning "Setup wizard download failed"
-curl -sL "$REPO_URL/config_templates.py" -o config_templates.py && print_success "Config templates downloaded" || print_warning "Config templates download failed"
-curl -sL "$REPO_URL/first_run_setup.py" -o first_run_setup.py && print_success "GUI setup downloaded" || print_warning "GUI setup download failed"
-curl -sL "$REPO_URL/quick_templates.py" -o quick_templates.py && print_success "Quick templates downloaded" || print_warning "Quick templates download failed"
-curl -sL "$REPO_URL/config_validator.py" -o config_validator.py && print_success "Config validator downloaded" || print_warning "Config validator download failed"
-curl -sL "$REPO_URL/test_config.py" -o test_config.py && print_success "Test config downloaded" || print_warning "Test config download failed"
 
 # Download configuration template
 curl -sL "$REPO_URL/config.example.env" -o config.example.env && print_success "config.example.env downloaded" || print_warning "config.example.env download failed"
