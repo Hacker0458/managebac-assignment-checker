@@ -509,6 +509,43 @@ Choose your preferred report formats:
 
 """)
 
+    def launch_post_setup_options(self):
+        """Launch post-setup options using the launch helper"""
+        try:
+            # Import and use launch helper
+            import subprocess
+            import sys
+            from pathlib import Path
+
+            launch_helper_path = Path(__file__).parent / 'launch_helper.py'
+
+            if launch_helper_path.exists():
+                print(f"\n{Colors.CYAN}🚀 启动选项助手...{Colors.END}")
+                subprocess.run([sys.executable, str(launch_helper_path)])
+            else:
+                # Fallback: ask user if they want to launch now
+                print(f"\n{Colors.CYAN}是否立即启动应用程序？(y/n) [y]: {Colors.END}", end='')
+                launch_now = input().strip().lower()
+
+                if launch_now in ['', 'y', 'yes', '是', '1']:
+                    # Try to launch GUI mode
+                    gui_files = ['smart_launcher.py', 'gui_launcher.py', 'run_app.py']
+                    for gui_file in gui_files:
+                        gui_path = Path(__file__).parent / gui_file
+                        if gui_path.exists():
+                            try:
+                                subprocess.Popen([sys.executable, str(gui_path)])
+                                print(f"{Colors.GREEN}✅ 应用程序启动成功！{Colors.END}")
+                                return
+                            except Exception as e:
+                                continue
+
+                    print(f"{Colors.YELLOW}⚠️ 无法自动启动，请手动运行: python gui_launcher.py{Colors.END}")
+
+        except Exception as e:
+            print(f"{Colors.YELLOW}⚠️ 启动选项助手出错: {e}{Colors.END}")
+            print(f"{Colors.CYAN}您可以手动启动: python gui_launcher.py{Colors.END}")
+
     def run(self):
         """Run the complete setup wizard"""
         try:
@@ -536,6 +573,9 @@ Choose your preferred report formats:
             if self.generate_env_file():
                 self.test_configuration()
                 self.show_next_steps()
+
+                # Launch helper for post-setup options
+                self.launch_post_setup_options()
             else:
                 print(f"{Colors.RED}❌ Setup failed. Please try again.{Colors.END}")
 

@@ -124,7 +124,8 @@ curl -sL "$REPO_URL/main_new.py" -o main_new.py && print_success "main_new.py do
 curl -sL "$REPO_URL/gui_launcher.py" -o gui_launcher.py && print_success "gui_launcher.py downloaded" || print_warning "gui_launcher.py download failed"
 curl -sL "$REPO_URL/professional_gui.py" -o professional_gui.py && print_success "professional_gui.py downloaded" || print_warning "professional_gui.py download failed"
 
-# Download additional useful files
+# Download smart launcher and additional useful files
+curl -sL "$REPO_URL/run_app.py" -o run_app.py && print_success "Smart launcher downloaded" || print_warning "Smart launcher download failed"
 curl -sL "$REPO_URL/create_shortcuts.py" -o create_shortcuts.py && print_success "Shortcut creator downloaded" || print_warning "Shortcut creator download failed"
 
 # Create project structure | 创建项目结构
@@ -372,7 +373,11 @@ cat > quick_start.sh << 'EOF'
 #!/bin/bash
 # Quick Start Script for ManageBac Assignment Checker
 echo "🚀 Starting ManageBac Assignment Checker..."
-if [ -f "gui_launcher.py" ]; then
+if [ -f "smart_launcher.py" ]; then
+    python3 smart_launcher.py
+elif [ -f "run_app.py" ]; then
+    python3 run_app.py
+elif [ -f "gui_launcher.py" ]; then
     python3 gui_launcher.py
 elif [ -f "main_new.py" ]; then
     python3 main_new.py --interactive
@@ -383,4 +388,60 @@ EOF
 chmod +x quick_start.sh
 
 echo -e "${GREEN}${CHECK} Quick start script created: ./quick_start.sh${NC}"
+
+# Ask user if they want to run the application now
+echo ""
+echo -e "${CYAN}🚀 Installation Complete! | 安装完成！${NC}"
+echo ""
+echo "Would you like to start ManageBac Assignment Checker now?"
+echo "您想现在启动ManageBac作业检查器吗？"
+echo ""
+echo -e "${GREEN}1. ${ROCKET} Yes, start now${NC} - Launch the application (recommended)"
+echo "   是的，现在启动 - 启动应用程序（推荐）"
+echo ""
+echo -e "${BLUE}2. 📋 No, I'll start it later${NC} - Just show me how to run it"
+echo "   不，稍后启动 - 只显示运行方法"
+echo ""
+
+# Wait for user choice with timeout
+read -t 30 -p "Choose option (1/2) or press Enter to start now [1]: " launch_choice
+launch_choice=${launch_choice:-1}
+
+case $launch_choice in
+    1|"")
+        echo ""
+        echo -e "${CYAN}${ROCKET} Starting ManageBac Assignment Checker...${NC}"
+        echo -e "${CYAN}${ROCKET} 启动ManageBac作业检查器...${NC}"
+        echo ""
+
+        # Try to run the application with smart launcher first
+        if [ -f "smart_launcher.py" ]; then
+            echo -e "${GREEN}Using intelligent launcher...${NC}"
+            echo -e "${GREEN}使用智能启动器...${NC}"
+            $PYTHON_CMD smart_launcher.py
+        elif [ -f "launch_helper.py" ]; then
+            echo -e "${GREEN}Using launch helper...${NC}"
+            echo -e "${GREEN}使用启动助手...${NC}"
+            $PYTHON_CMD launch_helper.py
+        elif [ -f "run_app.py" ]; then
+            echo -e "${GREEN}Using smart launcher...${NC}"
+            $PYTHON_CMD run_app.py
+        elif [ -f "gui_launcher.py" ]; then
+            echo -e "${GREEN}Using GUI launcher...${NC}"
+            $PYTHON_CMD gui_launcher.py
+        else
+            echo -e "${YELLOW}⚠️ Launcher not found, showing manual instructions...${NC}"
+        fi
+        ;;
+    2)
+        echo ""
+        echo -e "${BLUE}📋 Manual Start Instructions | 手动启动说明${NC}"
+        echo -e "${BLUE}📋 手动启动说明${NC}"
+        ;;
+    *)
+        echo ""
+        echo -e "${YELLOW}Invalid choice, showing instructions...${NC}"
+        ;;
+esac
+
 echo ""

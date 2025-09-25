@@ -18,14 +18,16 @@ def check_dependencies():
         'tkinter',  # Usually comes with Python
         'playwright',
         'python-dotenv',
-        'jinja2',
-        'openai',
-        'pystray',  # For system tray
-        'pillow'    # For system tray icons
+        'jinja2'
     ]
-    
+
+    optional_packages = [
+        'openai',
+        'pillow'
+    ]
+
     missing_packages = []
-    
+
     # Check tkinter
     try:
         import tkinter
@@ -33,8 +35,8 @@ def check_dependencies():
     except ImportError:
         print("❌ tkinter is not available")
         missing_packages.append('tkinter')
-    
-    # Check other packages
+
+    # Check required packages
     for package in required_packages[1:]:  # Skip tkinter as we checked it separately
         try:
             __import__(package.replace('-', '_'))
@@ -42,6 +44,14 @@ def check_dependencies():
         except ImportError:
             print(f"❌ {package} is missing")
             missing_packages.append(package)
+
+    # Check optional packages (don't add to missing if not found)
+    for package in optional_packages:
+        try:
+            __import__(package.replace('-', '_'))
+            print(f"✅ {package} is available")
+        except ImportError:
+            print(f"⚠️ {package} is optional and not installed")
     
     if missing_packages:
         print(f"\n📦 Installing missing packages: {', '.join(missing_packages)}")
