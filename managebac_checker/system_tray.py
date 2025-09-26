@@ -29,7 +29,20 @@ try:
     NOTIFICATIONS_AVAILABLE = True
 except ImportError:
     NOTIFICATIONS_AVAILABLE = False
-    print("⚠️ plyer not available. Desktop notifications disabled.")
+    # Try macOS native notifications instead
+    import platform
+    if platform.system() == "Darwin":
+        try:
+            import subprocess
+            # Test osascript availability
+            subprocess.run(['osascript', '-e', 'display notification "Test" with title "Test"'],
+                         check=True, capture_output=True)
+            NOTIFICATIONS_AVAILABLE = True
+            print("✅ Using macOS native notifications (osascript)")
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            print("⚠️ plyer and osascript not available. Desktop notifications disabled.")
+    else:
+        print("⚠️ plyer not available. Desktop notifications disabled.")
 
 
 class SystemTrayManager:
@@ -267,12 +280,24 @@ class NotificationManager:
             return
 
         try:
-            notification.notify(
-                title=title,
-                message=message,
-                timeout=timeout,
-                app_name="ManageBac Checker",
-            )
+            # Try plyer first
+            try:
+                notification.notify(
+                    title=title,
+                    message=message,
+                    timeout=timeout,
+                    app_name="ManageBac Checker",
+                )
+            except NameError:
+                # plyer not available, try macOS native
+                import platform
+                import subprocess
+                if platform.system() == "Darwin":
+                    script = f'display notification "{message}" with title "{title}"'
+                    subprocess.run(['osascript', '-e', script], check=True, capture_output=True)
+                else:
+                    # Fallback to console
+                    print(f"Notification: {title} - {message}")
         except Exception as e:
             print(f"❌ Failed to send notification: {e}")
 

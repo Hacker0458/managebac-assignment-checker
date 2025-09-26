@@ -284,7 +284,7 @@ class IntelligentLauncher:
         if not running_instances:
             return True
 
-        print(f"{Colors.YELLOW}📋 Found {len(running_instances)} running instance(s):"){Colors.END}
+        print(f"{Colors.YELLOW}📋 Found {len(running_instances)} running instance(s):{Colors.END}")
         for i, instance in enumerate(running_instances, 1):
             uptime = time.time() - instance['create_time']
             print(f"   {i}. PID {instance['pid']} (running for {uptime/60:.1f}m)")

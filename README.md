@@ -1,4 +1,339 @@
-# ManageBac Assignment Checker | ManageBac作业检查器
+# 🎓 ManageBac Assignment Checker | ManageBac作业检查器
+
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)](https://github.com/Hacker0458/managebac-assignment-checker)
+
+> 🚀 **智能化ManageBac作业追踪工具** - 自动检查作业状态，生成详细报告，永远不再错过作业！
+> **Intelligent ManageBac Assignment Tracking Tool** - Automatically check assignment status, generate detailed reports, never miss an assignment again!
+
+## ✨ 核心特性 | Key Features
+
+### 🎯 一键启动体验 | One-Click Launch Experience
+- 🌟 **默认自动启动** - 运行安装器后自动打开应用
+- 🧠 **智能环境检测** - 自动选择最佳启动方式 (GUI/命令行)
+- 🔧 **自动错误修复** - 智能诊断并自动解决常见问题
+- 📱 **跨平台支持** - macOS, Windows, Linux全平台兼容
+
+### 📊 强大功能 | Powerful Features
+- 📚 **自动作业检查** - 定期扫描ManageBac获取最新作业信息
+- ⏰ **智能提醒系统** - 逾期作业和紧急任务及时提醒
+- 📋 **多格式报告** - 支持HTML、JSON、Markdown等多种报告格式
+- 🔔 **系统通知** - macOS原生通知系统集成
+- 🤖 **AI智能分析** - 可选的AI助手提供作业优先级建议
+
+### 💻 现代化界面 | Modern Interface
+- 🎨 **专业GUI界面** - 现代化的桌面应用程序
+- 🌙 **深色模式支持** - 护眼的深色主题
+- 📱 **响应式设计** - 自适应不同屏幕尺寸
+- 🗂️ **系统托盘集成** - 后台运行，随时可用
+
+## 🚀 快速开始 | Quick Start
+
+### 🌟 推荐方式：一键安装+自动启动
+
+```bash
+# 🎯 第一步：克隆项目
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git
+cd managebac-assignment-checker
+
+# 🚀 第二步：运行优化安装器（推荐）
+python3 优化安装器.py
+```
+
+**就这么简单！** 安装器会：
+- ✅ 自动检查系统要求
+- ✅ 安装所有必需的依赖
+- ✅ 创建基础配置文件
+- ✅ **自动启动应用程序**
+
+### 🔧 替代安装方式
+
+如果优化安装器不可用，可以使用以下替代方案：
+
+```bash
+# 方案1：Ultimate Installer（现在默认自动启动）
+python3 ultimate_installer.py
+
+# 方案2：高级安装器
+python3 advanced_installer.py
+
+# 方案3：经典安装向导
+python3 setup_wizard.py
+
+# 方案4：图形界面安装向导
+python3 enhanced_setup_gui.py
+```
+
+### 📋 配置设置
+
+安装完成后，编辑 `.env` 文件填入你的ManageBac账户信息：
+
+```bash
+# ManageBac Configuration
+MANAGEBAC_URL=https://your-school.managebac.cn
+MANAGEBAC_EMAIL=your.email@school.edu
+MANAGEBAC_PASSWORD=your_password
+
+# 可选配置
+REPORT_FORMAT=html,console
+OUTPUT_DIR=reports
+LANGUAGE=zh
+HEADLESS=true
+```
+
+## 🚀 启动应用 | Launch Application
+
+### 🧠 智能启动器（推荐）
+
+```bash
+# 🌟 智能启动器 - 最佳用户体验
+python3 intelligent_launcher.py
+
+# 🤖 智能启动器功能：
+# ✅ 自动环境检测
+# ✅ 智能选择最佳启动方式
+# ✅ 进程管理和冲突处理
+# ✅ 失败时自动重试
+# ✅ 详细的错误诊断
+```
+
+### 🎨 GUI启动选项
+
+```bash
+# GUI启动器
+python3 gui_launcher.py
+
+# 智能启动器（自动检测GUI）
+python3 smart_launcher.py
+
+# 专业GUI应用
+python3 run_app.py
+```
+
+### 💻 命令行选项
+
+```bash
+# 基础命令行界面
+python3 main_new.py
+
+# 交互式模式
+python3 main_new.py --interactive
+
+# 指定输出格式
+python3 -m managebac_checker.cli --format html
+
+# 启用通知
+python3 -m managebac_checker.cli --notify
+```
+
+## 📱 双击启动（小白用户友好）
+
+安装后会自动创建桌面快捷方式：
+
+### macOS
+```bash
+# 双击桌面上的 "ManageBac作业检查器.command" 文件
+# 或使用终端：
+./START.sh
+```
+
+### Windows
+```batch
+:: 双击 START.bat 文件
+START.bat
+```
+
+### Linux
+```bash
+# 双击 managebac-checker.desktop 文件
+# 或使用终端：
+./START.sh
+```
+
+## 📚 详细文档 | Documentation
+
+### 📖 完整使用教程
+- **[📘 详细使用教程](详细使用教程.md)** - 最完整的使用指南，包含所有功能说明
+- **[📋 技术文档](CLAUDE.md)** - 开发和配置相关的技术细节
+
+### 🍎 macOS用户专享
+- **[🍎 macOS应用转换指南](macos_conversion_guide.md)** - 创建原生macOS应用的完整方案
+
+### 🛠️ 开发者资源
+- [🏗️ 项目架构](CLAUDE.md#project-architecture) - 代码结构说明
+- [🧪 测试指南](CLAUDE.md#testing-strategy) - 测试方法和工具
+- [🔒 安全考虑](CLAUDE.md#security-considerations) - 安全最佳实践
+
+## 🔧 故障排除 | Troubleshooting
+
+### 快速修复
+
+#### 1. 应用不自动启动
+```bash
+# 解决方案：
+python3 优化安装器.py  # 重新运行优化安装器
+python3 intelligent_launcher.py  # 直接使用智能启动器
+```
+
+#### 2. 依赖安装失败
+```bash
+# 手动安装依赖：
+pip3 install -r requirements.txt
+python3 -m playwright install chromium
+```
+
+#### 3. GUI无法启动
+```bash
+# 检查tkinter：
+python3 -c "import tkinter; print('tkinter OK')"
+
+# 使用命令行模式：
+python3 smart_launcher.py --cli
+```
+
+### 🧪 诊断工具
+
+```bash
+# 运行完整系统测试
+python3 test_auto_launch.py
+
+# 运行错误诊断
+python3 error_handler.py
+```
+
+**更多详细的故障排除指南请参考：[📘 详细使用教程](详细使用教程.md#-故障排除指南)**
+
+## 📁 项目结构 | Project Structure
+
+```
+managebac-assignment-checker/
+├── 🌟 优化安装器.py           # 推荐的一键安装器（默认自动启动）
+├── 🚀 ultimate_installer.py  # 多模式安装器
+├── 🧠 intelligent_launcher.py # 智能启动器（最佳体验）
+├── 🤖 smart_launcher.py       # 自适应启动器
+├── 🎨 gui_launcher.py         # GUI专用启动器
+├── 📋 main_new.py            # 主应用程序
+├── 🔧 error_handler.py       # 综合错误处理系统
+├── 🧪 test_auto_launch.py    # 自动启动测试工具
+├── managebac_checker/        # 核心包目录
+│   ├── checker.py           # 主检查逻辑
+│   ├── scraper.py          # Web爬虫引擎
+│   ├── analyzer.py         # 数据分析器
+│   ├── reporter.py         # 报告生成器
+│   ├── gui.py             # GUI界面
+│   ├── system_tray.py     # 系统托盘（原生通知）
+│   └── notifications.py    # 多平台通知系统
+├── 📖 README.md             # 本文档
+├── 📘 详细使用教程.md        # 完整使用指南
+├── 📋 CLAUDE.md             # 技术开发文档
+├── 🍎 macos_conversion_guide.md # macOS应用转换指南
+├── ⚙️ config.example.env    # 配置文件模板
+└── 📦 requirements.txt      # Python依赖清单
+```
+
+## 🌟 最新更新 | Latest Updates
+
+### ✅ 已解决的问题
+
+- **🎯 一键安装后自动启动** - 优化安装器现在默认自动启动应用
+- **🔧 依赖兼容性修复** - 解决了Python 3.13下pyobjus编译问题
+- **🍎 macOS原生通知** - 使用osascript替代plyer，完美支持macOS通知
+- **🧠 智能启动器** - 新增intelligent_launcher.py，提供最佳启动体验
+- **🚨 错误处理系统** - 新增comprehensive error handler，智能诊断和修复
+
+### 🔥 核心改进
+
+- **零配置体验** - 新手用户只需运行一条命令
+- **智能环境检测** - 自动选择GUI或命令行模式
+- **自动错误修复** - 常见问题自动解决
+- **跨平台通知** - 统一的通知体验
+
+## 🤝 贡献指南 | Contributing
+
+欢迎贡献代码和建议！
+
+### 快速开始贡献
+
+1. **Fork项目**
+2. **创建特性分支** (`git checkout -b feature/AmazingFeature`)
+3. **提交更改** (`git commit -m 'Add some AmazingFeature'`)
+4. **推送到分支** (`git push origin feature/AmazingFeature`)
+5. **开启Pull Request**
+
+### 开发环境设置
+
+```bash
+# 克隆开发版本
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git
+cd managebac-assignment-checker
+
+# 使用优化安装器设置开发环境
+python3 优化安装器.py
+
+# 运行测试
+python3 test_auto_launch.py
+```
+
+## 📄 许可证 | License
+
+本项目采用MIT许可证 - 查看[LICENSE](LICENSE)文件了解详情。
+
+## 👨‍💻 作者 | Author
+
+**Hacker0458**
+- GitHub: [@Hacker0458](https://github.com/Hacker0458)
+- 项目主页: [ManageBac Assignment Checker](https://github.com/Hacker0458/managebac-assignment-checker)
+
+## 🙏 致谢 | Acknowledgments
+
+- 感谢所有贡献者和用户的反馈
+- 特别感谢为改进用户体验提出建议的朋友们
+- 感谢ManageBac平台提供的服务
+- 感谢开源社区的支持
+
+## 📞 支持与反馈 | Support & Feedback
+
+### 🆘 获取帮助
+
+- 🐛 [报告Bug](https://github.com/Hacker0458/managebac-assignment-checker/issues/new?template=bug_report.md)
+- 💡 [功能建议](https://github.com/Hacker0458/managebac-assignment-checker/issues/new?template=feature_request.md)
+- 💬 [讨论交流](https://github.com/Hacker0458/managebac-assignment-checker/discussions)
+- 📧 [邮件支持](mailto:support@example.com)
+
+### 📚 文档索引
+
+- **新手指南**: [📘 详细使用教程](详细使用教程.md) - 从安装到高级功能的完整指南
+- **技术文档**: [📋 CLAUDE.md](CLAUDE.md) - 开发者和高级用户文档
+- **macOS用户**: [🍎 macOS转换指南](macos_conversion_guide.md) - 原生应用构建方案
+
+---
+
+## 🎉 立即开始使用！
+
+### 🌟 最简单的方式
+
+```bash
+# 一条命令，开始你的智能作业管理之旅！
+git clone https://github.com/Hacker0458/managebac-assignment-checker.git
+cd managebac-assignment-checker
+python3 优化安装器.py
+```
+
+### ⭐ 现在包含的功能
+
+✅ **零配置安装** - 一键完成所有设置
+✅ **自动启动应用** - 安装完成立即可用
+✅ **智能错误修复** - 自动诊断和解决问题
+✅ **跨平台支持** - 在任何系统上都能完美运行
+✅ **原生系统集成** - macOS通知、桌面快捷方式
+✅ **现代化界面** - 专业GUI和命令行双模式
+
+**享受再也不会忘记作业的轻松学习生活！** 🎓✨
+
+---
+
+*如果这个项目帮助到了你，请考虑给我们一个⭐Star！这将激励我们继续改进和添加新功能。*
 
 <div align="center">
 
