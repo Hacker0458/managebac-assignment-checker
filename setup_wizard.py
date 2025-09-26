@@ -63,32 +63,76 @@ in just a few minutes. We'll guide you through the essential settings.
     def get_input(self, prompt: str, default: str = "", required: bool = True,
                   secret: bool = False, validator=None) -> str:
         """Get user input with validation"""
-        while True:
-            if secret:
-                if default:
-                    value = getpass.getpass(f"{prompt} [{Colors.YELLOW}current: ***{Colors.END}]: ")
+        max_attempts = 3
+        attempt = 0
+
+        while attempt < max_attempts:
+            try:
+                if secret:
+                    if default:
+                        value = getpass.getpass(f"{prompt} [{Colors.YELLOW}current: ***{Colors.END}]: ")
+                    else:
+                        value = getpass.getpass(f"{prompt}: ")
                 else:
-                    value = getpass.getpass(f"{prompt}: ")
-            else:
-                if default:
-                    value = input(f"{prompt} [{Colors.YELLOW}{default}{Colors.END}]: ").strip()
-                else:
-                    value = input(f"{prompt}: ").strip()
+                    if default:
+                        value = input(f"{prompt} [{Colors.YELLOW}{default}{Colors.END}]: ").strip()
+                    else:
+                        value = input(f"{prompt}: ").strip()
 
-            if not value and default:
-                value = default
+                if not value and default:
+                    value = default
 
-            if required and not value:
-                print(f"{Colors.RED}❌ This field is required!{Colors.END}")
-                continue
-
-            if validator:
-                is_valid, error_msg = validator(value)
-                if not is_valid:
-                    print(f"{Colors.RED}❌ {error_msg}{Colors.END}")
+                if required and not value:
+                    attempt += 1
+                    if attempt >= max_attempts:
+                        print(f"{Colors.YELLOW}⚠️ Using default value due to input timeout{Colors.END}")
+                        return self.get_safe_default(prompt, secret)
+                    print(f"{Colors.RED}❌ This field is required! (Attempt {attempt}/{max_attempts}){Colors.END}")
                     continue
 
-            return value
+                if validator:
+                    is_valid, error_msg = validator(value)
+                    if not is_valid:
+                        attempt += 1
+                        if attempt >= max_attempts:
+                            print(f"{Colors.YELLOW}⚠️ Using default value due to validation errors{Colors.END}")
+                            return self.get_safe_default(prompt, secret)
+                        print(f"{Colors.RED}❌ {error_msg} (Attempt {attempt}/{max_attempts}){Colors.END}")
+                        continue
+
+                return value
+
+            except (EOFError, KeyboardInterrupt):
+                print(f"\n{Colors.YELLOW}⚠️ Input interrupted, using default values{Colors.END}")
+                return self.get_safe_default(prompt, secret)
+            except Exception as e:
+                print(f"{Colors.RED}❌ Input error: {e}{Colors.END}")
+                return self.get_safe_default(prompt, secret)
+
+    def get_safe_default(self, prompt: str, secret: bool = False) -> str:
+        """Get safe default value for prompts"""
+        prompt_lower = prompt.lower()
+
+        if "url" in prompt_lower:
+            return "https://shtcs.managebac.cn"
+        elif "email" in prompt_lower:
+            return "user@example.com"
+        elif "password" in prompt_lower and secret:
+            return "change_me_password"
+        elif "api" in prompt_lower and secret:
+            return ""
+        elif "smtp server" in prompt_lower:
+            return "smtp.gmail.com"
+        elif "model" in prompt_lower:
+            return "gpt-3.5-turbo"
+        elif "language" in prompt_lower:
+            return "zh"
+        elif "directory" in prompt_lower or "dir" in prompt_lower:
+            return "reports"
+        elif prompt_lower.endswith("(y/n)"):
+            return "n"
+        else:
+            return ""
 
     def validate_url(self, url: str) -> Tuple[bool, str]:
         """Validate ManageBac URL"""
@@ -512,39 +556,104 @@ Choose your preferred report formats:
     def launch_post_setup_options(self):
         """Launch post-setup options using the launch helper"""
         try:
-            # Import and use launch helper
             import subprocess
             import sys
+            import time
             from pathlib import Path
 
+            # First try launch helper
             launch_helper_path = Path(__file__).parent / 'launch_helper.py'
 
             if launch_helper_path.exists():
                 print(f"\n{Colors.CYAN}🚀 启动选项助手...{Colors.END}")
-                subprocess.run([sys.executable, str(launch_helper_path)])
-            else:
-                # Fallback: ask user if they want to launch now
-                print(f"\n{Colors.CYAN}是否立即启动应用程序？(y/n) [y]: {Colors.END}", end='')
-                launch_now = input().strip().lower()
+                try:
+                    subprocess.run([sys.executable, str(launch_helper_path)], timeout=10)
+                    return
+                except (subprocess.TimeoutExpired, Exception) as e:
+                    print(f"{Colors.YELLOW}⚠️ Launch helper timeout: {e}{Colors.END}")
 
-                if launch_now in ['', 'y', 'yes', '是', '1']:
-                    # Try to launch GUI mode
-                    gui_files = ['smart_launcher.py', 'gui_launcher.py', 'run_app.py']
-                    for gui_file in gui_files:
-                        gui_path = Path(__file__).parent / gui_file
-                        if gui_path.exists():
-                            try:
-                                subprocess.Popen([sys.executable, str(gui_path)])
-                                print(f"{Colors.GREEN}✅ 应用程序启动成功！{Colors.END}")
-                                return
-                            except Exception as e:
-                                continue
+            # Fallback: automatic launch with timeout
+            print(f"\n{Colors.CYAN}🚀 准备启动应用程序...{Colors.END}")
+            print(f"{Colors.CYAN}Preparing to launch application...{Colors.END}")
 
-                    print(f"{Colors.YELLOW}⚠️ 无法自动启动，请手动运行: python gui_launcher.py{Colors.END}")
+            # Auto-launch countdown
+            try:
+                for i in range(3, 0, -1):
+                    print(f"{Colors.YELLOW}启动倒计时: {i} 秒 (按 Ctrl+C 取消) / Launch in {i} seconds (Ctrl+C to cancel){Colors.END}", end='\r')
+                    time.sleep(1)
+
+                print(f"\n{Colors.GREEN}🚀 启动应用程序... / Launching application...{Colors.END}")
+
+            except KeyboardInterrupt:
+                print(f"\n{Colors.YELLOW}⚠️ 用户取消启动 / Launch cancelled by user{Colors.END}")
+                self.show_manual_launch_options()
+                return
+
+            # Try different launchers in order of preference
+            launcher_priority = [
+                ('smart_launcher.py', 'Smart Launcher', '智能启动器'),
+                ('gui_launcher.py', 'GUI Launcher', 'GUI启动器'),
+                ('run_app.py', 'App Runner', '应用运行器'),
+                ('one_click_run.py', 'One Click Run', '一键启动'),
+                ('professional_gui.py', 'Professional GUI', '专业GUI'),
+                ('main_new.py', 'Main Application', '主应用程序')
+            ]
+
+            for launcher_file, launcher_name, launcher_name_zh in launcher_priority:
+                launcher_path = Path(__file__).parent / launcher_file
+                if launcher_path.exists():
+                    try:
+                        print(f"{Colors.CYAN}尝试启动 {launcher_name_zh} / Trying {launcher_name}...{Colors.END}")
+
+                        # Launch in background
+                        if sys.platform.startswith('win'):
+                            # Windows
+                            subprocess.Popen([sys.executable, str(launcher_path)],
+                                           creationflags=subprocess.CREATE_NEW_CONSOLE)
+                        else:
+                            # macOS/Linux
+                            subprocess.Popen([sys.executable, str(launcher_path)])
+
+                        # Wait a moment to check if launch was successful
+                        time.sleep(2)
+                        print(f"{Colors.GREEN}✅ {launcher_name_zh} 启动成功！/ {launcher_name} launched successfully!{Colors.END}")
+                        print(f"{Colors.GREEN}✨ 应用程序正在后台运行... / Application is running in background...{Colors.END}")
+                        return
+
+                    except Exception as e:
+                        print(f"{Colors.YELLOW}⚠️ {launcher_name_zh} 启动失败: {e}{Colors.END}")
+                        continue
+
+            # If all launchers failed
+            print(f"{Colors.RED}❌ 所有启动器都失败了 / All launchers failed{Colors.END}")
+            self.show_manual_launch_options()
 
         except Exception as e:
-            print(f"{Colors.YELLOW}⚠️ 启动选项助手出错: {e}{Colors.END}")
-            print(f"{Colors.CYAN}您可以手动启动: python gui_launcher.py{Colors.END}")
+            print(f"{Colors.RED}❌ 启动过程出错: {e} / Launch process error: {e}{Colors.END}")
+            self.show_manual_launch_options()
+
+    def show_manual_launch_options(self):
+        """Show manual launch options to user"""
+        print(f"""
+{Colors.CYAN}📋 手动启动选项 / Manual Launch Options:{Colors.END}
+
+{Colors.GREEN}推荐方式 / Recommended:{Colors.END}
+   python smart_launcher.py
+   python gui_launcher.py
+
+{Colors.BLUE}其他方式 / Alternatives:{Colors.END}
+   python run_app.py
+   python one_click_run.py
+   python main_new.py
+
+{Colors.YELLOW}桌面快捷方式 / Desktop Shortcuts:{Colors.END}
+   • 双击桌面上的快捷方式 / Double-click desktop shortcut
+   • ./START.sh (macOS/Linux)
+   • START.bat (Windows)
+
+{Colors.CYAN}💡 首次运行时请配置您的 ManageBac 凭据
+💡 Please configure your ManageBac credentials on first run{Colors.END}
+""")
 
     def run(self):
         """Run the complete setup wizard"""

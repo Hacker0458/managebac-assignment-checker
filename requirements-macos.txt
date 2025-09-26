@@ -1,0 +1,43 @@
+# ========================================
+# 🍎 ManageBac Assignment Checker - macOS Dependencies
+# 🍎 ManageBac作业检查器 - macOS依赖包
+# ========================================
+
+# Core Dependencies | 核心依赖
+playwright>=1.45.0          # Web automation and scraping | 网页自动化和抓取
+python-dotenv>=1.0.0        # Environment variable management | 环境变量管理
+
+# GUI Dependencies | GUI依赖
+pystray>=0.19.0            # System tray integration | 系统托盘集成
+pillow>=10.0.0             # Image processing for icons | 图标图像处理
+
+# AI Dependencies | AI依赖
+openai>=1.0.0              # AI Assistant integration | AI助手集成
+
+# Template Dependencies | 模板依赖
+jinja2>=3.1.4              # HTML template engine | HTML模板引擎
+
+# macOS Specific Dependencies | macOS特定依赖
+py2app>=0.28.0             # macOS app bundling | macOS应用打包
+pyinstaller>=6.0.0         # Cross-platform app bundling | 跨平台应用打包
+
+# Development Dependencies | 开发依赖
+pytest>=8.4.2              # Testing framework | 测试框架
+pytest-asyncio>=0.23.0     # Async testing support | 异步测试支持
+pytest-cov>=5.0.0          # Coverage reporting | 覆盖率报告
+
+# Code Quality | 代码质量
+black>=24.4.0               # Code formatter | 代码格式化
+flake8>=7.1.0               # Linting | 代码检查
+mypy>=1.10.0                # Type checking | 类型检查
+
+# Build and Distribution | 构建和分发
+build>=1.2.1                # Build system | 构建系统
+twine>=5.1.1                # Package upload | 包上传
+
+# macOS App Store Dependencies | macOS应用商店依赖
+# 注意：这些依赖仅在发布到App Store时需要
+# Note: These dependencies are only needed for App Store distribution
+# altool>=1.0.0              # App Store submission | 应用商店提交
+# notarization-tool>=1.0.0  # App notarization | 应用公证
+

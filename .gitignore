@@ -103,4 +103,8 @@ celerybeat.pid
 dmypy.json
 
 # Pyre type checker
-.pyre/
+.pyre/# External Dependencies (not included in repository)
+context7/
+excel-mcp-server/
+iOS Project/
+mcp-server-chart/

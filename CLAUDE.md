@@ -40,8 +40,52 @@ isort managebac_checker/
 ```
 
 ### Installation & Setup
+
+#### 🌟 Ultimate Installer (推荐 | Recommended)
 ```bash
-# Install for development (includes GUI libraries)
+# 🚀 一键智能安装 - 自动选择最佳方式
+# One-click smart installation - automatically selects best method
+python ultimate_installer.py
+
+# 🎨 图形界面安装 - 美观的安装向导
+# GUI installation - beautiful installation wizard
+python ultimate_installer.py --mode gui
+
+# ⚡ 快速安装 - 使用默认设置
+# Quick installation - uses default settings
+python ultimate_installer.py --mode quick --auto-launch
+
+# 🧙‍♂️ 交互式向导 - 逐步配置
+# Interactive wizard - step-by-step configuration
+python ultimate_installer.py --mode wizard
+
+# 🔧 修复安装 - 修复现有问题
+# Repair installation - fix existing issues
+python ultimate_installer.py --repair
+```
+
+#### 🎯 Alternative Installers
+```bash
+# 高级命令行安装器 - 智能检测和自动启动
+# Advanced command-line installer with smart detection
+python advanced_installer.py
+
+# 图形界面安装向导 - 现代化界面
+# Enhanced GUI setup wizard
+python enhanced_setup_gui.py
+
+# 经典安装向导 - 交互式配置
+# Classic interactive setup wizard
+python setup_wizard.py
+
+# 完整安装脚本 - 包含GUI库
+# Complete installation script with GUI libraries
+python install_complete.py
+```
+
+#### 🛠️ Manual Installation
+```bash
+# Install dependencies
 pip install -r requirements-dev.txt
 
 # Install Playwright browsers (required for web scraping)
@@ -51,27 +95,35 @@ python -m playwright install chromium
 cp config.example.env .env
 # Edit .env with ManageBac credentials
 
-# Create desktop shortcuts and complete setup
-python install_complete.py
+# Create desktop shortcuts
+python create_desktop_shortcut.py
 ```
 
 ### Running the Application
 
 #### 🎯 For Novice Users (Zero Configuration)
 ```bash
-# Double-click these files to start (recommended for beginners)
+# 🌟 优化安装器 - 默认自动启动应用（推荐）
+# Optimized installer - auto-launches by default (recommended)
+python 优化安装器.py
+
+# Ultimate installer - now with auto-launch by default
+python ultimate_installer.py
+
+# Double-click these files to start
 ./START.sh           # macOS/Linux
 START.bat            # Windows
 
 # One-click Python launcher (fully automated)
 python one_click_run.py
-
-# Quick start script
-./quick_start.sh
 ```
 
-#### 🤖 Intelligent Launchers
+#### 🧠 Intelligent Launchers (New & Improved)
 ```bash
+# 🧠 智能启动器 - 最佳用户体验和错误处理
+# Intelligent launcher - best UX with error handling
+python intelligent_launcher.py
+
 # Smart launcher - auto-detects best startup method
 python smart_launcher.py
 
@@ -132,6 +184,14 @@ The project follows a modular architecture with separation of concerns:
 - `enhanced_gui.py` - Enhanced GUI features
 - `system_tray.py` - System tray integration
 - `gui_launcher.py` - GUI launcher script
+
+**Installation System**:
+- `ultimate_installer.py` - Master installer with multiple modes and smart fallbacks
+- `advanced_installer.py` - Advanced command-line installer with state tracking
+- `enhanced_setup_gui.py` - Beautiful graphical installation wizard
+- `setup_wizard.py` - Interactive setup wizard with enhanced error handling
+- `install_complete.py` - Complete installation script with GUI libraries
+- `error_handler.py` - Comprehensive error handling and user feedback system
 
 **Novice User Experience**:
 - `one_click_run.py` - Zero-configuration startup script with full automation
