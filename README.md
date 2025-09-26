@@ -5,7 +5,9 @@
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)](https://github.com/Hacker0458/managebac-assignment-checker)
 
 > 🚀 **智能化ManageBac作业追踪工具** - 自动检查作业状态，生成详细报告，永远不再错过作业！
-> **Intelligent ManageBac Assignment Tracking Tool** - Automatically check assignment status, generate detailed reports, never miss an assignment again!
+> 🚀 **Intelligent ManageBac Assignment Tracking Tool** - Automatically check assignment status, generate detailed reports, never miss an assignment again!
+
+**📖 Language / 语言**: [English](README.en.md) | **中文**
 
 ## ✨ 核心特性 | Key Features
 
