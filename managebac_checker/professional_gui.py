@@ -23,6 +23,24 @@ import tkinter.font as tkfont
 from .config import Config
 from .checker import ManageBacChecker
 
+# Import enhanced error handling
+try:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from enhanced_error_handler import get_error_handler, handle_error, log_info, log_warning, log_error
+    ERROR_HANDLER_AVAILABLE = True
+    print("✅ Enhanced error handler loaded")
+except ImportError:
+    ERROR_HANDLER_AVAILABLE = False
+    def handle_error(error, context="", severity="ERROR", user_friendly=True):
+        print(f"❌ [{context}] {type(error).__name__}: {error}")
+        return {"error_type": type(error).__name__, "error_message": str(error)}
+    def log_info(msg): print(f"ℹ️ {msg}")
+    def log_warning(msg): print(f"⚠️ {msg}")
+    def log_error(msg): print(f"❌ {msg}")
+    print("⚠️ Using fallback error handling")
+
 # Try to import system tray components, fallback to improved versions
 try:
     from .system_tray import SystemTrayManager, NotificationManager
@@ -1476,42 +1494,59 @@ class ProfessionalManageBacGUI:
     def _setup_system_integration(self):
         """Setup system integration | 设置系统集成"""
         try:
+            log_info("Setting up system integration...")
             self.tray_manager = SystemTrayManager(
                 app_callback=self._handle_tray_callback, language="zh"
             )
             self.tray_manager.start_tray()
+            log_info("System tray initialized successfully")
         except Exception as e:
-            print(f"⚠️ System tray not available: {e}")
+            handle_error(e, "System Integration Setup", "WARNING", user_friendly=False)
+            self.tray_manager = None
 
     def _load_configuration(self):
         """Load configuration | 加载配置"""
         try:
+            log_info("Loading configuration...")
             self.config = Config(interactive=False)
             self._update_status("✅ Configuration loaded | 配置已加载", "✅")
+            log_info("Configuration loaded successfully")
         except Exception as e:
-            self._update_status(f"⚠️ Configuration error | 配置错误", "⚠️")
-            print(f"Configuration error: {e}")
+            handle_error(e, "Configuration Loading", "WARNING", user_friendly=False)
+            self.config = None
+            try:
+                self._update_status(f"⚠️ Using default configuration | 使用默认配置", "⚠️")
+            except Exception as status_error:
+                handle_error(status_error, "Status Update", "WARNING", user_friendly=False)
 
     def _load_user_preferences(self):
         """Load user preferences | 加载用户偏好"""
-        prefs_file = Path("user_preferences.json")
-        if prefs_file.exists():
-            try:
-                with open(prefs_file, "r", encoding="utf-8") as f:
-                    prefs = json.load(f)
+        try:
+            log_info("Loading user preferences...")
+            prefs_file = Path("user_preferences.json")
+            if prefs_file.exists():
+                try:
+                    with open(prefs_file, "r", encoding="utf-8") as f:
+                        prefs = json.load(f)
 
-                # Apply preferences
-                self.auto_check_enabled = prefs.get("auto_check_enabled", False)
-                self.auto_check_interval = prefs.get("auto_check_interval", 30)
+                    # Apply preferences
+                    self.auto_check_enabled = prefs.get("auto_check_enabled", False)
+                    self.auto_check_interval = prefs.get("auto_check_interval", 30)
+                    log_info("User preferences loaded from file")
+                except Exception as file_error:
+                    handle_error(file_error, "Preferences File Loading", "WARNING", user_friendly=False)
+                    self._set_default_preferences()
+            else:
+                log_info("No preferences file found, using defaults")
+                self._set_default_preferences()
+        except Exception as e:
+            handle_error(e, "User Preferences Loading", "WARNING", user_friendly=False)
+            self._set_default_preferences()
 
-                # Apply theme
-                theme_name = prefs.get("theme", "professional_light")
-                if theme_name != self.theme.current_theme:
-                    self.theme = ProfessionalTheme(theme_name)
-                    self._apply_theme_to_widgets()
-
-            except Exception as e:
-                print(f"⚠️ Error loading preferences: {e}")
+    def _set_default_preferences(self):
+        """Set default user preferences | 设置默认用户偏好"""
+        self.auto_check_enabled = False
+        self.auto_check_interval = 30
 
     def _update_status(
         self, message: str, icon: str = "🔄", show_progress: bool = False
@@ -2278,14 +2313,42 @@ class ProfessionalManageBacGUI:
 
 def main():
     """Main function to run the professional GUI | 运行专业GUI的主函数"""
-    try:
-        app = ProfessionalManageBacGUI()
-        app.run()
-    except Exception as e:
-        print(f"❌ Failed to start professional GUI: {e}")
-        import traceback
+    log_info("Starting Professional ManageBac GUI...")
+    print("🚀 Starting Professional ManageBac GUI...")
+    print("=" * 50)
 
-        traceback.print_exc()
+    try:
+        log_info("Creating ProfessionalManageBacGUI instance...")
+        app = ProfessionalManageBacGUI()
+        log_info("GUI instance created successfully")
+
+        log_info("Starting GUI application...")
+        app.run()
+        log_info("GUI application completed successfully")
+
+    except KeyboardInterrupt:
+        log_info("Application interrupted by user")
+        print("🛑 Application interrupted by user")
+    except Exception as e:
+        error_info = handle_error(e, "GUI Startup", "CRITICAL", user_friendly=True)
+
+        # Additional suggestions for GUI startup failures
+        print("\n🔧 Additional troubleshooting for GUI issues:")
+        print("1. Check display server (X11/Wayland on Linux)")
+        print("2. Verify tkinter installation: python3 -m tkinter")
+        print("3. Try running in headless mode with --no-gui flag")
+        print("4. Check permissions for GUI applications")
+
+        if ERROR_HANDLER_AVAILABLE:
+            handler = get_error_handler()
+            print(f"\n📊 Error Statistics:")
+            stats = handler.get_error_statistics()
+            print(f"   Total errors this session: {stats['total_errors']}")
+            print(f"   Log directory: {stats['log_directory']}")
+
+        return False
+
+    return True
 
 
 if __name__ == "__main__":
