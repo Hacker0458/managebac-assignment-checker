@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, List, Optional
-import os
 
 
 _TRUE_VALUES = {"1", "true", "t", "yes", "y", "on"}
@@ -82,13 +83,22 @@ class Config:
 
     @classmethod
     def from_environment(cls, overrides: Optional[dict] = None) -> "Config":
+        """从环境变量加载配置，增强安全性验证。"""
         overrides = overrides or {}
         env = os.environ
 
         email = overrides.get("email") or env.get("MANAGEBAC_EMAIL")
         password = overrides.get("password") or env.get("MANAGEBAC_PASSWORD")
+        
+        # 安全性检查
         if not email or not password:
             raise ValueError("必须提供 MANAGEBAC_EMAIL 和 MANAGEBAC_PASSWORD")
+        
+        if not cls._is_valid_email(email):
+            raise ValueError(f"无效的邮箱格式: {email}")
+        
+        if len(password) < 6:
+            raise ValueError("密码长度至少为6个字符")
 
         url = overrides.get("url") or env.get(
             "MANAGEBAC_URL", "https://shtcs.managebac.cn"
@@ -231,3 +241,72 @@ class Config:
 
     def is_notification_enabled(self) -> bool:
         return self.enable_notifications
+
+    @staticmethod
+    def _is_valid_email(email: str) -> bool:
+        """验证邮箱格式。"""
+        import re
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return re.match(pattern, email) is not None
+
+    def get_safe_dict(self) -> dict:
+        """获取安全的配置字典（隐藏敏感信息）。"""
+        return {
+            "email": self._mask_email(self.email),
+            "password": "***HIDDEN***",
+            "url": self.url,
+            "headless": self.headless,
+            "timeout": self.timeout,
+            "debug": self.debug,
+            "report_formats": self.report_formats,
+            "output_dir": str(self.output_dir),
+            "enable_notifications": self.enable_notifications,
+            "smtp_server": self.smtp_server if self.smtp_server else "(not configured)",
+            "email_password": "***HIDDEN***" if self.email_password else "(not configured)",
+            "openai_api_key": "***HIDDEN***" if self.openai_api_key else "(not configured)",
+            "language": self.language,
+            "log_level": self.log_level,
+        }
+
+    @staticmethod
+    def _mask_email(email: str) -> str:
+        """遮蔽邮箱显示。"""
+        if not email or "@" not in email:
+            return "***HIDDEN***"
+        local, domain = email.split("@", 1)
+        if len(local) <= 2:
+            masked_local = "*" * len(local)
+        else:
+            masked_local = local[0] + "*" * (len(local) - 2) + local[-1]
+        return f"{masked_local}@{domain}"
+
+    def validate(self) -> List[str]:
+        """验证配置的有效性，返回警告列表。"""
+        warnings = []
+
+        # 检查URL格式
+        if not self.url.startswith(("http://", "https://")):
+            warnings.append(f"URL格式可能不正确: {self.url}")
+
+        # 检查超时设置
+        if self.timeout < 5000:
+            warnings.append(f"超时设置过低可能导致请求失败: {self.timeout}ms")
+
+        # 检查通知配置
+        if self.enable_notifications:
+            if not self.smtp_server:
+                warnings.append("已启用通知但未配置SMTP服务器")
+            if not self.notification_email:
+                warnings.append("已启用通知但未配置接收邮箱")
+
+        # 检查AI配置
+        if self.ai_enabled and not self.openai_api_key:
+            warnings.append("已启用AI功能但未配置OpenAI API密钥")
+
+        # 检查输出目录权限
+        try:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+        except PermissionError:
+            warnings.append(f"无法创建输出目录: {self.output_dir}")
+
+        return warnings
