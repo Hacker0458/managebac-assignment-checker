@@ -1,34 +1,23 @@
-"""ManageBac Assignment Checker 包装模块。"""
+"""Top-level package for managebac_checker.
+
+Keep imports minimal to avoid heavy optional dependencies (e.g., Playwright,
+tkinter) during package import, so lightweight modules like `analysis`,
+`reporting`, and `config` can be imported in isolated unit tests without
+requiring those extras.
+"""
 
 from __future__ import annotations
 
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError, version as _version
 
-try:  # pragma: no cover - 打包后可读取真实版本
-    __version__ = version("managebac-assignment-checker")
-except PackageNotFoundError:  # pragma: no cover - 开发环境回退
+# Expose package version if available; fallback for editable/dev installs.
+try:  # pragma: no cover - resolved at runtime in packaged builds
+    __version__ = _version("managebac-assignment-checker")
+except PackageNotFoundError:  # pragma: no cover - development fallback
     __version__ = "0.0.0"
 
-from .config import Config
-from .runner import Runner, run_sync
-from .analysis import analyse_assignments
-from .reporting import ReportBuilder
-from .scraper import ManageBacScraper
-from .checker import ManageBacChecker
-from .reporter import ReportGenerator
-from .notifications import NotificationManager
-from .analyzer import AssignmentAnalyzer
+# Public API note: submodules should be imported directly, e.g.:
+#   from managebac_checker.analysis import analyse_assignments
+# to prevent importing optional heavy dependencies at package import time.
 
-__all__ = [
-    "__version__",
-    "Config",
-    "Runner",
-    "run_sync",
-    "analyse_assignments",
-    "ReportBuilder",
-    "ManageBacScraper",
-    "ManageBacChecker",
-    "ReportGenerator",
-    "NotificationManager",
-    "AssignmentAnalyzer",
-]
+__all__ = ["__version__"]
