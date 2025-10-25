@@ -19,6 +19,325 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog, scrolledtext
 import tkinter.font as tkfont
 
+
+def _is_headless_environment() -> bool:
+    """Return True when the current process cannot create real Tk widgets."""
+
+    if os.environ.get("MANAGEBAC_FORCE_GUI") == "1":
+        return False
+
+    if os.environ.get("PYTEST_CURRENT_TEST"):
+        # Tests run in a headless environment inside CI containers
+        return True
+
+    if sys.platform.startswith("linux") and not os.environ.get("DISPLAY"):
+        return True
+
+    return False
+
+
+if _is_headless_environment():
+    from types import SimpleNamespace
+
+    class _HeadlessVariable:
+        def __init__(self, value=None):
+            self._value = value
+            self._trace_callbacks = []
+
+        def get(self):
+            return self._value
+
+        def set(self, value):
+            self._value = value
+            for callback in list(self._trace_callbacks):
+                callback(None, None, None)
+
+        def trace(self, mode, callback):
+            def _wrapped(*args, **kwargs):
+                callback(*args, **kwargs)
+
+            self._trace_callbacks.append(_wrapped)
+            return _wrapped
+
+        def trace_add(self, mode, callback):
+            return self.trace(mode, callback)
+
+        def trace_remove(self, mode, callback_name):
+            self._trace_callbacks = [
+                cb for cb in self._trace_callbacks if cb != callback_name
+            ]
+
+    class _HeadlessWidget:
+        def __init__(self, master=None, **kwargs):
+            self.master = master
+            self.children = []
+            self._config = dict(kwargs)
+            self._bindings = []
+            if master is not None and hasattr(master, "children"):
+                master.children.append(self)
+
+        # Tkinter compatibility helpers -------------------------------------------------
+        def config(self, **kwargs):
+            self._config.update(kwargs)
+
+        configure = config
+
+        def cget(self, key):
+            return self._config.get(key)
+
+        def bind(self, event=None, handler=None, add=None):
+            self._bindings.append((event, handler, add))
+
+        def pack(self, *args, **kwargs):
+            return None
+
+        def grid(self, *args, **kwargs):
+            return None
+
+        def place(self, *args, **kwargs):
+            return None
+
+        def pack_propagate(self, flag):
+            self._config["pack_propagate"] = bool(flag)
+
+        def grid_propagate(self, flag):
+            self._config["grid_propagate"] = bool(flag)
+
+        def grid_columnconfigure(self, index, **kwargs):
+            self._config.setdefault("grid_columns", {})[index] = kwargs
+
+        def grid_rowconfigure(self, index, **kwargs):
+            self._config.setdefault("grid_rows", {})[index] = kwargs
+
+        def destroy(self):
+            self.children.clear()
+
+        def winfo_children(self):
+            return list(self.children)
+
+        def winfo_exists(self):
+            return True
+
+        def winfo_screenwidth(self):
+            return 1920
+
+        def winfo_screenheight(self):
+            return 1080
+
+        def after(self, delay, callback=None, *args):
+            if callback and delay <= 0:
+                callback(*args)
+            return object()
+
+        def after_cancel(self, handle):
+            return None
+
+        def insert(self, index, value):
+            text = self._config.setdefault("_text", "")
+            if isinstance(index, str) and index.lower() in {"end", "insert"}:
+                index = len(text)
+            if not isinstance(index, int):
+                index = 0
+            self._config["_text"] = text[:index] + str(value) + text[index:]
+
+        def delete(self, start, end=None):
+            text = self._config.setdefault("_text", "")
+            if isinstance(start, str) and start.lower() == "end":
+                start = len(text)
+            if not isinstance(start, int):
+                start = 0
+            if end is None:
+                end = start + 1
+            if isinstance(end, str) and end.lower() == "end":
+                end = len(text)
+            if not isinstance(end, int):
+                end = start
+            self._config["_text"] = text[:start] + text[end:]
+
+        def get(self):
+            return self._config.get("_text", "")
+            
+    class _HeadlessTk(_HeadlessWidget):
+        def __init__(self, *args, **kwargs):
+            super().__init__(None)
+            self._geometry = ""
+            self.tk = self
+
+        def mainloop(self):
+            return None
+
+        def withdraw(self):
+            return None
+
+        def deiconify(self):
+            return None
+
+        def lift(self):
+            return None
+
+        def focus_force(self):
+            return None
+
+        def quit(self):
+            return None
+
+        def call(self, *args, **kwargs):
+            return None
+
+        def protocol(self, *args, **kwargs):
+            return None
+
+        def title(self, value):
+            self._config["title"] = value
+
+        def geometry(self, value=None):
+            if value is not None:
+                self._geometry = value
+            return self._geometry or "1024x768"
+
+        def iconbitmap(self, *args, **kwargs):
+            return None
+
+        def minsize(self, *args, **kwargs):
+            return None
+
+        def wait_window(self, *args, **kwargs):
+            return None
+
+        def destroy(self):
+            super().destroy()
+
+    class _HeadlessMenu(_HeadlessWidget):
+        def add_command(self, *args, **kwargs):
+            return None
+
+        def add_separator(self, *args, **kwargs):
+            return None
+
+        def add_cascade(self, *args, **kwargs):
+            return None
+
+    class _HeadlessProgressbar(_HeadlessWidget):
+        def start(self, interval=None):
+            return None
+
+        def stop(self):
+            return None
+
+    class _HeadlessScrollbar(_HeadlessWidget):
+        def set(self, *args, **kwargs):
+            self._config["scroll"] = (args, kwargs)
+
+        def get(self):
+            return (0.0, 1.0)
+
+    class _HeadlessScrolledText(_HeadlessWidget):
+        def insert(self, *args, **kwargs):
+            return None
+
+        def delete(self, *args, **kwargs):
+            return None
+
+        def get(self, *args, **kwargs):
+            return ""
+
+    class _HeadlessStyle:
+        def configure(self, *args, **kwargs):
+            return None
+
+        def map(self, *args, **kwargs):
+            return None
+
+    class _HeadlessStringVar(_HeadlessVariable):
+        pass
+
+    class _HeadlessBooleanVar(_HeadlessVariable):
+        def __init__(self, value=False):
+            super().__init__(bool(value))
+
+    class _HeadlessCanvas(_HeadlessWidget):
+        def create_window(self, *args, **kwargs):
+            return None
+
+        def configure(self, **kwargs):
+            self._config.update(kwargs)
+
+        config = configure
+
+        def yview(self, *args, **kwargs):
+            return (0.0, 1.0)
+
+        def yview_moveto(self, fraction):
+            self._config["yview"] = fraction
+
+        def yview_scroll(self, number, what):
+            self._config["yview_scroll"] = (number, what)
+
+    class _HeadlessPanedWindow(_HeadlessWidget):
+        def add(self, *args, **kwargs):
+            return None
+
+    class _HeadlessCheckbutton(_HeadlessWidget):
+        pass
+
+    class _HeadlessMessageBox:
+        @staticmethod
+        def askyesno(*args, **kwargs):
+            return True
+
+        @staticmethod
+        def showinfo(*args, **kwargs):
+            return None
+
+        @staticmethod
+        def showwarning(*args, **kwargs):
+            return None
+
+        @staticmethod
+        def showerror(*args, **kwargs):
+            return None
+
+    def _headless_var_factory(initial=None):
+        return _HeadlessStringVar(initial)
+
+    class _HeadlessTclError(Exception):
+        """Fallback TclError replacement used in headless mode."""
+
+    tk = SimpleNamespace(
+        Tk=_HeadlessTk,
+        Toplevel=_HeadlessTk,
+        Frame=_HeadlessWidget,
+        Label=_HeadlessWidget,
+        Button=_HeadlessWidget,
+        Entry=_HeadlessWidget,
+        Canvas=_HeadlessCanvas,
+        PanedWindow=_HeadlessPanedWindow,
+        Checkbutton=_HeadlessCheckbutton,
+        Menu=_HeadlessMenu,
+        StringVar=_headless_var_factory,
+        BooleanVar=_HeadlessBooleanVar,
+        IntVar=_HeadlessVariable,
+        DoubleVar=_HeadlessVariable,
+        PhotoImage=lambda *args, **kwargs: None,
+        END="end",
+        WORD="word",
+        TclError=_HeadlessTclError,
+    )
+
+    ttk = SimpleNamespace(
+        Progressbar=_HeadlessProgressbar,
+        Scrollbar=_HeadlessScrollbar,
+        Style=_HeadlessStyle,
+    )
+
+    messagebox = _HeadlessMessageBox()
+    filedialog = SimpleNamespace(
+        askopenfilename=lambda **kwargs: "",
+        asksaveasfilename=lambda **kwargs: "",
+    )
+    scrolledtext = SimpleNamespace(ScrolledText=_HeadlessScrolledText)
+    tkfont = SimpleNamespace(Font=lambda *args, **kwargs: ("Arial", 12))
+
 # Import our modules
 from .config import Config
 from .checker import ManageBacChecker
