@@ -16,13 +16,33 @@ from typing import Optional, Callable
 from pathlib import Path
 
 # Try to import system tray libraries with fallbacks
-try:
-    import pystray
-    from pystray import MenuItem, Icon, Menu
-    from PIL import Image, ImageDraw
 
-    TRAY_AVAILABLE = True
-except ImportError:
+
+def _is_graphical_environment_available() -> bool:
+    platform = sys.platform.lower()
+
+    if platform.startswith("linux"):
+        return bool(os.environ.get("DISPLAY"))
+    if platform == "darwin":
+        return True
+    if platform.startswith("win"):
+        return True
+    return False
+
+
+MenuItem = Icon = Menu = None
+Image = ImageDraw = None
+
+if _is_graphical_environment_available():
+    try:
+        import pystray
+        from pystray import MenuItem, Icon, Menu
+        from PIL import Image, ImageDraw
+
+        TRAY_AVAILABLE = True
+    except ImportError:
+        TRAY_AVAILABLE = False
+else:
     TRAY_AVAILABLE = False
 
 
@@ -107,8 +127,11 @@ class ImprovedSystemTrayManager:
         """Get localized message | 获取本地化消息"""
         return self.messages[self.language].get(key, key)
 
-    def create_icon_image(self) -> Optional[Image.Image]:
+    def create_icon_image(self) -> Optional["Image.Image"]:
         """Create system tray icon | 创建系统托盘图标"""
+        if not TRAY_AVAILABLE or Image is None or ImageDraw is None:
+            return None
+
         try:
             # Create a modern, high-quality icon (128x128 for better quality)
             width = 128

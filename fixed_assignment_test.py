@@ -13,6 +13,16 @@ import asyncio
 import logging
 from pathlib import Path
 
+import pytest
+
+
+RUN_INTEGRATION_TESTS = os.getenv("MANAGEBAC_RUN_INTEGRATION_TESTS") == "1"
+
+if not RUN_INTEGRATION_TESTS:
+    pytestmark = pytest.mark.skip(
+        reason="Manual integration diagnostics disabled without MANAGEBAC_RUN_INTEGRATION_TESTS=1"
+    )
+
 
 def setup_test_logging():
     """Setup logging for testing"""

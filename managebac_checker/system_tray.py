@@ -13,15 +13,43 @@ import webbrowser
 from typing import Optional, Callable
 from pathlib import Path
 
-try:
-    import pystray
-    from pystray import MenuItem, Icon, Menu
-    from PIL import Image, ImageDraw
+def _is_graphical_environment_available() -> bool:
+    """Return True when a graphical environment is accessible.
 
-    TRAY_AVAILABLE = True
-except ImportError:
+    ``pystray`` triggers the selection of a backend on import time. The X11
+    backend attempts to connect to ``$DISPLAY`` immediately which raises
+    ``DisplayNameError`` inside headless CI environments.  Importing
+    ``pystray`` only when we can talk to a windowing system therefore keeps
+    the module importable under automated tests.
+    """
+
+    platform = sys.platform.lower()
+
+    if platform.startswith("linux"):
+        return bool(os.environ.get("DISPLAY"))
+    if platform == "darwin":  # macOS always has a window server for GUI apps
+        return True
+    if platform.startswith("win"):
+        return True
+    return False
+
+
+MenuItem = Icon = Menu = None
+Image = ImageDraw = None
+
+if _is_graphical_environment_available():
+    try:
+        import pystray
+        from pystray import MenuItem, Icon, Menu
+        from PIL import Image, ImageDraw
+
+        TRAY_AVAILABLE = True
+    except ImportError:
+        TRAY_AVAILABLE = False
+        print("⚠️ pystray not available. System tray features disabled.")
+else:
     TRAY_AVAILABLE = False
-    print("⚠️ pystray not available. System tray features disabled.")
+    print("⚠️ No graphical environment detected. System tray features disabled.")
 
 try:
     from plyer import notification
@@ -88,8 +116,11 @@ class SystemTrayManager:
         """Get localized message | 获取本地化消息"""
         return self.messages[self.language].get(key, key)
 
-    def create_icon_image(self) -> Image.Image:
+    def create_icon_image(self) -> Optional["Image.Image"]:
         """Create system tray icon | 创建系统托盘图标"""
+        if not TRAY_AVAILABLE or Image is None:
+            return None
+
         # Create a simple icon (64x64)
         width = 64
         height = 64
