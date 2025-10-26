@@ -13,6 +13,14 @@ import asyncio
 import logging
 from pathlib import Path
 
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("✅ Environment variables loaded from .env file")
+except ImportError:
+    print("⚠️ python-dotenv not available, relying on system environment")
+
 
 def setup_test_logging():
     """Setup logging for testing"""

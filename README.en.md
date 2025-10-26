@@ -3,8 +3,15 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)](https://github.com/Hacker0458/managebac-assignment-checker)
+[![Status](https://img.shields.io/badge/status-Production%20Ready-brightgreen)](https://github.com/Hacker0458/managebac-assignment-checker)
+
+<div align="center">
 
 > 🚀 **Intelligent ManageBac Assignment Tracking Tool** - Automatically check assignment status, generate detailed reports, never miss an assignment again!
+
+**📖 Languages**: **English** | [中文](README.md)
+
+</div>
 
 ## ✨ Key Features
 
@@ -193,33 +200,42 @@ python3 error_handler.py
 
 ```
 managebac-assignment-checker/
-├── 🌟 优化安装器.py              # Recommended one-click installer (auto-launch by default)
-├── 🚀 ultimate_installer.py     # Multi-mode installer
-├── 🧠 intelligent_launcher.py    # Intelligent launcher (best experience)
-├── 🎨 ultimate_user_experience.py # Ultimate user experience launcher
-├── 🤖 smart_launcher.py          # Adaptive launcher
-├── 🎯 gui_launcher.py            # GUI-specific launcher
-├── 📋 main_new.py               # Main application
-├── 🔧 enhanced_error_handler.py  # Enhanced error handling and logging system
-├── 🚨 error_handler.py          # Basic error handling system
-├── 🧪 test_auto_launch.py       # Auto-launch testing tool
-├── ✨ fixed_gui.py              # Fixed GUI app (diagnostic)
-├── 🛠️ professional_gui_fixed.py  # Professional GUI fixed version
-├── managebac_checker/           # Core package directory
-│   ├── checker.py              # Main checking logic
-│   ├── scraper.py             # Web scraping engine
-│   ├── analyzer.py            # Data analyzer
-│   ├── reporter.py            # Report generator
-│   ├── professional_gui.py     # Professional GUI interface (fixed)
-│   ├── system_tray.py         # System tray (native notifications)
-│   └── notifications.py       # Multi-platform notification system
-├── 📁 logs/                    # Log files directory
-├── 📖 README.md                # Main documentation (bilingual)
-├── 📘 详细使用教程.md           # Complete user guide (Chinese)
-├── 📋 CLAUDE.md                # Technical development documentation
-├── 🍎 macos_conversion_guide.md # macOS app conversion guide
-├── ⚙️ config.example.env       # Configuration file template
-└── 📦 requirements.txt         # Python dependencies list
+├── 🚀 ultimate_launcher.py        # Ultimate launcher (recommended)
+├── 🧠 intelligent_launcher.py     # Intelligent launcher
+├── 📋 main.py                     # Main application
+├── 📋 main_new.py                 # Enhanced main application
+├── 📦 managebac_checker/          # Core package
+│   ├── config.py                 # Configuration management
+│   ├── scraper.py                # Web scraping engine
+│   ├── analyzer.py               # Data analysis
+│   ├── reporter.py               # Report generation
+│   ├── professional_gui.py       # Professional GUI
+│   └── system_tray.py            # System tray integration
+├── 🛠️ tools/                      # Development tools
+│   ├── installers/               # Installation scripts
+│   │   ├── ultimate_installer.py
+│   │   ├── enhanced_setup_gui.py
+│   │   └── setup_wizard.py
+│   ├── launchers/                # Launch utilities
+│   │   ├── gui_launcher.py
+│   │   ├── smart_launcher.py
+│   │   └── run_app.py
+│   └── diagnostics/              # Diagnostic tools
+│       ├── final_comprehensive_test.py
+│       ├── enhanced_error_handler.py
+│       └── comprehensive_diagnostic.py
+├── 📁 archive/                    # Archived files
+│   ├── test_files/               # Test files
+│   ├── experimental/             # Experimental code
+│   └── old_installers/           # Legacy installers
+├── 📜 scripts/                    # Utility scripts
+├── 📖 docs/                       # Documentation
+├── 📄 README.md                   # Main documentation (bilingual)
+├── 📄 README.en.md                # English documentation
+├── 📋 CLAUDE.md                   # Technical documentation
+├── ✅ RESOLUTION_SUMMARY.md       # Issue resolution summary
+├── ⚙️ .env                        # Configuration file
+└── 📦 requirements.txt            # Python dependencies
 ```
 
 ## 🌟 Latest Updates

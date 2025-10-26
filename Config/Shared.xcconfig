@@ -1,0 +1,34 @@
+// Shared.xcconfig
+// ManageBac Assignment Checker - iOS App Configuration
+// Modern SwiftUI + Swift 6 Implementation
+// Created: 2025/9/28
+
+// ==========================================
+// Project Identity
+// ==========================================
+PRODUCT_NAME = ManageBacChecker
+PRODUCT_DISPLAY_NAME = ManageBac作业检查器
+PRODUCT_BUNDLE_IDENTIFIER = com.managebac.checker
+MARKETING_VERSION = 2.0
+CURRENT_PROJECT_VERSION = 2
+
+// ==========================================
+// Platform Configuration
+// ==========================================
+IPHONEOS_DEPLOYMENT_TARGET = 15.0
+
+// (1 == iPhone, 2 == iPad)
+TARGETED_DEVICE_FAMILY = 1,2 
+
+// ==========================================
+// Info PLIST
+// ==========================================
+GENERATE_INFOPLIST_FILE = YES
+INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait
+INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeRight UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown
+
+// ==========================================
+// Entitlements
+// ==========================================
+// AI agents can modify Config/ManageBacChecker.entitlements to add capabilities
+CODE_SIGN_ENTITLEMENTS = Config/ManageBacChecker.entitlements
