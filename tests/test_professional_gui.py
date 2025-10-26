@@ -276,6 +276,10 @@ class TestGUIIntegration(unittest.TestCase):
     def test_gui_launcher_import(self):
         """Test GUI launcher import | 测试GUI启动器导入"""
         try:
+            import sys
+            import os
+            # Add tools/launchers to path since gui_launcher was moved there
+            sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tools', 'launchers'))
             import gui_launcher
             self.assertTrue(True, "GUI launcher imported successfully")
         except ImportError as e:
