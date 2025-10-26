@@ -79,6 +79,12 @@ class Config:
     ai_temperature: float = 0.7
     ai_max_tokens: int = 500
     user_agent: str = ""
+    
+    # 新增：作业过滤配置
+    include_submitted: bool = False      # 是否包含已提交作业（默认不包含）
+    include_overdue: bool = True         # 是否包含过期作业（默认包含）
+    include_upcoming: bool = True        # 是否包含即将到期作业（默认包含）
+    overdue_days_back: int = 30         # 回溯过期作业的天数（默认30天）
 
     @classmethod
     def from_environment(cls, overrides: Optional[dict] = None) -> "Config":
@@ -183,6 +189,26 @@ class Config:
             env.get("AI_MAX_TOKENS"), 500
         )
         user_agent = overrides.get("user_agent") or env.get("USER_AGENT", "")
+        
+        # 新增：作业过滤配置
+        include_submitted = bool(
+            overrides.get("include_submitted")
+            if "include_submitted" in overrides
+            else _as_bool(env.get("INCLUDE_SUBMITTED"), False)
+        )
+        include_overdue = bool(
+            overrides.get("include_overdue")
+            if "include_overdue" in overrides
+            else _as_bool(env.get("INCLUDE_OVERDUE"), True)
+        )
+        include_upcoming = bool(
+            overrides.get("include_upcoming")
+            if "include_upcoming" in overrides
+            else _as_bool(env.get("INCLUDE_UPCOMING"), True)
+        )
+        overdue_days_back = overrides.get("overdue_days_back") or _as_int(
+            env.get("OVERDUE_DAYS_BACK"), 30
+        )
 
         config = cls(
             email=email,
@@ -216,6 +242,10 @@ class Config:
             ai_temperature=ai_temperature,
             ai_max_tokens=ai_max_tokens,
             user_agent=user_agent,
+            include_submitted=include_submitted,
+            include_overdue=include_overdue,
+            include_upcoming=include_upcoming,
+            overdue_days_back=overdue_days_back,
         )
 
         config.ensure_directories()

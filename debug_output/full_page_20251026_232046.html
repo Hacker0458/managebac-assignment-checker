@@ -1,0 +1,896 @@
+<!DOCTYPE html><html class=""><head>
+<script async="" src="https://scripts.clarity.ms/0.8.37/clarity.js"></script><script async="" src="https://www.clarity.ms/tag/qwrk3j05gi"></script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"NRJS-2e014ee212e42bf72ba","applicationID":"1132956538","transactionName":"dlheQBBdXA8ERR5CTEBTVVoWHUQCElxCbllbU29QB1NUDwhZVEIXXFlUURo=","queueTime":0,"applicationTime":394,"agent":""}</script>
+<script type="text/javascript">(window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:true},ajax:{deny_list:["bam.nr-data.net"]},distributed_tracing:{enabled:true}};(window.NREUM||(NREUM={})).loader_config={agentID:"1134174286",accountID:"3331950",trustKey:"3331950",xpid:"VwUEUF9WCBABVVJQDgQBU1cJ",licenseKey:"NRJS-2e014ee212e42bf72ba",applicationID:"1132956538",browserID:"1134174286"};;/*! For license information please see nr-loader-spa-1.301.0.min.js.LICENSE.txt */
+(()=>{var e,t,r={384:(e,t,r)=>{"use strict";r.d(t,{NT:()=>a,US:()=>d,Zm:()=>s,bQ:()=>u,dV:()=>c,pV:()=>l});var n=r(6154),i=r(1863),o=r(1910);const a={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net"};function s(){return n.gm.NREUM||(n.gm.NREUM={}),void 0===n.gm.newrelic&&(n.gm.newrelic=n.gm.NREUM),n.gm.NREUM}function c(){let e=s();return e.o||(e.o={ST:n.gm.setTimeout,SI:n.gm.setImmediate||n.gm.setInterval,CT:n.gm.clearTimeout,XHR:n.gm.XMLHttpRequest,REQ:n.gm.Request,EV:n.gm.Event,PR:n.gm.Promise,MO:n.gm.MutationObserver,FETCH:n.gm.fetch,WS:n.gm.WebSocket},(0,o.i)(...Object.values(e.o))),e}function u(e,t){let r=s();r.initializedAgents??={},t.initializedAt={ms:(0,i.t)(),date:new Date},r.initializedAgents[e]=t}function d(e,t){s()[e]=t}function l(){return function(){let e=s();const t=e.info||{};e.info={beacon:a.beacon,errorBeacon:a.errorBeacon,...t}}(),function(){let e=s();const t=e.init||{};e.init={...t}}(),c(),function(){let e=s();const t=e.loader_config||{};e.loader_config={...t}}(),s()}},782:(e,t,r)=>{"use strict";r.d(t,{T:()=>n});const n=r(860).K7.pageViewTiming},860:(e,t,r)=>{"use strict";r.d(t,{$J:()=>d,K7:()=>c,P3:()=>u,XX:()=>i,Yy:()=>s,df:()=>o,qY:()=>n,v4:()=>a});const n="events",i="jserrors",o="browser/blobs",a="rum",s="browser/logs",c={ajax:"ajax",genericEvents:"generic_events",jserrors:i,logging:"logging",metrics:"metrics",pageAction:"page_action",pageViewEvent:"page_view_event",pageViewTiming:"page_view_timing",sessionReplay:"session_replay",sessionTrace:"session_trace",softNav:"soft_navigations",spa:"spa"},u={[c.pageViewEvent]:1,[c.pageViewTiming]:2,[c.metrics]:3,[c.jserrors]:4,[c.spa]:5,[c.ajax]:6,[c.sessionTrace]:7,[c.softNav]:8,[c.sessionReplay]:9,[c.logging]:10,[c.genericEvents]:11},d={[c.pageViewEvent]:a,[c.pageViewTiming]:n,[c.ajax]:n,[c.spa]:n,[c.softNav]:n,[c.metrics]:i,[c.jserrors]:i,[c.sessionTrace]:o,[c.sessionReplay]:o,[c.logging]:s,[c.genericEvents]:"ins"}},944:(e,t,r)=>{"use strict";r.d(t,{R:()=>i});var n=r(3241);function i(e,t){"function"==typeof console.debug&&(console.debug("New Relic Warning: https://github.com/newrelic/newrelic-browser-agent/blob/main/docs/warning-codes.md#".concat(e),t),(0,n.W)({agentIdentifier:null,drained:null,type:"data",name:"warn",feature:"warn",data:{code:e,secondary:t}}))}},993:(e,t,r)=>{"use strict";r.d(t,{A$:()=>o,ET:()=>a,TZ:()=>s,p_:()=>i});var n=r(860);const i={ERROR:"ERROR",WARN:"WARN",INFO:"INFO",DEBUG:"DEBUG",TRACE:"TRACE"},o={OFF:0,ERROR:1,WARN:2,INFO:3,DEBUG:4,TRACE:5},a="log",s=n.K7.logging},1687:(e,t,r)=>{"use strict";r.d(t,{Ak:()=>u,Ze:()=>f,x3:()=>d});var n=r(3241),i=r(7836),o=r(3606),a=r(860),s=r(2646);const c={};function u(e,t){const r={staged:!1,priority:a.P3[t]||0};l(e),c[e].get(t)||c[e].set(t,r)}function d(e,t){e&&c[e]&&(c[e].get(t)&&c[e].delete(t),p(e,t,!1),c[e].size&&h(e))}function l(e){if(!e)throw new Error("agentIdentifier required");c[e]||(c[e]=new Map)}function f(e="",t="feature",r=!1){if(l(e),!e||!c[e].get(t)||r)return p(e,t);c[e].get(t).staged=!0,h(e)}function h(e){const t=Array.from(c[e]);t.every(([e,t])=>t.staged)&&(t.sort((e,t)=>e[1].priority-t[1].priority),t.forEach(([t])=>{c[e].delete(t),p(e,t)}))}function p(e,t,r=!0){const a=e?i.ee.get(e):i.ee,c=o.i.handlers;if(!a.aborted&&a.backlog&&c){if((0,n.W)({agentIdentifier:e,type:"lifecycle",name:"drain",feature:t}),r){const e=a.backlog[t],r=c[t];if(r){for(let t=0;e&&t<e.length;++t)g(e[t],r);Object.entries(r).forEach(([e,t])=>{Object.values(t||{}).forEach(t=>{t[0]?.on&&t[0]?.context()instanceof s.y&&t[0].on(e,t[1])})})}}a.isolatedBacklog||delete c[t],a.backlog[t]=null,a.emit("drain-"+t,[])}}function g(e,t){var r=e[1];Object.values(t[r]||{}).forEach(t=>{var r=e[0];if(t[0]===r){var n=t[1],i=e[3],o=e[2];n.apply(i,o)}})}},1741:(e,t,r)=>{"use strict";r.d(t,{W:()=>o});var n=r(944),i=r(4261);class o{#e(e,...t){if(this[e]!==o.prototype[e])return this[e](...t);(0,n.R)(35,e)}addPageAction(e,t){return this.#e(i.hG,e,t)}register(e){return this.#e(i.eY,e)}recordCustomEvent(e,t){return this.#e(i.fF,e,t)}setPageViewName(e,t){return this.#e(i.Fw,e,t)}setCustomAttribute(e,t,r){return this.#e(i.cD,e,t,r)}noticeError(e,t){return this.#e(i.o5,e,t)}setUserId(e){return this.#e(i.Dl,e)}setApplicationVersion(e){return this.#e(i.nb,e)}setErrorHandler(e){return this.#e(i.bt,e)}addRelease(e,t){return this.#e(i.k6,e,t)}log(e,t){return this.#e(i.$9,e,t)}start(){return this.#e(i.d3)}finished(e){return this.#e(i.BL,e)}recordReplay(){return this.#e(i.CH)}pauseReplay(){return this.#e(i.Tb)}addToTrace(e){return this.#e(i.U2,e)}setCurrentRouteName(e){return this.#e(i.PA,e)}interaction(e){return this.#e(i.dT,e)}wrapLogger(e,t,r){return this.#e(i.Wb,e,t,r)}measure(e,t){return this.#e(i.V1,e,t)}}},1863:(e,t,r)=>{"use strict";function n(){return Math.floor(performance.now())}r.d(t,{t:()=>n})},1910:(e,t,r)=>{"use strict";r.d(t,{i:()=>o});var n=r(944);const i=new Map;function o(...e){return e.every(e=>{if(i.has(e))return i.get(e);const t="function"==typeof e&&e.toString().includes("[native code]");return t||(0,n.R)(64,e?.name||e?.toString()),i.set(e,t),t})}},2555:(e,t,r)=>{"use strict";r.d(t,{D:()=>s,f:()=>a});var n=r(384),i=r(8122);const o={beacon:n.NT.beacon,errorBeacon:n.NT.errorBeacon,licenseKey:void 0,applicationID:void 0,sa:void 0,queueTime:void 0,applicationTime:void 0,ttGuid:void 0,user:void 0,account:void 0,product:void 0,extra:void 0,jsAttributes:{},userAttributes:void 0,atts:void 0,transactionName:void 0,tNamePlain:void 0};function a(e){try{return!!e.licenseKey&&!!e.errorBeacon&&!!e.applicationID}catch(e){return!1}}const s=e=>(0,i.a)(e,o)},2614:(e,t,r)=>{"use strict";r.d(t,{BB:()=>a,H3:()=>n,g:()=>u,iL:()=>c,tS:()=>s,uh:()=>i,wk:()=>o});const n="NRBA",i="SESSION",o=144e5,a=18e5,s={STARTED:"session-started",PAUSE:"session-pause",RESET:"session-reset",RESUME:"session-resume",UPDATE:"session-update"},c={SAME_TAB:"same-tab",CROSS_TAB:"cross-tab"},u={OFF:0,FULL:1,ERROR:2}},2646:(e,t,r)=>{"use strict";r.d(t,{y:()=>n});class n{constructor(e){this.contextId=e}}},2843:(e,t,r)=>{"use strict";r.d(t,{u:()=>i});var n=r(3878);function i(e,t=!1,r,i){(0,n.DD)("visibilitychange",function(){if(t)return void("hidden"===document.visibilityState&&e());e(document.visibilityState)},r,i)}},3241:(e,t,r)=>{"use strict";r.d(t,{W:()=>o});var n=r(6154);const i="newrelic";function o(e={}){try{n.gm.dispatchEvent(new CustomEvent(i,{detail:e}))}catch(e){}}},3304:(e,t,r)=>{"use strict";r.d(t,{A:()=>o});var n=r(7836);const i=()=>{const e=new WeakSet;return(t,r)=>{if("object"==typeof r&&null!==r){if(e.has(r))return;e.add(r)}return r}};function o(e){try{return JSON.stringify(e,i())??""}catch(e){try{n.ee.emit("internal-error",[e])}catch(e){}return""}}},3333:(e,t,r)=>{"use strict";r.d(t,{$v:()=>d,TZ:()=>n,Xh:()=>c,Zp:()=>i,kd:()=>u,mq:()=>s,nf:()=>a,qN:()=>o});const n=r(860).K7.genericEvents,i=["auxclick","click","copy","keydown","paste","scrollend"],o=["focus","blur"],a=4,s=1e3,c=2e3,u=["PageAction","UserAction","BrowserPerformance"],d={RESOURCES:"experimental.resources"}},3434:(e,t,r)=>{"use strict";r.d(t,{Jt:()=>o,YM:()=>u});var n=r(7836),i=r(5607);const o="nr@original:".concat(i.W),a=50;var s=Object.prototype.hasOwnProperty,c=!1;function u(e,t){return e||(e=n.ee),r.inPlace=function(e,t,n,i,o){n||(n="");const a="-"===n.charAt(0);for(let s=0;s<t.length;s++){const c=t[s],u=e[c];l(u)||(e[c]=r(u,a?c+n:n,i,c,o))}},r.flag=o,r;function r(t,r,n,c,u){return l(t)?t:(r||(r=""),nrWrapper[o]=t,function(e,t,r){if(Object.defineProperty&&Object.keys)try{return Object.keys(e).forEach(function(r){Object.defineProperty(t,r,{get:function(){return e[r]},set:function(t){return e[r]=t,t}})}),t}catch(e){d([e],r)}for(var n in e)s.call(e,n)&&(t[n]=e[n])}(t,nrWrapper,e),nrWrapper);function nrWrapper(){var o,s,l,f;let h;try{s=this,o=[...arguments],l="function"==typeof n?n(o,s):n||{}}catch(t){d([t,"",[o,s,c],l],e)}i(r+"start",[o,s,c],l,u);const p=performance.now();let g;try{return f=t.apply(s,o),g=performance.now(),f}catch(e){throw g=performance.now(),i(r+"err",[o,s,e],l,u),h=e,h}finally{const e=g-p,t={start:p,end:g,duration:e,isLongTask:e>=a,methodName:c,thrownError:h};t.isLongTask&&i("long-task",[t,s],l,u),i(r+"end",[o,s,f],l,u)}}}function i(r,n,i,o){if(!c||t){var a=c;c=!0;try{e.emit(r,n,i,t,o)}catch(t){d([t,r,n,i],e)}c=a}}}function d(e,t){t||(t=n.ee);try{t.emit("internal-error",e)}catch(e){}}function l(e){return!(e&&"function"==typeof e&&e.apply&&!e[o])}},3496:(e,t,r)=>{"use strict";function n(e){return!e||!(!e.licenseKey||!e.applicationID)}function i(e,t){return!e||e.licenseKey===t.info.licenseKey&&e.applicationID===t.info.applicationID}r.d(t,{A:()=>i,I:()=>n})},3606:(e,t,r)=>{"use strict";r.d(t,{i:()=>o});var n=r(9908);o.on=a;var i=o.handlers={};function o(e,t,r,o){a(o||n.d,i,e,t,r)}function a(e,t,r,i,o){o||(o="feature"),e||(e=n.d);var a=t[o]=t[o]||{};(a[r]=a[r]||[]).push([e,i])}},3738:(e,t,r)=>{"use strict";r.d(t,{He:()=>i,Kp:()=>s,Lc:()=>u,Rz:()=>d,TZ:()=>n,bD:()=>o,d3:()=>a,jx:()=>l,sl:()=>f,uP:()=>c});const n=r(860).K7.sessionTrace,i="bstResource",o="resource",a="-start",s="-end",c="fn"+a,u="fn"+s,d="pushState",l=1e3,f=3e4},3785:(e,t,r)=>{"use strict";r.d(t,{R:()=>c,b:()=>u});var n=r(9908),i=r(1863),o=r(860),a=r(8154),s=r(993);function c(e,t,r={},c=s.p_.INFO,u,d=(0,i.t)()){(0,n.p)(a.xV,["API/logging/".concat(c.toLowerCase(),"/called")],void 0,o.K7.metrics,e),(0,n.p)(s.ET,[d,t,r,c,u],void 0,o.K7.logging,e)}function u(e){return"string"==typeof e&&Object.values(s.p_).some(t=>t===e.toUpperCase().trim())}},3878:(e,t,r)=>{"use strict";function n(e,t){return{capture:e,passive:!1,signal:t}}function i(e,t,r=!1,i){window.addEventListener(e,t,n(r,i))}function o(e,t,r=!1,i){document.addEventListener(e,t,n(r,i))}r.d(t,{DD:()=>o,jT:()=>n,sp:()=>i})},3962:(e,t,r)=>{"use strict";r.d(t,{AM:()=>a,O2:()=>l,OV:()=>o,Qu:()=>f,TZ:()=>c,ih:()=>h,pP:()=>s,t1:()=>d,tC:()=>i,wD:()=>u});var n=r(860);const i=["click","keydown","submit"],o="popstate",a="api",s="initialPageLoad",c=n.K7.softNav,u=5e3,d=500,l={INITIAL_PAGE_LOAD:"",ROUTE_CHANGE:1,UNSPECIFIED:2},f={INTERACTION:1,AJAX:2,CUSTOM_END:3,CUSTOM_TRACER:4},h={IP:"in progress",PF:"pending finish",FIN:"finished",CAN:"cancelled"}},4234:(e,t,r)=>{"use strict";r.d(t,{W:()=>o});var n=r(7836),i=r(1687);class o{constructor(e,t){this.agentIdentifier=e,this.ee=n.ee.get(e),this.featureName=t,this.blocked=!1}deregisterDrain(){(0,i.x3)(this.agentIdentifier,this.featureName)}}},4261:(e,t,r)=>{"use strict";r.d(t,{$9:()=>d,BL:()=>c,CH:()=>p,Dl:()=>R,Fw:()=>w,PA:()=>v,Pl:()=>n,Tb:()=>f,U2:()=>a,V1:()=>E,Wb:()=>T,bt:()=>y,cD:()=>b,d3:()=>x,dT:()=>u,eY:()=>g,fF:()=>h,hG:()=>o,hw:()=>i,k6:()=>s,nb:()=>m,o5:()=>l});const n="api-",i=n+"ixn-",o="addPageAction",a="addToTrace",s="addRelease",c="finished",u="interaction",d="log",l="noticeError",f="pauseReplay",h="recordCustomEvent",p="recordReplay",g="register",m="setApplicationVersion",v="setCurrentRouteName",b="setCustomAttribute",y="setErrorHandler",w="setPageViewName",R="setUserId",x="start",T="wrapLogger",E="measure"},5205:(e,t,r)=>{"use strict";r.d(t,{j:()=>O});var n=r(384),i=r(1741);var o=r(2555),a=r(3333);const s=e=>{if(!e||"string"!=typeof e)return!1;try{document.createDocumentFragment().querySelector(e)}catch{return!1}return!0};var c=r(2614),u=r(944),d=r(8122);const l="[data-nr-mask]",f=e=>(0,d.a)(e,(()=>{const e={feature_flags:[],experimental:{resources:!1},mask_selector:"*",block_selector:"[data-nr-block]",mask_input_options:{color:!1,date:!1,"datetime-local":!1,email:!1,month:!1,number:!1,range:!1,search:!1,tel:!1,text:!1,time:!1,url:!1,week:!1,textarea:!1,select:!1,password:!0}};return{ajax:{deny_list:void 0,block_internal:!0,enabled:!0,autoStart:!0},api:{allow_registered_children:!0,duplicate_registered_data:!1},distributed_tracing:{enabled:void 0,exclude_newrelic_header:void 0,cors_use_newrelic_header:void 0,cors_use_tracecontext_headers:void 0,allowed_origins:void 0},get feature_flags(){return e.feature_flags},set feature_flags(t){e.feature_flags=t},generic_events:{enabled:!0,autoStart:!0},harvest:{interval:30},jserrors:{enabled:!0,autoStart:!0},logging:{enabled:!0,autoStart:!0},metrics:{enabled:!0,autoStart:!0},obfuscate:void 0,page_action:{enabled:!0},page_view_event:{enabled:!0,autoStart:!0},page_view_timing:{enabled:!0,autoStart:!0},performance:{capture_marks:!1,capture_measures:!1,capture_detail:!0,resources:{get enabled(){return e.feature_flags.includes(a.$v.RESOURCES)||e.experimental.resources},set enabled(t){e.experimental.resources=t},asset_types:[],first_party_domains:[],ignore_newrelic:!0}},privacy:{cookies_enabled:!0},proxy:{assets:void 0,beacon:void 0},session:{expiresMs:c.wk,inactiveMs:c.BB},session_replay:{autoStart:!0,enabled:!1,preload:!1,sampling_rate:10,error_sampling_rate:100,collect_fonts:!1,inline_images:!1,fix_stylesheets:!0,mask_all_inputs:!0,get mask_text_selector(){return e.mask_selector},set mask_text_selector(t){s(t)?e.mask_selector="".concat(t,",").concat(l):""===t||null===t?e.mask_selector=l:(0,u.R)(5,t)},get block_class(){return"nr-block"},get ignore_class(){return"nr-ignore"},get mask_text_class(){return"nr-mask"},get block_selector(){return e.block_selector},set block_selector(t){s(t)?e.block_selector+=",".concat(t):""!==t&&(0,u.R)(6,t)},get mask_input_options(){return e.mask_input_options},set mask_input_options(t){t&&"object"==typeof t?e.mask_input_options={...t,password:!0}:(0,u.R)(7,t)}},session_trace:{enabled:!0,autoStart:!0},soft_navigations:{enabled:!0,autoStart:!0},spa:{enabled:!0,autoStart:!0},ssl:void 0,user_actions:{enabled:!0,elementAttributes:["id","className","tagName","type"]}}})());var h=r(6154),p=r(9324);let g=0;const m={buildEnv:p.F3,distMethod:p.Xs,version:p.xv,originTime:h.WN},v={appMetadata:{},customTransaction:void 0,denyList:void 0,disabled:!1,entityManager:void 0,harvester:void 0,isolatedBacklog:!1,isRecording:!1,loaderType:void 0,maxBytes:3e4,obfuscator:void 0,onerror:void 0,ptid:void 0,releaseIds:{},session:void 0,timeKeeper:void 0,jsAttributesMetadata:{bytes:0},get harvestCount(){return++g}},b=e=>{const t=(0,d.a)(e,v),r=Object.keys(m).reduce((e,t)=>(e[t]={value:m[t],writable:!1,configurable:!0,enumerable:!0},e),{});return Object.defineProperties(t,r)};var y=r(5701);const w=e=>{const t=e.startsWith("http");e+="/",r.p=t?e:"https://"+e};var R=r(7836),x=r(3241);const T={accountID:void 0,trustKey:void 0,agentID:void 0,licenseKey:void 0,applicationID:void 0,xpid:void 0},E=e=>(0,d.a)(e,T),A=new Set;function O(e,t={},r,a){let{init:s,info:c,loader_config:u,runtime:d={},exposed:l=!0}=t;if(!c){const e=(0,n.pV)();s=e.init,c=e.info,u=e.loader_config}e.init=f(s||{}),e.loader_config=E(u||{}),c.jsAttributes??={},h.bv&&(c.jsAttributes.isWorker=!0),e.info=(0,o.D)(c);const p=e.init,g=[c.beacon,c.errorBeacon];A.has(e.agentIdentifier)||(p.proxy.assets&&(w(p.proxy.assets),g.push(p.proxy.assets)),p.proxy.beacon&&g.push(p.proxy.beacon),e.beacons=[...g],function(e){const t=(0,n.pV)();Object.getOwnPropertyNames(i.W.prototype).forEach(r=>{const n=i.W.prototype[r];if("function"!=typeof n||"constructor"===n)return;let o=t[r];e[r]&&!1!==e.exposed&&"micro-agent"!==e.runtime?.loaderType&&(t[r]=(...t)=>{const n=e[r](...t);return o?o(...t):n})})}(e),(0,n.US)("activatedFeatures",y.B),e.runSoftNavOverSpa&&=!0===p.soft_navigations.enabled&&p.feature_flags.includes("soft_nav")),d.denyList=[...p.ajax.deny_list||[],...p.ajax.block_internal?g:[]],d.ptid=e.agentIdentifier,d.loaderType=r,e.runtime=b(d),A.has(e.agentIdentifier)||(e.ee=R.ee.get(e.agentIdentifier),e.exposed=l,(0,x.W)({agentIdentifier:e.agentIdentifier,drained:!!y.B?.[e.agentIdentifier],type:"lifecycle",name:"initialize",feature:void 0,data:e.config})),A.add(e.agentIdentifier)}},5270:(e,t,r)=>{"use strict";r.d(t,{Aw:()=>a,SR:()=>o,rF:()=>s});var n=r(384),i=r(7767);function o(e){return!!(0,n.dV)().o.MO&&(0,i.V)(e)&&!0===e?.session_trace.enabled}function a(e){return!0===e?.session_replay.preload&&o(e)}function s(e,t){try{if("string"==typeof t?.type){if("password"===t.type.toLowerCase())return"*".repeat(e?.length||0);if(void 0!==t?.dataset?.nrUnmask||t?.classList?.contains("nr-unmask"))return e}}catch(e){}return"string"==typeof e?e.replace(/[\S]/g,"*"):"*".repeat(e?.length||0)}},5289:(e,t,r)=>{"use strict";r.d(t,{GG:()=>o,Qr:()=>s,sB:()=>a});var n=r(3878);function i(){return"undefined"==typeof document||"complete"===document.readyState}function o(e,t){if(i())return e();(0,n.sp)("load",e,t)}function a(e){if(i())return e();(0,n.DD)("DOMContentLoaded",e)}function s(e){if(i())return e();(0,n.sp)("popstate",e)}},5607:(e,t,r)=>{"use strict";r.d(t,{W:()=>n});const n=(0,r(9566).bz)()},5701:(e,t,r)=>{"use strict";r.d(t,{B:()=>o,t:()=>a});var n=r(3241);const i=new Set,o={};function a(e,t){const r=t.agentIdentifier;o[r]??={},e&&"object"==typeof e&&(i.has(r)||(t.ee.emit("rumresp",[e]),o[r]=e,i.add(r),(0,n.W)({agentIdentifier:r,loaded:!0,drained:!0,type:"lifecycle",name:"load",feature:void 0,data:e})))}},6154:(e,t,r)=>{"use strict";r.d(t,{A4:()=>s,OF:()=>d,RI:()=>i,WN:()=>h,bv:()=>o,gm:()=>a,lR:()=>f,m:()=>u,mw:()=>c,sb:()=>l});var n=r(1863);const i="undefined"!=typeof window&&!!window.document,o="undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self.navigator instanceof WorkerNavigator||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis.navigator instanceof WorkerNavigator),a=i?window:"undefined"!=typeof WorkerGlobalScope&&("undefined"!=typeof self&&self instanceof WorkerGlobalScope&&self||"undefined"!=typeof globalThis&&globalThis instanceof WorkerGlobalScope&&globalThis),s="complete"===a?.document?.readyState,c=Boolean("hidden"===a?.document?.visibilityState),u=""+a?.location,d=/iPad|iPhone|iPod/.test(a.navigator?.userAgent),l=d&&"undefined"==typeof SharedWorker,f=(()=>{const e=a.navigator?.userAgent?.match(/Firefox[/\s](\d+\.\d+)/);return Array.isArray(e)&&e.length>=2?+e[1]:0})(),h=Date.now()-(0,n.t)()},6344:(e,t,r)=>{"use strict";r.d(t,{BB:()=>d,G4:()=>o,Qb:()=>l,TZ:()=>i,Ug:()=>a,_s:()=>s,bc:()=>u,yP:()=>c});var n=r(2614);const i=r(860).K7.sessionReplay,o={RECORD:"recordReplay",PAUSE:"pauseReplay",ERROR_DURING_REPLAY:"errorDuringReplay"},a=.12,s={DomContentLoaded:0,Load:1,FullSnapshot:2,IncrementalSnapshot:3,Meta:4,Custom:5},c={[n.g.ERROR]:15e3,[n.g.FULL]:3e5,[n.g.OFF]:0},u={RESET:{message:"Session was reset",sm:"Reset"},IMPORT:{message:"Recorder failed to import",sm:"Import"},TOO_MANY:{message:"429: Too Many Requests",sm:"Too-Many"},TOO_BIG:{message:"Payload was too large",sm:"Too-Big"},CROSS_TAB:{message:"Session Entity was set to OFF on another tab",sm:"Cross-Tab"},ENTITLEMENTS:{message:"Session Replay is not allowed and will not be started",sm:"Entitlement"}},d=5e3,l={API:"api",RESUME:"resume",SWITCH_TO_FULL:"switchToFull",INITIALIZE:"initialize",PRELOAD:"preload"}},6389:(e,t,r)=>{"use strict";function n(e,t=500,r={}){const n=r?.leading||!1;let i;return(...r)=>{n&&void 0===i&&(e.apply(this,r),i=setTimeout(()=>{i=clearTimeout(i)},t)),n||(clearTimeout(i),i=setTimeout(()=>{e.apply(this,r)},t))}}function i(e){let t=!1;return(...r)=>{t||(t=!0,e.apply(this,r))}}r.d(t,{J:()=>i,s:()=>n})},6630:(e,t,r)=>{"use strict";r.d(t,{T:()=>n});const n=r(860).K7.pageViewEvent},6774:(e,t,r)=>{"use strict";r.d(t,{T:()=>n});const n=r(860).K7.jserrors},7295:(e,t,r)=>{"use strict";r.d(t,{Xv:()=>a,gX:()=>i,iW:()=>o});var n=[];function i(e){if(!e||o(e))return!1;if(0===n.length)return!0;for(var t=0;t<n.length;t++){var r=n[t];if("*"===r.hostname)return!1;if(s(r.hostname,e.hostname)&&c(r.pathname,e.pathname))return!1}return!0}function o(e){return void 0===e.hostname}function a(e){if(n=[],e&&e.length)for(var t=0;t<e.length;t++){let r=e[t];if(!r)continue;0===r.indexOf("http://")?r=r.substring(7):0===r.indexOf("https://")&&(r=r.substring(8));const i=r.indexOf("/");let o,a;i>0?(o=r.substring(0,i),a=r.substring(i)):(o=r,a="");let[s]=o.split(":");n.push({hostname:s,pathname:a})}}function s(e,t){return!(e.length>t.length)&&t.indexOf(e)===t.length-e.length}function c(e,t){return 0===e.indexOf("/")&&(e=e.substring(1)),0===t.indexOf("/")&&(t=t.substring(1)),""===e||e===t}},7378:(e,t,r)=>{"use strict";r.d(t,{$p:()=>x,BR:()=>b,Kp:()=>R,L3:()=>y,Lc:()=>c,NC:()=>o,SG:()=>d,TZ:()=>i,U6:()=>p,UT:()=>m,d3:()=>w,dT:()=>f,e5:()=>E,gx:()=>v,l9:()=>l,oW:()=>h,op:()=>g,rw:()=>u,tH:()=>A,uP:()=>s,wW:()=>T,xq:()=>a});var n=r(384);const i=r(860).K7.spa,o=["click","submit","keypress","keydown","keyup","change"],a=999,s="fn-start",c="fn-end",u="cb-start",d="api-ixn-",l="remaining",f="interaction",h="spaNode",p="jsonpNode",g="fetch-start",m="fetch-done",v="fetch-body-",b="jsonp-end",y=(0,n.dV)().o.ST,w="-start",R="-end",x="-body",T="cb"+R,E="jsTime",A="fetch"},7485:(e,t,r)=>{"use strict";r.d(t,{D:()=>i});var n=r(6154);function i(e){if(0===(e||"").indexOf("data:"))return{protocol:"data"};try{const t=new URL(e,location.href),r={port:t.port,hostname:t.hostname,pathname:t.pathname,search:t.search,protocol:t.protocol.slice(0,t.protocol.indexOf(":")),sameOrigin:t.protocol===n.gm?.location?.protocol&&t.host===n.gm?.location?.host};return r.port&&""!==r.port||("http:"===t.protocol&&(r.port="80"),"https:"===t.protocol&&(r.port="443")),r.pathname&&""!==r.pathname?r.pathname.startsWith("/")||(r.pathname="/".concat(r.pathname)):r.pathname="/",r}catch(e){return{}}}},7699:(e,t,r)=>{"use strict";r.d(t,{It:()=>i,No:()=>n,qh:()=>a,uh:()=>o});const n=16e3,i=1e6,o="NR_CONTAINER_AGENT",a="SESSION_ERROR"},7767:(e,t,r)=>{"use strict";r.d(t,{V:()=>i});var n=r(6154);const i=e=>n.RI&&!0===e?.privacy.cookies_enabled},7836:(e,t,r)=>{"use strict";r.d(t,{P:()=>s,ee:()=>c});var n=r(384),i=r(8990),o=r(2646),a=r(5607);const s="nr@context:".concat(a.W),c=function e(t,r){var n={},a={},d={},l=!1;try{l=16===r.length&&u.initializedAgents?.[r]?.runtime.isolatedBacklog}catch(e){}var f={on:p,addEventListener:p,removeEventListener:function(e,t){var r=n[e];if(!r)return;for(var i=0;i<r.length;i++)r[i]===t&&r.splice(i,1)},emit:function(e,r,n,i,o){!1!==o&&(o=!0);if(c.aborted&&!i)return;t&&o&&t.emit(e,r,n);var s=h(n);g(e).forEach(e=>{e.apply(s,r)});var u=v()[a[e]];u&&u.push([f,e,r,s]);return s},get:m,listeners:g,context:h,buffer:function(e,t){const r=v();if(t=t||"feature",f.aborted)return;Object.entries(e||{}).forEach(([e,n])=>{a[n]=t,t in r||(r[t]=[])})},abort:function(){f._aborted=!0,Object.keys(f.backlog).forEach(e=>{delete f.backlog[e]})},isBuffering:function(e){return!!v()[a[e]]},debugId:r,backlog:l?{}:t&&"object"==typeof t.backlog?t.backlog:{},isolatedBacklog:l};return Object.defineProperty(f,"aborted",{get:()=>{let e=f._aborted||!1;return e||(t&&(e=t.aborted),e)}}),f;function h(e){return e&&e instanceof o.y?e:e?(0,i.I)(e,s,()=>new o.y(s)):new o.y(s)}function p(e,t){n[e]=g(e).concat(t)}function g(e){return n[e]||[]}function m(t){return d[t]=d[t]||e(f,t)}function v(){return f.backlog}}(void 0,"globalEE"),u=(0,n.Zm)();u.ee||(u.ee=c)},8122:(e,t,r)=>{"use strict";r.d(t,{a:()=>i});var n=r(944);function i(e,t){try{if(!e||"object"!=typeof e)return(0,n.R)(3);if(!t||"object"!=typeof t)return(0,n.R)(4);const r=Object.create(Object.getPrototypeOf(t),Object.getOwnPropertyDescriptors(t)),o=0===Object.keys(r).length?e:r;for(let a in o)if(void 0!==e[a])try{if(null===e[a]){r[a]=null;continue}Array.isArray(e[a])&&Array.isArray(t[a])?r[a]=Array.from(new Set([...e[a],...t[a]])):"object"==typeof e[a]&&"object"==typeof t[a]?r[a]=i(e[a],t[a]):r[a]=e[a]}catch(e){r[a]||(0,n.R)(1,e)}return r}catch(e){(0,n.R)(2,e)}}},8139:(e,t,r)=>{"use strict";r.d(t,{u:()=>f});var n=r(7836),i=r(3434),o=r(8990),a=r(6154);const s={},c=a.gm.XMLHttpRequest,u="addEventListener",d="removeEventListener",l="nr@wrapped:".concat(n.P);function f(e){var t=function(e){return(e||n.ee).get("events")}(e);if(s[t.debugId]++)return t;s[t.debugId]=1;var r=(0,i.YM)(t,!0);function f(e){r.inPlace(e,[u,d],"-",p)}function p(e,t){return e[1]}return"getPrototypeOf"in Object&&(a.RI&&h(document,f),c&&h(c.prototype,f),h(a.gm,f)),t.on(u+"-start",function(e,t){var n=e[1];if(null!==n&&("function"==typeof n||"object"==typeof n)&&"newrelic"!==e[0]){var i=(0,o.I)(n,l,function(){var e={object:function(){if("function"!=typeof n.handleEvent)return;return n.handleEvent.apply(n,arguments)},function:n}[typeof n];return e?r(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=e[1]=i}}),t.on(d+"-start",function(e){e[1]=this.wrapped||e[1]}),t}function h(e,t,...r){let n=e;for(;"object"==typeof n&&!Object.prototype.hasOwnProperty.call(n,u);)n=Object.getPrototypeOf(n);n&&t(n,...r)}},8154:(e,t,r)=>{"use strict";r.d(t,{z_:()=>o,XG:()=>s,TZ:()=>n,rs:()=>i,xV:()=>a});r(6154),r(9566),r(384);const n=r(860).K7.metrics,i="sm",o="cm",a="storeSupportabilityMetrics",s="storeEventMetrics"},8374:(e,t,r)=>{r.nc=(()=>{try{return document?.currentScript?.nonce}catch(e){}return""})()},8990:(e,t,r)=>{"use strict";r.d(t,{I:()=>i});var n=Object.prototype.hasOwnProperty;function i(e,t,r){if(n.call(e,t))return e[t];var i=r();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:i,writable:!0,enumerable:!1}),i}catch(e){}return e[t]=i,i}},9300:(e,t,r)=>{"use strict";r.d(t,{T:()=>n});const n=r(860).K7.ajax},9324:(e,t,r)=>{"use strict";r.d(t,{AJ:()=>a,F3:()=>i,Xs:()=>o,Yq:()=>s,xv:()=>n});const n="1.301.0",i="PROD",o="CDN",a="@newrelic/rrweb",s="1.0.1"},9566:(e,t,r)=>{"use strict";r.d(t,{LA:()=>s,ZF:()=>c,bz:()=>a,el:()=>u});var n=r(6154);const i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";function o(e,t){return e?15&e[t]:16*Math.random()|0}function a(){const e=n.gm?.crypto||n.gm?.msCrypto;let t,r=0;return e&&e.getRandomValues&&(t=e.getRandomValues(new Uint8Array(30))),i.split("").map(e=>"x"===e?o(t,r++).toString(16):"y"===e?(3&o()|8).toString(16):e).join("")}function s(e){const t=n.gm?.crypto||n.gm?.msCrypto;let r,i=0;t&&t.getRandomValues&&(r=t.getRandomValues(new Uint8Array(e)));const a=[];for(var s=0;s<e;s++)a.push(o(r,i++).toString(16));return a.join("")}function c(){return s(16)}function u(){return s(32)}},9908:(e,t,r)=>{"use strict";r.d(t,{d:()=>n,p:()=>i});var n=r(7836).ee.get("handle");function i(e,t,r,i,o){o?(o.buffer([e],i),o.emit(e,t,r)):(n.buffer([e],i),n.emit(e,t,r))}}},n={};function i(e){var t=n[e];if(void 0!==t)return t.exports;var o=n[e]={exports:{}};return r[e](o,o.exports,i),o.exports}i.m=r,i.d=(e,t)=>{for(var r in t)i.o(t,r)&&!i.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},i.f={},i.e=e=>Promise.all(Object.keys(i.f).reduce((t,r)=>(i.f[r](e,t),t),[])),i.u=e=>({212:"nr-spa-compressor",249:"nr-spa-recorder",478:"nr-spa"}[e]+"-1.301.0.min.js"),i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),e={},t="NRBA-1.301.0.PROD:",i.l=(r,n,o,a)=>{if(e[r])e[r].push(n);else{var s,c;if(void 0!==o)for(var u=document.getElementsByTagName("script"),d=0;d<u.length;d++){var l=u[d];if(l.getAttribute("src")==r||l.getAttribute("data-webpack")==t+o){s=l;break}}if(!s){c=!0;var f={478:"sha512-7qHClSVBtoyiwRvCkgyaF5Ps0RAENoPwjauK0I+0bYyBYefdZVshGSe8JQWh/Wexd7hFuUui5xp+2xn5U1a3ZA==",249:"sha512-KuEP0gQ0mAldYT/AqNp3NW4kVb0kLtfIlXaPSFq4WQRFf8vKVNnSqiafso/bWR75halLwFsgmJtdLJEzntVZoQ==",212:"sha512-fqWEILwVJyfYV9/SedvSjCZ6hDRNjOvwYfN73wxZtahaztcFZ2cr3Ns172tBGIDQeWO25QmSlihZm+awv8ma/w=="};(s=document.createElement("script")).charset="utf-8",i.nc&&s.setAttribute("nonce",i.nc),s.setAttribute("data-webpack",t+o),s.src=r,0!==s.src.indexOf(window.location.origin+"/")&&(s.crossOrigin="anonymous"),f[a]&&(s.integrity=f[a])}e[r]=[n];var h=(t,n)=>{s.onerror=s.onload=null,clearTimeout(p);var i=e[r];if(delete e[r],s.parentNode&&s.parentNode.removeChild(s),i&&i.forEach(e=>e(n)),t)return t(n)},p=setTimeout(h.bind(null,void 0,{type:"timeout",target:s}),12e4);s.onerror=h.bind(null,s.onerror),s.onload=h.bind(null,s.onload),c&&document.head.appendChild(s)}},i.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.p="https://js-agent.newrelic.com/",(()=>{var e={38:0,788:0};i.f.j=(t,r)=>{var n=i.o(e,t)?e[t]:void 0;if(0!==n)if(n)r.push(n[2]);else{var o=new Promise((r,i)=>n=e[t]=[r,i]);r.push(n[2]=o);var a=i.p+i.u(t),s=new Error;i.l(a,r=>{if(i.o(e,t)&&(0!==(n=e[t])&&(e[t]=void 0),n)){var o=r&&("load"===r.type?"missing":r.type),a=r&&r.target&&r.target.src;s.message="Loading chunk "+t+" failed.\n("+o+": "+a+")",s.name="ChunkLoadError",s.type=o,s.request=a,n[1](s)}},"chunk-"+t,t)}};var t=(t,r)=>{var n,o,[a,s,c]=r,u=0;if(a.some(t=>0!==e[t])){for(n in s)i.o(s,n)&&(i.m[n]=s[n]);if(c)c(i)}for(t&&t(r);u<a.length;u++)o=a[u],i.o(e,o)&&e[o]&&e[o][0](),e[o]=0},r=self["webpackChunk:NRBA-1.301.0.PROD"]=self["webpackChunk:NRBA-1.301.0.PROD"]||[];r.forEach(t.bind(null,0)),r.push=t.bind(null,r.push.bind(r))})(),(()=>{"use strict";i(8374);var e=i(9566),t=i(1741);class r extends t.W{agentIdentifier=(0,e.LA)(16)}var n=i(860);const o=Object.values(n.K7);var a=i(5205);var s=i(9908),c=i(1863),u=i(4261),d=i(3241),l=i(944),f=i(5701),h=i(8154);function p(e,t,i,o){const a=o||i;!a||a[e]&&a[e]!==r.prototype[e]||(a[e]=function(){(0,s.p)(h.xV,["API/"+e+"/called"],void 0,n.K7.metrics,i.ee),(0,d.W)({agentIdentifier:i.agentIdentifier,drained:!!f.B?.[i.agentIdentifier],type:"data",name:"api",feature:u.Pl+e,data:{}});try{return t.apply(this,arguments)}catch(e){(0,l.R)(23,e)}})}function g(e,t,r,n,i){const o=e.info;null===r?delete o.jsAttributes[t]:o.jsAttributes[t]=r,(i||null===r)&&(0,s.p)(u.Pl+n,[(0,c.t)(),t,r],void 0,"session",e.ee)}var m=i(1687),v=i(4234),b=i(5289),y=i(6154),w=i(5270),R=i(7767),x=i(6389),T=i(7699);class E extends v.W{constructor(e,t){super(e.agentIdentifier,t),this.agentRef=e,this.abortHandler=void 0,this.featAggregate=void 0,this.onAggregateImported=void 0,this.deferred=Promise.resolve(),!1===e.init[this.featureName].autoStart?this.deferred=new Promise((t,r)=>{this.ee.on("manual-start-all",(0,x.J)(()=>{(0,m.Ak)(e.agentIdentifier,this.featureName),t()}))}):(0,m.Ak)(e.agentIdentifier,t)}importAggregator(e,t,r={}){if(this.featAggregate)return;let n;this.onAggregateImported=new Promise(e=>{n=e});const o=async()=>{let o;await this.deferred;try{if((0,R.V)(e.init)){const{setupAgentSession:t}=await i.e(478).then(i.bind(i,8766));o=t(e)}}catch(e){(0,l.R)(20,e),this.ee.emit("internal-error",[e]),(0,s.p)(T.qh,[e],void 0,this.featureName,this.ee)}try{if(!this.#t(this.featureName,o,e.init))return(0,m.Ze)(this.agentIdentifier,this.featureName),void n(!1);const{Aggregate:i}=await t();this.featAggregate=new i(e,r),e.runtime.harvester.initializedAggregates.push(this.featAggregate),n(!0)}catch(e){(0,l.R)(34,e),this.abortHandler?.(),(0,m.Ze)(this.agentIdentifier,this.featureName,!0),n(!1),this.ee&&this.ee.abort()}};y.RI?(0,b.GG)(()=>o(),!0):o()}#t(e,t,r){if(this.blocked)return!1;switch(e){case n.K7.sessionReplay:return(0,w.SR)(r)&&!!t;case n.K7.sessionTrace:return!!t;default:return!0}}}var A=i(6630),O=i(2614);class S extends E{static featureName=A.T;constructor(e){var t;super(e,A.T),this.setupInspectionEvents(e.agentIdentifier),t=e,p(u.Fw,function(e,r){"string"==typeof e&&("/"!==e.charAt(0)&&(e="/"+e),t.runtime.customTransaction=(r||"http://custom.transaction")+e,(0,s.p)(u.Pl+u.Fw,[(0,c.t)()],void 0,void 0,t.ee))},t),this.ee.on("api-send-rum",(e,t)=>(0,s.p)("send-rum",[e,t],void 0,this.featureName,this.ee)),this.importAggregator(e,()=>i.e(478).then(i.bind(i,1983)))}setupInspectionEvents(e){const t=(t,r)=>{t&&(0,d.W)({agentIdentifier:e,timeStamp:t.timeStamp,loaded:"complete"===t.target.readyState,type:"window",name:r,data:t.target.location+""})};(0,b.sB)(e=>{t(e,"DOMContentLoaded")}),(0,b.GG)(e=>{t(e,"load")}),(0,b.Qr)(e=>{t(e,"navigate")}),this.ee.on(O.tS.UPDATE,(t,r)=>{(0,d.W)({agentIdentifier:e,type:"lifecycle",name:"session",data:r})})}}var N=i(384);var _=i(2843),I=i(3878),P=i(782);class j extends E{static featureName=P.T;constructor(e){super(e,P.T),y.RI&&((0,_.u)(()=>(0,s.p)("docHidden",[(0,c.t)()],void 0,P.T,this.ee),!0),(0,I.sp)("pagehide",()=>(0,s.p)("winPagehide",[(0,c.t)()],void 0,P.T,this.ee)),this.importAggregator(e,()=>i.e(478).then(i.bind(i,9917))))}}class C extends E{static featureName=h.TZ;constructor(e){super(e,h.TZ),y.RI&&document.addEventListener("securitypolicyviolation",e=>{(0,s.p)(h.xV,["Generic/CSPViolation/Detected"],void 0,this.featureName,this.ee)}),this.importAggregator(e,()=>i.e(478).then(i.bind(i,6555)))}}var k=i(6774),L=i(3304);class H{constructor(e,t,r,n,i){this.name="UncaughtError",this.message="string"==typeof e?e:(0,L.A)(e),this.sourceURL=t,this.line=r,this.column=n,this.__newrelic=i}}function M(e){return U(e)?e:new H(void 0!==e?.message?e.message:e,e?.filename||e?.sourceURL,e?.lineno||e?.line,e?.colno||e?.col,e?.__newrelic,e?.cause)}function D(e){const t="Unhandled Promise Rejection: ";if(!e?.reason)return;if(U(e.reason)){try{e.reason.message.startsWith(t)||(e.reason.message=t+e.reason.message)}catch(e){}return M(e.reason)}const r=M(e.reason);return(r.message||"").startsWith(t)||(r.message=t+r.message),r}function K(e){if(e.error instanceof SyntaxError&&!/:\d+$/.test(e.error.stack?.trim())){const t=new H(e.message,e.filename,e.lineno,e.colno,e.error.__newrelic,e.cause);return t.name=SyntaxError.name,t}return U(e.error)?e.error:M(e)}function U(e){return e instanceof Error&&!!e.stack}function F(e,t,r,i,o=(0,c.t)()){"string"==typeof e&&(e=new Error(e)),(0,s.p)("err",[e,o,!1,t,r.runtime.isRecording,void 0,i],void 0,n.K7.jserrors,r.ee),(0,s.p)("uaErr",[],void 0,n.K7.genericEvents,r.ee)}var W=i(3496),B=i(993),G=i(3785);function V(e,{customAttributes:t={},level:r=B.p_.INFO}={},n,i,o=(0,c.t)()){(0,G.R)(n.ee,e,t,r,i,o)}function z(e,t,r,i,o=(0,c.t)()){(0,s.p)(u.Pl+u.hG,[o,e,t,i],void 0,n.K7.genericEvents,r.ee)}function Z(e){p(u.eY,function(t){return function(e,t){const r={};let i,o;(0,l.R)(54,"newrelic.register"),e.init.api.allow_registered_children||(i=()=>(0,l.R)(55));t&&(0,W.I)(t)||(i=()=>(0,l.R)(48,t));const a={addPageAction:(n,i={})=>{u(z,[n,{...r,...i},e],t)},log:(n,i={})=>{u(V,[n,{...i,customAttributes:{...r,...i.customAttributes||{}}},e],t)},noticeError:(n,i={})=>{u(F,[n,{...r,...i},e],t)},setApplicationVersion:e=>{r["application.version"]=e},setCustomAttribute:(e,t)=>{r[e]=t},setUserId:e=>{r["enduser.id"]=e},metadata:{customAttributes:r,target:t,get connected(){return o||Promise.reject(new Error("Failed to connect"))}}};i?i():o=new Promise((n,i)=>{try{const o=e.runtime?.entityManager;let s=!!o?.get().entityGuid,c=o?.getEntityGuidFor(t.licenseKey,t.applicationID),u=!!c;if(s&&u)t.entityGuid=c,n(a);else{const d=setTimeout(()=>i(new Error("Failed to connect - Timeout")),15e3);function l(r){(0,W.A)(r,e)?s||=!0:t.licenseKey===r.licenseKey&&t.applicationID===r.applicationID&&(u=!0,t.entityGuid=r.entityGuid),s&&u&&(clearTimeout(d),e.ee.removeEventListener("entity-added",l),n(a))}e.ee.emit("api-send-rum",[r,t]),e.ee.on("entity-added",l)}}catch(f){i(f)}});const u=async(t,r,a)=>{if(i)return i();const u=(0,c.t)();(0,s.p)(h.xV,["API/register/".concat(t.name,"/called")],void 0,n.K7.metrics,e.ee);try{await o;const n=e.init.api.duplicate_registered_data;(!0===n||Array.isArray(n)&&n.includes(a.entityGuid))&&t(...r,void 0,u),t(...r,a.entityGuid,u)}catch(e){(0,l.R)(50,e)}};return a}(e,t)},e)}class q extends E{static featureName=k.T;constructor(e){var t;super(e,k.T),t=e,p(u.o5,(e,r)=>F(e,r,t),t),function(e){p(u.bt,function(t){e.runtime.onerror=t},e)}(e),function(e){let t=0;p(u.k6,function(e,r){++t>10||(this.runtime.releaseIds[e.slice(-200)]=(""+r).slice(-200))},e)}(e),Z(e);try{this.removeOnAbort=new AbortController}catch(e){}this.ee.on("internal-error",(t,r)=>{this.abortHandler&&(0,s.p)("ierr",[M(t),(0,c.t)(),!0,{},e.runtime.isRecording,r],void 0,this.featureName,this.ee)}),y.gm.addEventListener("unhandledrejection",t=>{this.abortHandler&&(0,s.p)("err",[D(t),(0,c.t)(),!1,{unhandledPromiseRejection:1},e.runtime.isRecording],void 0,this.featureName,this.ee)},(0,I.jT)(!1,this.removeOnAbort?.signal)),y.gm.addEventListener("error",t=>{this.abortHandler&&(0,s.p)("err",[K(t),(0,c.t)(),!1,{},e.runtime.isRecording],void 0,this.featureName,this.ee)},(0,I.jT)(!1,this.removeOnAbort?.signal)),this.abortHandler=this.#r,this.importAggregator(e,()=>i.e(478).then(i.bind(i,2176)))}#r(){this.removeOnAbort?.abort(),this.abortHandler=void 0}}var X=i(8990);let Y=1;function Q(e){const t=typeof e;return!e||"object"!==t&&"function"!==t?-1:e===y.gm?0:(0,X.I)(e,"nr@id",function(){return Y++})}function J(e){if("string"==typeof e&&e.length)return e.length;if("object"==typeof e){if("undefined"!=typeof ArrayBuffer&&e instanceof ArrayBuffer&&e.byteLength)return e.byteLength;if("undefined"!=typeof Blob&&e instanceof Blob&&e.size)return e.size;if(!("undefined"!=typeof FormData&&e instanceof FormData))try{return(0,L.A)(e).length}catch(e){return}}}var ee=i(8139),te=i(7836),re=i(3434);const ne={},ie=["open","send"];function oe(e){var t=e||te.ee;const r=function(e){return(e||te.ee).get("xhr")}(t);if(void 0===y.gm.XMLHttpRequest)return r;if(ne[r.debugId]++)return r;ne[r.debugId]=1,(0,ee.u)(t);var n=(0,re.YM)(r),i=y.gm.XMLHttpRequest,o=y.gm.MutationObserver,a=y.gm.Promise,s=y.gm.setInterval,c="readystatechange",u=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],d=[],f=y.gm.XMLHttpRequest=function(e){const t=new i(e),o=r.context(t);try{r.emit("new-xhr",[t],o),t.addEventListener(c,(a=o,function(){var e=this;e.readyState>3&&!a.resolved&&(a.resolved=!0,r.emit("xhr-resolved",[],e)),n.inPlace(e,u,"fn-",b)}),(0,I.jT)(!1))}catch(e){(0,l.R)(15,e);try{r.emit("internal-error",[e])}catch(e){}}var a;return t};function h(e,t){n.inPlace(t,["onreadystatechange"],"fn-",b)}if(function(e,t){for(var r in e)t[r]=e[r]}(i,f),f.prototype=i.prototype,n.inPlace(f.prototype,ie,"-xhr-",b),r.on("send-xhr-start",function(e,t){h(e,t),function(e){d.push(e),o&&(p?p.then(v):s?s(v):(g=-g,m.data=g))}(t)}),r.on("open-xhr-start",h),o){var p=a&&a.resolve();if(!s&&!a){var g=1,m=document.createTextNode(g);new o(v).observe(m,{characterData:!0})}}else t.on("fn-end",function(e){e[0]&&e[0].type===c||v()});function v(){for(var e=0;e<d.length;e++)h(0,d[e]);d.length&&(d=[])}function b(e,t){return t}return r}var ae="fetch-",se=ae+"body-",ce=["arrayBuffer","blob","json","text","formData"],ue=y.gm.Request,de=y.gm.Response,le="prototype";const fe={};function he(e){const t=function(e){return(e||te.ee).get("fetch")}(e);if(!(ue&&de&&y.gm.fetch))return t;if(fe[t.debugId]++)return t;function r(e,r,n){var i=e[r];"function"==typeof i&&(e[r]=function(){var e,r=[...arguments],o={};t.emit(n+"before-start",[r],o),o[te.P]&&o[te.P].dt&&(e=o[te.P].dt);var a=i.apply(this,r);return t.emit(n+"start",[r,e],a),a.then(function(e){return t.emit(n+"end",[null,e],a),e},function(e){throw t.emit(n+"end",[e],a),e})})}return fe[t.debugId]=1,ce.forEach(e=>{r(ue[le],e,se),r(de[le],e,se)}),r(y.gm,"fetch",ae),t.on(ae+"end",function(e,r){var n=this;if(r){var i=r.headers.get("content-length");null!==i&&(n.rxSize=i),t.emit(ae+"done",[null,r],n)}else t.emit(ae+"done",[e],n)}),t}var pe=i(7485);class ge{constructor(e){this.agentRef=e}generateTracePayload(t){const r=this.agentRef.loader_config;if(!this.shouldGenerateTrace(t)||!r)return null;var n=(r.accountID||"").toString()||null,i=(r.agentID||"").toString()||null,o=(r.trustKey||"").toString()||null;if(!n||!i)return null;var a=(0,e.ZF)(),s=(0,e.el)(),c=Date.now(),u={spanId:a,traceId:s,timestamp:c};return(t.sameOrigin||this.isAllowedOrigin(t)&&this.useTraceContextHeadersForCors())&&(u.traceContextParentHeader=this.generateTraceContextParentHeader(a,s),u.traceContextStateHeader=this.generateTraceContextStateHeader(a,c,n,i,o)),(t.sameOrigin&&!this.excludeNewrelicHeader()||!t.sameOrigin&&this.isAllowedOrigin(t)&&this.useNewrelicHeaderForCors())&&(u.newrelicHeader=this.generateTraceHeader(a,s,c,n,i,o)),u}generateTraceContextParentHeader(e,t){return"00-"+t+"-"+e+"-01"}generateTraceContextStateHeader(e,t,r,n,i){return i+"@nr=0-1-"+r+"-"+n+"-"+e+"----"+t}generateTraceHeader(e,t,r,n,i,o){if(!("function"==typeof y.gm?.btoa))return null;var a={v:[0,1],d:{ty:"Browser",ac:n,ap:i,id:e,tr:t,ti:r}};return o&&n!==o&&(a.d.tk=o),btoa((0,L.A)(a))}shouldGenerateTrace(e){return this.agentRef.init?.distributed_tracing?.enabled&&this.isAllowedOrigin(e)}isAllowedOrigin(e){var t=!1;const r=this.agentRef.init?.distributed_tracing;if(e.sameOrigin)t=!0;else if(r?.allowed_origins instanceof Array)for(var n=0;n<r.allowed_origins.length;n++){var i=(0,pe.D)(r.allowed_origins[n]);if(e.hostname===i.hostname&&e.protocol===i.protocol&&e.port===i.port){t=!0;break}}return t}excludeNewrelicHeader(){var e=this.agentRef.init?.distributed_tracing;return!!e&&!!e.exclude_newrelic_header}useNewrelicHeaderForCors(){var e=this.agentRef.init?.distributed_tracing;return!!e&&!1!==e.cors_use_newrelic_header}useTraceContextHeadersForCors(){var e=this.agentRef.init?.distributed_tracing;return!!e&&!!e.cors_use_tracecontext_headers}}var me=i(9300),ve=i(7295);function be(e){return"string"==typeof e?e:e instanceof(0,N.dV)().o.REQ?e.url:y.gm?.URL&&e instanceof URL?e.href:void 0}var ye=["load","error","abort","timeout"],we=ye.length,Re=(0,N.dV)().o.REQ,xe=(0,N.dV)().o.XHR;const Te="X-NewRelic-App-Data";class Ee extends E{static featureName=me.T;constructor(e){super(e,me.T),this.dt=new ge(e),this.handler=(e,t,r,n)=>(0,s.p)(e,t,r,n,this.ee);try{const e={xmlhttprequest:"xhr",fetch:"fetch",beacon:"beacon"};y.gm?.performance?.getEntriesByType("resource").forEach(t=>{if(t.initiatorType in e&&0!==t.responseStatus){const r={status:t.responseStatus},i={rxSize:t.transferSize,duration:Math.floor(t.duration),cbTime:0};Ae(r,t.name),this.handler("xhr",[r,i,t.startTime,t.responseEnd,e[t.initiatorType]],void 0,n.K7.ajax)}})}catch(e){}he(this.ee),oe(this.ee),function(e,t,r,i){function o(e){var t=this;t.totalCbs=0,t.called=0,t.cbTime=0,t.end=E,t.ended=!1,t.xhrGuids={},t.lastSize=null,t.loadCaptureCalled=!1,t.params=this.params||{},t.metrics=this.metrics||{},t.latestLongtaskEnd=0,e.addEventListener("load",function(r){A(t,e)},(0,I.jT)(!1)),y.lR||e.addEventListener("progress",function(e){t.lastSize=e.loaded},(0,I.jT)(!1))}function a(e){this.params={method:e[0]},Ae(this,e[1]),this.metrics={}}function u(t,r){e.loader_config.xpid&&this.sameOrigin&&r.setRequestHeader("X-NewRelic-ID",e.loader_config.xpid);var n=i.generateTracePayload(this.parsedOrigin);if(n){var o=!1;n.newrelicHeader&&(r.setRequestHeader("newrelic",n.newrelicHeader),o=!0),n.traceContextParentHeader&&(r.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&r.setRequestHeader("tracestate",n.traceContextStateHeader),o=!0),o&&(this.dt=n)}}function d(e,r){var n=this.metrics,i=e[0],o=this;if(n&&i){var a=J(i);a&&(n.txSize=a)}this.startTime=(0,c.t)(),this.body=i,this.listener=function(e){try{"abort"!==e.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==e.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof r.onload)&&"function"==typeof o.end)&&o.end(r)}catch(e){try{t.emit("internal-error",[e])}catch(e){}}};for(var s=0;s<we;s++)r.addEventListener(ye[s],this.listener,(0,I.jT)(!1))}function l(e,t,r){this.cbTime+=e,t?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof r.onload||"function"!=typeof this.end||this.end(r)}function f(e,t){var r=""+Q(e)+!!t;this.xhrGuids&&!this.xhrGuids[r]&&(this.xhrGuids[r]=!0,this.totalCbs+=1)}function p(e,t){var r=""+Q(e)+!!t;this.xhrGuids&&this.xhrGuids[r]&&(delete this.xhrGuids[r],this.totalCbs-=1)}function g(){this.endTime=(0,c.t)()}function m(e,r){r instanceof xe&&"load"===e[0]&&t.emit("xhr-load-added",[e[1],e[2]],r)}function v(e,r){r instanceof xe&&"load"===e[0]&&t.emit("xhr-load-removed",[e[1],e[2]],r)}function b(e,t,r){t instanceof xe&&("onload"===r&&(this.onload=!0),("load"===(e[0]&&e[0].type)||this.onload)&&(this.xhrCbStart=(0,c.t)()))}function w(e,r){this.xhrCbStart&&t.emit("xhr-cb-time",[(0,c.t)()-this.xhrCbStart,this.onload,r],r)}function R(e){var t,r=e[1]||{};if("string"==typeof e[0]?0===(t=e[0]).length&&y.RI&&(t=""+y.gm.location.href):e[0]&&e[0].url?t=e[0].url:y.gm?.URL&&e[0]&&e[0]instanceof URL?t=e[0].href:"function"==typeof e[0].toString&&(t=e[0].toString()),"string"==typeof t&&0!==t.length){t&&(this.parsedOrigin=(0,pe.D)(t),this.sameOrigin=this.parsedOrigin.sameOrigin);var n=i.generateTracePayload(this.parsedOrigin);if(n&&(n.newrelicHeader||n.traceContextParentHeader))if(e[0]&&e[0].headers)s(e[0].headers,n)&&(this.dt=n);else{var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),s(o.headers,n)&&(this.dt=n),e.length>1?e[1]=o:e.push(o)}}function s(e,t){var r=!1;return t.newrelicHeader&&(e.set("newrelic",t.newrelicHeader),r=!0),t.traceContextParentHeader&&(e.set("traceparent",t.traceContextParentHeader),t.traceContextStateHeader&&e.set("tracestate",t.traceContextStateHeader),r=!0),r}}function x(e,t){this.params={},this.metrics={},this.startTime=(0,c.t)(),this.dt=t,e.length>=1&&(this.target=e[0]),e.length>=2&&(this.opts=e[1]);var r=this.opts||{},n=this.target;Ae(this,be(n));var i=(""+(n&&n instanceof Re&&n.method||r.method||"GET")).toUpperCase();this.params.method=i,this.body=r.body,this.txSize=J(r.body)||0}function T(e,t){if(this.endTime=(0,c.t)(),this.params||(this.params={}),(0,ve.iW)(this.params))return;let i;this.params.status=t?t.status:0,"string"==typeof this.rxSize&&this.rxSize.length>0&&(i=+this.rxSize);const o={txSize:this.txSize,rxSize:i,duration:(0,c.t)()-this.startTime};r("xhr",[this.params,o,this.startTime,this.endTime,"fetch"],this,n.K7.ajax)}function E(e){const t=this.params,i=this.metrics;if(!this.ended){this.ended=!0;for(let t=0;t<we;t++)e.removeEventListener(ye[t],this.listener,!1);t.aborted||(0,ve.iW)(t)||(i.duration=(0,c.t)()-this.startTime,this.loadCaptureCalled||4!==e.readyState?null==t.status&&(t.status=0):A(this,e),i.cbTime=this.cbTime,r("xhr",[t,i,this.startTime,this.endTime,"xhr"],this,n.K7.ajax))}}function A(e,r){e.params.status=r.status;var i=function(e,t){var r=e.responseType;return"json"===r&&null!==t?t:"arraybuffer"===r||"blob"===r||"json"===r?J(e.response):"text"===r||""===r||void 0===r?J(e.responseText):void 0}(r,e.lastSize);if(i&&(e.metrics.rxSize=i),e.sameOrigin&&r.getAllResponseHeaders().indexOf(Te)>=0){var o=r.getResponseHeader(Te);o&&((0,s.p)(h.rs,["Ajax/CrossApplicationTracing/Header/Seen"],void 0,n.K7.metrics,t),e.params.cat=o.split(", ").pop())}e.loadCaptureCalled=!0}t.on("new-xhr",o),t.on("open-xhr-start",a),t.on("open-xhr-end",u),t.on("send-xhr-start",d),t.on("xhr-cb-time",l),t.on("xhr-load-added",f),t.on("xhr-load-removed",p),t.on("xhr-resolved",g),t.on("addEventListener-end",m),t.on("removeEventListener-end",v),t.on("fn-end",w),t.on("fetch-before-start",R),t.on("fetch-start",x),t.on("fn-start",b),t.on("fetch-done",T)}(e,this.ee,this.handler,this.dt),this.importAggregator(e,()=>i.e(478).then(i.bind(i,3845)))}}function Ae(e,t){var r=(0,pe.D)(t),n=e.params||e;n.hostname=r.hostname,n.port=r.port,n.protocol=r.protocol,n.host=r.hostname+":"+r.port,n.pathname=r.pathname,e.parsedOrigin=r,e.sameOrigin=r.sameOrigin}const Oe={},Se=["pushState","replaceState"];function Ne(e){const t=function(e){return(e||te.ee).get("history")}(e);return!y.RI||Oe[t.debugId]++||(Oe[t.debugId]=1,(0,re.YM)(t).inPlace(window.history,Se,"-")),t}var _e=i(3738);function Ie(e){p(u.BL,function(t=Date.now()){const r=t-y.WN;r<0&&(0,l.R)(62,t),(0,s.p)(h.XG,[u.BL,{time:r}],void 0,n.K7.metrics,e.ee),e.addToTrace({name:u.BL,start:t,origin:"nr"}),(0,s.p)(u.Pl+u.hG,[r,u.BL],void 0,n.K7.genericEvents,e.ee)},e)}const{He:Pe,bD:je,d3:Ce,Kp:ke,TZ:Le,Lc:He,uP:Me,Rz:De}=_e;class Ke extends E{static featureName=Le;constructor(e){var t;super(e,Le),t=e,p(u.U2,function(e){if(!(e&&"object"==typeof e&&e.name&&e.start))return;const r={n:e.name,s:e.start-y.WN,e:(e.end||e.start)-y.WN,o:e.origin||"",t:"api"};r.s<0||r.e<0||r.e<r.s?(0,l.R)(61,{start:r.s,end:r.e}):(0,s.p)("bstApi",[r],void 0,n.K7.sessionTrace,t.ee)},t),Ie(e);if(!(0,R.V)(e.init))return void this.deregisterDrain();const r=this.ee;let o;Ne(r),this.eventsEE=(0,ee.u)(r),this.eventsEE.on(Me,function(e,t){this.bstStart=(0,c.t)()}),this.eventsEE.on(He,function(e,t){(0,s.p)("bst",[e[0],t,this.bstStart,(0,c.t)()],void 0,n.K7.sessionTrace,r)}),r.on(De+Ce,function(e){this.time=(0,c.t)(),this.startPath=location.pathname+location.hash}),r.on(De+ke,function(e){(0,s.p)("bstHist",[location.pathname+location.hash,this.startPath,this.time],void 0,n.K7.sessionTrace,r)});try{o=new PerformanceObserver(e=>{const t=e.getEntries();(0,s.p)(Pe,[t],void 0,n.K7.sessionTrace,r)}),o.observe({type:je,buffered:!0})}catch(e){}this.importAggregator(e,()=>i.e(478).then(i.bind(i,6974)),{resourceObserver:o})}}var Ue=i(6344);class Fe extends E{static featureName=Ue.TZ;#n;recorder;constructor(e){var t;let r;super(e,Ue.TZ),t=e,p(u.CH,function(){(0,s.p)(u.CH,[],void 0,n.K7.sessionReplay,t.ee)},t),function(e){p(u.Tb,function(){(0,s.p)(u.Tb,[],void 0,n.K7.sessionReplay,e.ee)},e)}(e);try{r=JSON.parse(localStorage.getItem("".concat(O.H3,"_").concat(O.uh)))}catch(e){}(0,w.SR)(e.init)&&this.ee.on(Ue.G4.RECORD,()=>this.#i()),this.#o(r)&&this.importRecorder().then(e=>{e.startRecording(Ue.Qb.PRELOAD,r?.sessionReplayMode)}),this.importAggregator(this.agentRef,()=>i.e(478).then(i.bind(i,6167)),this),this.ee.on("err",e=>{this.blocked||this.agentRef.runtime.isRecording&&(this.errorNoticed=!0,(0,s.p)(Ue.G4.ERROR_DURING_REPLAY,[e],void 0,this.featureName,this.ee))})}#o(e){return e&&(e.sessionReplayMode===O.g.FULL||e.sessionReplayMode===O.g.ERROR)||(0,w.Aw)(this.agentRef.init)}importRecorder(){return this.recorder?Promise.resolve(this.recorder):(this.#n??=Promise.all([i.e(478),i.e(249)]).then(i.bind(i,4866)).then(({Recorder:e})=>(this.recorder=new e(this),this.recorder)).catch(e=>{throw this.ee.emit("internal-error",[e]),this.blocked=!0,e}),this.#n)}#i(){this.blocked||(this.featAggregate?this.featAggregate.mode!==O.g.FULL&&this.featAggregate.initializeRecording(O.g.FULL,!0,Ue.Qb.API):this.importRecorder().then(()=>{this.recorder.startRecording(Ue.Qb.API,O.g.FULL)}))}}var We=i(3962);function Be(e){const t=e.ee.get("tracer");function r(){}p(u.dT,function(e){return(new r).get("object"==typeof e?e:{})},e);const i=r.prototype={createTracer:function(r,i){var o={},a=this,d="function"==typeof i;return(0,s.p)(h.xV,["API/createTracer/called"],void 0,n.K7.metrics,e.ee),e.runSoftNavOverSpa||(0,s.p)(u.hw+"tracer",[(0,c.t)(),r,o],a,n.K7.spa,e.ee),function(){if(t.emit((d?"":"no-")+"fn-start",[(0,c.t)(),a,d],o),d)try{return i.apply(this,arguments)}catch(e){const r="string"==typeof e?new Error(e):e;throw t.emit("fn-err",[arguments,this,r],o),r}finally{t.emit("fn-end",[(0,c.t)()],o)}}}};["actionText","setName","setAttribute","save","ignore","onEnd","getContext","end","get"].forEach(t=>{p.apply(this,[t,function(){return(0,s.p)(u.hw+t,[(0,c.t)(),...arguments],this,e.runSoftNavOverSpa?n.K7.softNav:n.K7.spa,e.ee),this},e,i])}),p(u.PA,function(){e.runSoftNavOverSpa?(0,s.p)(u.hw+"routeName",[performance.now(),...arguments],void 0,n.K7.softNav,e.ee):(0,s.p)(u.Pl+"routeName",[(0,c.t)(),...arguments],this,n.K7.spa,e.ee)},e)}class Ge extends E{static featureName=We.TZ;constructor(e){if(super(e,We.TZ),Be(e),!y.RI||!(0,N.dV)().o.MO)return;const t=Ne(this.ee);try{this.removeOnAbort=new AbortController}catch(e){}We.tC.forEach(e=>{(0,I.sp)(e,e=>{a(e)},!0,this.removeOnAbort?.signal)});const r=()=>(0,s.p)("newURL",[(0,c.t)(),""+window.location],void 0,this.featureName,this.ee);t.on("pushState-end",r),t.on("replaceState-end",r),(0,I.sp)(We.OV,e=>{a(e),(0,s.p)("newURL",[e.timeStamp,""+window.location],void 0,this.featureName,this.ee)},!0,this.removeOnAbort?.signal);let n=!1;const o=new((0,N.dV)().o.MO)((e,t)=>{n||(n=!0,requestAnimationFrame(()=>{(0,s.p)("newDom",[(0,c.t)()],void 0,this.featureName,this.ee),n=!1}))}),a=(0,x.s)(e=>{(0,s.p)("newUIEvent",[e],void 0,this.featureName,this.ee),o.observe(document.body,{attributes:!0,childList:!0,subtree:!0,characterData:!0})},100,{leading:!0});this.abortHandler=function(){this.removeOnAbort?.abort(),o.disconnect(),this.abortHandler=void 0},this.importAggregator(e,()=>i.e(478).then(i.bind(i,4393)),{domObserver:o})}}var Ve=i(7378);const ze={},Ze=["appendChild","insertBefore","replaceChild"];function qe(e){const t=function(e){return(e||te.ee).get("jsonp")}(e);if(!y.RI||ze[t.debugId])return t;ze[t.debugId]=!0;var r=(0,re.YM)(t),n=/[?&](?:callback|cb)=([^&#]+)/,i=/(.*)\.([^.]+)/,o=/^(\w+)(\.|$)(.*)$/;function a(e,t){if(!e)return t;const r=e.match(o),n=r[1];return a(r[3],t[n])}return r.inPlace(Node.prototype,Ze,"dom-"),t.on("dom-start",function(e){!function(e){if(!e||"string"!=typeof e.nodeName||"script"!==e.nodeName.toLowerCase())return;if("function"!=typeof e.addEventListener)return;var o=(s=e.src,c=s.match(n),c?c[1]:null);var s,c;if(!o)return;var u=function(e){var t=e.match(i);if(t&&t.length>=3)return{key:t[2],parent:a(t[1],window)};return{key:e,parent:window}}(o);if("function"!=typeof u.parent[u.key])return;var d={};function l(){t.emit("jsonp-end",[],d),e.removeEventListener("load",l,(0,I.jT)(!1)),e.removeEventListener("error",f,(0,I.jT)(!1))}function f(){t.emit("jsonp-error",[],d),t.emit("jsonp-end",[],d),e.removeEventListener("load",l,(0,I.jT)(!1)),e.removeEventListener("error",f,(0,I.jT)(!1))}r.inPlace(u.parent,[u.key],"cb-",d),e.addEventListener("load",l,(0,I.jT)(!1)),e.addEventListener("error",f,(0,I.jT)(!1)),t.emit("new-jsonp",[e.src],d)}(e[0])}),t}const Xe={};function Ye(e){const t=function(e){return(e||te.ee).get("promise")}(e);if(Xe[t.debugId])return t;Xe[t.debugId]=!0;var r=t.context,n=(0,re.YM)(t),i=y.gm.Promise;return i&&function(){function e(r){var o=t.context(),a=n(r,"executor-",o,null,!1);const s=Reflect.construct(i,[a],e);return t.context(s).getCtx=function(){return o},s}y.gm.Promise=e,Object.defineProperty(e,"name",{value:"Promise"}),e.toString=function(){return i.toString()},Object.setPrototypeOf(e,i),["all","race"].forEach(function(r){const n=i[r];e[r]=function(e){let i=!1;[...e||[]].forEach(e=>{this.resolve(e).then(a("all"===r),a(!1))});const o=n.apply(this,arguments);return o;function a(e){return function(){t.emit("propagate",[null,!i],o,!1,!1),i=i||!e}}}}),["resolve","reject"].forEach(function(r){const n=i[r];e[r]=function(e){const r=n.apply(this,arguments);return e!==r&&t.emit("propagate",[e,!0],r,!1,!1),r}}),e.prototype=i.prototype;const o=i.prototype.then;i.prototype.then=function(...e){var i=this,a=r(i);a.promise=i,e[0]=n(e[0],"cb-",a,null,!1),e[1]=n(e[1],"cb-",a,null,!1);const s=o.apply(this,e);return a.nextPromise=s,t.emit("propagate",[i,!0],s,!1,!1),s},i.prototype.then[re.Jt]=o,t.on("executor-start",function(e){e[0]=n(e[0],"resolve-",this,null,!1),e[1]=n(e[1],"resolve-",this,null,!1)}),t.on("executor-err",function(e,t,r){e[1](r)}),t.on("cb-end",function(e,r,n){t.emit("propagate",[n,!0],this.nextPromise,!1,!1)}),t.on("propagate",function(e,r,n){this.getCtx&&!r||(this.getCtx=function(){if(e instanceof Promise)var r=t.context(e);return r&&r.getCtx?r.getCtx():this})})}(),t}const Qe={},$e="setTimeout",Je="setInterval",et="clearTimeout",tt="-start",rt=[$e,"setImmediate",Je,et,"clearImmediate"];function nt(e){const t=function(e){return(e||te.ee).get("timer")}(e);if(Qe[t.debugId]++)return t;Qe[t.debugId]=1;var r=(0,re.YM)(t);return r.inPlace(y.gm,rt.slice(0,2),$e+"-"),r.inPlace(y.gm,rt.slice(2,3),Je+"-"),r.inPlace(y.gm,rt.slice(3),et+"-"),t.on(Je+tt,function(e,t,n){e[0]=r(e[0],"fn-",null,n)}),t.on($e+tt,function(e,t,n){this.method=n,this.timerDuration=isNaN(e[1])?0:+e[1],e[0]=r(e[0],"fn-",this,n)}),t}const it={};function ot(e){const t=function(e){return(e||te.ee).get("mutation")}(e);if(!y.RI||it[t.debugId])return t;it[t.debugId]=!0;var r=(0,re.YM)(t),n=y.gm.MutationObserver;return n&&(window.MutationObserver=function(e){return this instanceof n?new n(r(e,"fn-")):n.apply(this,arguments)},MutationObserver.prototype=n.prototype),t}const{TZ:at,d3:st,Kp:ct,$p:ut,wW:dt,e5:lt,tH:ft,uP:ht,rw:pt,Lc:gt}=Ve;class mt extends E{static featureName=at;constructor(e){if(super(e,at),Be(e),!y.RI)return;try{this.removeOnAbort=new AbortController}catch(e){}let t,r=0;const n=this.ee.get("tracer"),o=qe(this.ee),a=Ye(this.ee),u=nt(this.ee),d=oe(this.ee),l=this.ee.get("events"),f=he(this.ee),h=Ne(this.ee),p=ot(this.ee);function g(e,t){h.emit("newURL",[""+window.location,t])}function m(){r++,t=window.location.hash,this[ht]=(0,c.t)()}function v(){r--,window.location.hash!==t&&g(0,!0);var e=(0,c.t)();this[lt]=~~this[lt]+e-this[ht],this[gt]=e}function b(e,t){e.on(t,function(){this[t]=(0,c.t)()})}this.ee.on(ht,m),a.on(pt,m),o.on(pt,m),this.ee.on(gt,v),a.on(dt,v),o.on(dt,v),this.ee.on("fn-err",(...t)=>{t[2]?.__newrelic?.[e.agentIdentifier]||(0,s.p)("function-err",[...t],void 0,this.featureName,this.ee)}),this.ee.buffer([ht,gt,"xhr-resolved"],this.featureName),l.buffer([ht],this.featureName),u.buffer(["setTimeout"+ct,"clearTimeout"+st,ht],this.featureName),d.buffer([ht,"new-xhr","send-xhr"+st],this.featureName),f.buffer([ft+st,ft+"-done",ft+ut+st,ft+ut+ct],this.featureName),h.buffer(["newURL"],this.featureName),p.buffer([ht],this.featureName),a.buffer(["propagate",pt,dt,"executor-err","resolve"+st],this.featureName),n.buffer([ht,"no-"+ht],this.featureName),o.buffer(["new-jsonp","cb-start","jsonp-error","jsonp-end"],this.featureName),b(f,ft+st),b(f,ft+"-done"),b(o,"new-jsonp"),b(o,"jsonp-end"),b(o,"cb-start"),h.on("pushState-end",g),h.on("replaceState-end",g),window.addEventListener("hashchange",g,(0,I.jT)(!0,this.removeOnAbort?.signal)),window.addEventListener("load",g,(0,I.jT)(!0,this.removeOnAbort?.signal)),window.addEventListener("popstate",function(){g(0,r>1)},(0,I.jT)(!0,this.removeOnAbort?.signal)),this.abortHandler=this.#r,this.importAggregator(e,()=>i.e(478).then(i.bind(i,5592)))}#r(){this.removeOnAbort?.abort(),this.abortHandler=void 0}}var vt=i(3333);class bt extends E{static featureName=vt.TZ;constructor(e){super(e,vt.TZ);const t=[e.init.page_action.enabled,e.init.performance.capture_marks,e.init.performance.capture_measures,e.init.user_actions.enabled,e.init.performance.resources.enabled];var r;if(r=e,p(u.hG,(e,t)=>z(e,t,r),r),function(e){p(u.fF,function(){(0,s.p)(u.Pl+u.fF,[(0,c.t)(),...arguments],void 0,n.K7.genericEvents,e.ee)},e)}(e),Ie(e),Z(e),function(e){p(u.V1,function(t,r){const i=(0,c.t)(),{start:o,end:a,customAttributes:d}=r||{},f={customAttributes:d||{}};if("object"!=typeof f.customAttributes||"string"!=typeof t||0===t.length)return void(0,l.R)(57);const h=(e,t)=>null==e?t:"number"==typeof e?e:e instanceof PerformanceMark?e.startTime:Number.NaN;if(f.start=h(o,0),f.end=h(a,i),Number.isNaN(f.start)||Number.isNaN(f.end))(0,l.R)(57);else{if(f.duration=f.end-f.start,!(f.duration<0))return(0,s.p)(u.Pl+u.V1,[f,t],void 0,n.K7.genericEvents,e.ee),f;(0,l.R)(58)}},e)}(e),y.RI){if(e.init.user_actions.enabled&&(vt.Zp.forEach(e=>(0,I.sp)(e,e=>(0,s.p)("ua",[e],void 0,this.featureName,this.ee),!0)),vt.qN.forEach(e=>{const t=(0,x.s)(e=>{(0,s.p)("ua",[e],void 0,this.featureName,this.ee)},500,{leading:!0});(0,I.sp)(e,t)})),e.init.performance.resources.enabled&&y.gm.PerformanceObserver?.supportedEntryTypes.includes("resource")){new PerformanceObserver(e=>{e.getEntries().forEach(e=>{(0,s.p)("browserPerformance.resource",[e],void 0,this.featureName,this.ee)})}).observe({type:"resource",buffered:!0})}const a=Ne(this.ee);function d(){a.emit("navChange")}a.on("pushState-end",d),a.on("replaceState-end",d),window.addEventListener("hashchange",d,(0,I.jT)(!0,this.removeOnAbort?.signal)),window.addEventListener("popstate",d,(0,I.jT)(!0,this.removeOnAbort?.signal))}try{this.removeOnAbort=new AbortController}catch(f){}function o(t){const r=(0,pe.D)(t);return e.beacons.includes(r.hostname+":"+r.port)}this.abortHandler=()=>{this.removeOnAbort?.abort(),this.abortHandler=void 0},y.gm.addEventListener("error",()=>{(0,s.p)("uaErr",[],void 0,n.K7.genericEvents,this.ee)},(0,I.jT)(!1,this.removeOnAbort?.signal)),he(this.ee),oe(this.ee),this.ee.on("open-xhr-start",(e,t)=>{o(e[1])||t.addEventListener("readystatechange",()=>{2===t.readyState&&(0,s.p)("uaXhr",[],void 0,n.K7.genericEvents,this.ee)})}),this.ee.on("fetch-start",e=>{e.length>=1&&!o(be(e[0]))&&(0,s.p)("uaXhr",[],void 0,n.K7.genericEvents,this.ee)}),t.some(e=>e)?this.importAggregator(e,()=>i.e(478).then(i.bind(i,8019))):this.deregisterDrain()}}var yt=i(2646);const wt=new Map;function Rt(e,t,r,n){if("object"!=typeof t||!t||"string"!=typeof r||!r||"function"!=typeof t[r])return(0,l.R)(29);const i=function(e){return(e||te.ee).get("logger")}(e),o=(0,re.YM)(i),a=new yt.y(te.P);a.level=n.level,a.customAttributes=n.customAttributes;const s=t[r]?.[re.Jt]||t[r];return wt.set(s,a),o.inPlace(t,[r],"wrap-logger-",()=>wt.get(s)),i}var xt=i(1910);class Tt extends E{static featureName=B.TZ;constructor(e){var t;super(e,B.TZ),t=e,p(u.$9,(e,r)=>V(e,r,t),t),function(e){p(u.Wb,(t,r,{customAttributes:n={},level:i=B.p_.INFO}={})=>{Rt(e.ee,t,r,{customAttributes:n,level:i})},e)}(e),Z(e);const r=this.ee;["log","error","warn","info","debug","trace"].forEach(e=>{(0,xt.i)(y.gm.console[e]),Rt(r,y.gm.console,e,{level:"log"===e?"info":e})}),this.ee.on("wrap-logger-end",function([e]){const{level:t,customAttributes:n}=this;(0,G.R)(r,e,n,t)}),this.importAggregator(e,()=>i.e(478).then(i.bind(i,5288)))}}new class extends r{constructor(e){var t;(super(),y.gm)?(this.features={},(0,N.bQ)(this.agentIdentifier,this),this.desiredFeatures=new Set(e.features||[]),this.desiredFeatures.add(S),this.runSoftNavOverSpa=[...this.desiredFeatures].some(e=>e.featureName===n.K7.softNav),(0,a.j)(this,e,e.loaderType||"agent"),t=this,p(u.cD,function(e,r,n=!1){if("string"==typeof e){if(["string","number","boolean"].includes(typeof r)||null===r)return g(t,e,r,u.cD,n);(0,l.R)(40,typeof r)}else(0,l.R)(39,typeof e)},t),function(e){p(u.Dl,function(t){if("string"==typeof t||null===t)return g(e,"enduser.id",t,u.Dl,!0);(0,l.R)(41,typeof t)},e)}(this),function(e){p(u.nb,function(t){if("string"==typeof t||null===t)return g(e,"application.version",t,u.nb,!1);(0,l.R)(42,typeof t)},e)}(this),function(e){p(u.d3,function(){e.ee.emit("manual-start-all")},e)}(this),this.run()):(0,l.R)(21)}get config(){return{info:this.info,init:this.init,loader_config:this.loader_config,runtime:this.runtime}}get api(){return this}run(){try{const e=function(e){const t={};return o.forEach(r=>{t[r]=!!e[r]?.enabled}),t}(this.init),t=[...this.desiredFeatures];t.sort((e,t)=>n.P3[e.featureName]-n.P3[t.featureName]),t.forEach(t=>{if(!e[t.featureName]&&t.featureName!==n.K7.pageViewEvent)return;if(this.runSoftNavOverSpa&&t.featureName===n.K7.spa)return;if(!this.runSoftNavOverSpa&&t.featureName===n.K7.softNav)return;const r=function(e){switch(e){case n.K7.ajax:return[n.K7.jserrors];case n.K7.sessionTrace:return[n.K7.ajax,n.K7.pageViewEvent];case n.K7.sessionReplay:return[n.K7.sessionTrace];case n.K7.pageViewTiming:return[n.K7.pageViewEvent];default:return[]}}(t.featureName).filter(e=>!(e in this.features));r.length>0&&(0,l.R)(36,{targetFeature:t.featureName,missingDependencies:r}),this.features[t.featureName]=new t(this)})}catch(e){(0,l.R)(22,e);for(const e in this.features)this.features[e].abortHandler?.();const t=(0,N.Zm)();delete t.initializedAgents[this.agentIdentifier]?.features,delete this.sharedAggregator;return t.ee.get(this.agentIdentifier).abort(),!1}}}({features:[Ee,S,j,Ke,Fe,C,q,bt,Tt,Ge,mt],loaderType:"spa"})})()})();</script>
+<meta content="initial-scale=1.0, maximum-scale=1.0" name="viewport">
+<meta content="no-cache" name="turbolinks-cache-control">
+<meta content="20a95a83623c617ef8c45eac30e11a35" name="x-bg-uid">
+<meta content="7198.74931837" name="autologout">
+<meta content="-480" name="timezone-offset-minutes">
+<title>ManageBac | Jack Fang 方籽杰</title>
+<link rel="stylesheet" href="https://assets.managebac.cn/assets/common-1550ed867621063cfd7d2152f06be867de984f58edf9cb07d3df518320e68406.css" media="all" data-turbolinks-track="reload">
+<link rel="stylesheet" href="https://assets.managebac.cn/assets/student-402b4f0795a8badcf4f1f9d34986c5c7d6835fff6f2fc0b4695f1567caebde75.css" media="all" data-turbolinks-track="reload">
+<style class="embedly-css">
+body#cards .card .hdr {
+  display: none;
+}
+</style>
+
+<meta name="action-cable-url" content="/websocket">
+
+<script src="https://assets.managebac.cn/assets/es-module-shims-d2f4ff5f415b5adf2207b0c36b74cfa2f2f2fc871ea39fd138ab6f081e02195c.js"></script>
+<script type="importmap" data-turbo-track="reload">{
+  "imports": {
+    "application": "https://assets.managebac.cn/assets/application-3897b39d0f7fe7e947af9b84a1e1304bb30eb1dadb983104797d0a5e26a08736.js",
+    "@emoji-mart/data": "https://assets.managebac.cn/assets/node_modules/native-acc7e9b275acbfc648fb61c0362c81c87f76cce71476153246ef06d25e4d4760.js",
+    "@eduvo/chat-widget": "https://assets.managebac.cn/assets/node_modules/chat-widget-dc736e270f6bbe152ff7e6bc30f49ad1967ecea0d45658bae1e6e78736f1c9f7.js",
+    "@eduvo/sheetjs-core": "https://assets.managebac.cn/assets/node_modules/xlsx-3d695995a6e6cef184ea6caebeab3e88bebb0535b811b424806034e974612a19.js",
+    "@eduvo/mnn-widget": "https://assets.managebac.cn/assets/node_modules/mnn-widget-52ddad64ef8bca5c937f86a8bb30995443fbd3b3d422c3ec966b7563c950bdf7.js",
+    "@eduvo/rte": "https://assets.managebac.cn/assets/node_modules/rte-8f56ca70816938f92c914adc6c027f763a726b859ae13840bc052872fc49e0d9.js",
+    "partials/highcharts": "https://assets.managebac.cn/assets/node_modules/partials/highcharts-d1421f4226f28d81f6f5427796aef636de51b1be41138f6f74b7069d434afef4.js",
+    "partials/fullcalendar": "https://assets.managebac.cn/assets/node_modules/partials/fullcalendar-5899dd40836f9156132269bab82dc3bc1f6a1ca86727837cf72960ee05d804fc.js",
+    "partials/moment": "https://assets.managebac.cn/assets/node_modules/partials/moment-9ff93a8fcc7111e54d92be4a53e4cd718dfb5aa70b8ffe1ec428e1ab03db5ca3.js",
+    "@airbrake/browser": "https://assets.managebac.cn/assets/node_modules/@airbrake/browser/index-2a2fef22fa6776371d7b0309f863baae2ea87f1bd301c47d0f3b210c95fd09ff.js",
+    "stimulus": "https://assets.managebac.cn/assets/node_modules/stimulus-e6d086d6d66935b4eda25356826499f5df133795bb2f9113afe4cd476ef9fd9f.js",
+    "sortablejs": "https://assets.managebac.cn/assets/node_modules/sortable.esm-6310a6da1413033e64d0ada9f3ecefd263975a5daff26f015ba0b4ca94ea47a5.js"
+  }
+}</script>
+<link rel="modulepreload" href="https://assets.managebac.cn/assets/application-3897b39d0f7fe7e947af9b84a1e1304bb30eb1dadb983104797d0a5e26a08736.js">
+<script type="module">import "application"</script>
+<script src="https://www.googletagmanager.com/gtag/js?id=G-G7WFEBC9EW" async="async"></script>
+<script>
+//<![CDATA[
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "qwrk3j05gi");
+
+//]]>
+</script>
+<script src="https://assets.managebac.cn/assets/student-c0166c267b7b0d4b5ca62a92171b02493ab52ae5fb62e6836817717e1afe6682.js" crossorigin="anonymous" data-turbolinks-track="reload" debug="false" type="module" defer="defer"></script>
+<script src="https://assets.managebac.cn/assets/faria_password.jquery-8d7a613a763a5388ff6c3abaf3a24dac95e594c4088e777d0bf127818989a356.js" crossorigin="anonymous" data-turbolinks-track="reload" defer="defer" type="module"></script>
+<link rel="icon" type="image/x-icon" href="https://assets.managebac.cn/assets/favicons/managebac-99d01dbc284b5484a96c404e79e117dd14e1edcfb2e78aeb7cb0972dd7341ac7.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://assets.managebac.cn/assets/apple-touch-icon-332152b723fed6179da5ee4c7190f45788f0e53774cf4a5e7664cbc23f2ddcd1.png" sizes="512x512">
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="oUzpafQYwVGFeb-Ux3AB20x-bdOPRA5TwgZ2PfI03h7bBKJryxeIaCX8DORDQHumvhjMX0qZK6gHgwaHL7alNg">
+
+<script src="https://cdn.embedly.com/widgets/platform.js"></script></head>
+<body class="controller-student-tasks_and_deadlines chinese-school theme-blue" data-airbrake-enabled="" data-airbrake-environment="production" data-airbrake-project-id="317801" data-airbrake-project-key="eea438c8f65aebafb25fb83cbfbc3b7c" data-airbrake-user-id="13202892" data-controller="web-analytics" data-path="student/tasks_and_deadlines/index" data-pspdf-kit-script="https://assets.prod.faria.cn/pspdfkit.js" data-school-type="managebac" data-unload-message="The changes you made may not be saved. Are you sure you want to leave this page?" data-user-id="13202892" data-web-analytics-application-region-value="china" data-web-analytics-google-tracking-id-value="G-G7WFEBC9EW" data-web-analytics-program-value="cb_ap" data-web-analytics-subdomain-value="shtcs" data-web-analytics-user-id-value="china-13202892" data-web-analytics-user-role-value="Student" id="action-index" lang="en-US">
+
+<div class="f-layout-main">
+<nav class="navbar navbar-expand-lg bg-white fixed-top hidden-mobile">
+<div class="container-fluid p-0 column-gap-3 column-gap-lg-2">
+<div class="navbar-row">
+<a id="menu-trigger" class="btn btn-blank btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Menu" href="javascript:void(0)" data-tooltip-initialized="true"><span class="visually-hidden">Menu</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-list icon-24"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"></path></svg>
+</a><div class="navbar-brand-wrapper">
+<a class="navbar-brand hstack" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="My Workspace" href="/student/home" data-tooltip-initialized="true"><img class="navbar-logo wide-logo" src="https://managebac-cn-prod.s3.cn-north-1.amazonaws.com.cn/uploads/school/top_nav_logo/10005852/WechatIMG1750.png">
+<span class="navbar-brand-title d-none d-md-block">Shanghai Mingsui Creative School</span>
+</a>
+</div>
+</div>
+<div class="navbar-search-wrapper">
+<div class="global-search" data-action="keydown@document-&gt;global-search#handleModalKeydown click@document-&gt;global-search#handleOut focusout@document-&gt;global-search#handleOut global-search:updateResults@document-&gt;global-search#updateResults global-search:removeRecent@document-&gt;global-search#removeRecent" data-controller="global-search">
+<div class="global-search-modal flex flex-column" data-global-search-target="modal">
+<form id="nav-search-form" class="simple_form global-search-form" data-skip-turbolinks="true" data-global-search-target="form" novalidate="novalidate" action="/student/search" accept-charset="UTF-8" data-remote="true" method="get"><input type="hidden" name="modal" id="modal" value="true" autocomplete="off">
+<input value="all" autocomplete="off" type="hidden" name="global_search[predefined_filter]">
+<div class="position-relative color-secondary d-none d-lg-block custom-tooltip" data-bs-placement="bottom" data-bs-title="&lt;div class=&quot;hstack gap-1&quot;&gt;Search &lt;span class=&quot;badge background-gray-600&quot;&gt;&lt;span class=&quot;badge-label&quot;&gt;/&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;" data-bs-toggle="tooltip" data-global-search-target="inputGroup" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-search icon-16 form-control-icon"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path></svg>
+<div class="form-group string required global_search_q flex-fill mb-0"><input class="form-control string required form-control-prefix position-static" id="global_search_q" autocomplete="off" maxlength="255" data-placeholder="Search within School Directory, Year Groups, Classes, Tasks &amp; Deadlines …" data-placeholder-filter="Search within " data-global-search-url="/student/search" data-selected-filter="all" data-global-search-target="input" data-action="focus-&gt;global-search#activateSearch input-&gt;global-search#handleInput input-&gt;global-search#allowSubmit" placeholder="Search" type="text" name="global_search[q]"></div>
+<div class="input-controls flex">
+<a id="clear-search" data-action="global-search#clearSearch" href="javascript:void(0)">Clear</a>
+<div class="divider">|</div>
+<div class="btn btn-icon custom-tooltip" data-action="click-&gt;global-search#deactivateSearch" data-bs-placement="bottom" data-bs-toggle="tooltip" data-html="" id="deactive-search" data-tooltip-initialized="true" data-bs-original-title="Close &lt;span class=&quot;label esc&quot;&gt;ESC&lt;/span&gt;">×</div>
+</div>
+</div>
+<button name="button" type="submit" class="btn btn-secondary btn-icon d-lg-none" tabindex="0" data-action="focus-&gt;global-search#activateSearch"><span class="visually-hidden">Search</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-search f-active-toggle__hide"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path></svg>
+</button></form><div class="search-filters" data-action="click-&gt;global-search#handleFilters">
+<h4 class="search-filters-title">
+Filter Search
+</h4>
+<div class="flex flex-start flex-wrap">
+<a class="btn btn-light js-search-filter active" data-predefined-filter="all" data-pagination-mode="modal" href="javascript:void(0)">All Search Results</a>
+<a class="btn btn-light js-search-filter " data-predefined-filter="classes" data-pagination-mode="modal" href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="fi fi-book_globe_c"><path d="M12 6.827a5 5 0 1 0 .001 10.001 5 5 0 0 0-.001-10M9.292 8.391l-.18.403a.53.53 0 0 0 .925.51l.153-.23a.505.505 0 0 1 .646-.172c.143.071.31.071.453 0l.163-.082a.63.63 0 0 1 .484-.031l.615.213a.7.7 0 0 0 .152.034c.49.058.535.235.434.5a.524.524 0 0 1-.647.305l-.006-.002c-.313-.097-.641-.199-1.734-.199-.75 0-1.562.7-1.562 1.563 0 1.225.516 1.354 1.06 1.49.288.071.584.145.815.385.28.292.245.739.211 1.174-.052.677-.103 1.327 1.039 1.327 1.093 0 1.874-2.188 1.874-2.813 0-.164.13-.293.278-.438.248-.245.543-.537.348-1.125-.061-.182-.248-.355-.401-.473-.109-.083-.13-.247-.033-.344.07-.07.18-.081.263-.026l.678.452c.068.046.16.037.217-.022.095-.094.26-.051.306.074.1.268.278.656.53.848q.002.058.002.116a4.375 4.375 0 1 1-7.083-3.437"></path><path d="M1.5 5.068c1.327-.555 3.23-1.152 5.082-1.34 1.995-.2 4.438.307 5.418 1.34v14.41c-1.402-.795-3.929-.904-5.569-.739-1.77.179-3.554.692-4.931 1.217zm10.5 0c.98-1.033 3.423-1.54 5.419-1.34 1.85.188 3.753.785 5.081 1.34v14.888c-1.377-.525-3.16-1.038-4.931-1.217-1.64-.165-4.167-.056-5.569.74zM12 3.5c-1.477-1.27-3.62-1.462-5.569-1.265C4.16 2.466 1.867 3.245.44 3.894a.75.75 0 0 0-.44.683V21.08a.75.75 0 0 0 1.06.683c1.323-.602 3.455-1.323 5.522-1.53 2.111-.214 3.884.13 4.832 1.315a.75.75 0 0 0 1.172 0c.948-1.185 2.72-1.529 4.833-1.316 2.066.209 4.198.93 5.52 1.53A.75.75 0 0 0 24 21.08V4.577a.75.75 0 0 0-.44-.683c-1.427-.65-3.72-1.429-5.991-1.658-1.95-.197-4.092-.005-5.569 1.265"></path></svg>
+Classes
+</a><a class="btn btn-light js-search-filter " data-predefined-filter="groups" data-pagination-mode="modal" href="javascript:void(0)"><svg width="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" class="fi fi-groups"><path fill="#859bbb" d="M7 0L0 2.916v8.169L7 14l7-2.915v-8.17L7 0zm-.35 6.184l.352.116.348-.116v6.628l-.344.138-.356-.138V6.184zM7 .822l6.125 2.471L7 5.351.875 3.293 7 .823zM.7 10.5V4.2L7 6.3v6.65L.7 10.5zm12.6 0L7 12.95V6.3l6.3-2.1v6.3z"></path></svg>
+Groups
+</a><a class="btn btn-light js-search-filter " data-predefined-filter="resources" data-pagination-mode="modal" href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" class="fi fi-website"><path fill="#5B6C86" d="M6.818 15.182a1.372 1.372 0 001.945 0l6.419-6.419a1.375 1.375 0 10-1.945-1.945l-6.419 6.419a1.375 1.375 0 000 1.945zm3.21 2.821a4.27 4.27 0 01-6.032 0 4.269 4.269 0 010-6.03l3.016-3.016-1.945-1.945-3.015 3.016a7.023 7.023 0 000 9.921A6.997 6.997 0 007.012 22a6.99 6.99 0 004.96-2.051l3.016-3.016-1.945-1.945-3.016 3.015zm9.92-15.951c-2.734-2.736-7.185-2.736-9.92 0L7.011 5.067l1.945 1.945 3.016-3.015a4.25 4.25 0 013.014-1.247 4.25 4.25 0 013.016 1.248 4.269 4.269 0 010 6.03l-3.016 3.016 1.946 1.945 3.015-3.015c2.736-2.737 2.736-7.187 0-9.922z"></path></svg>
+Files &amp; Resources
+</a><a class="btn btn-light js-search-filter " data-predefined-filter="guides" data-pagination-mode="modal" href="javascript:void(0)"><svg height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="fi fi-guides icon-14">
+  <path d="M13.333 3.333a3.333 3.333 0 1 0-6.667 0 3.333 3.333 0 0 0 6.667 0ZM0 8.015v8.212c0 .751.503 1.41 1.228 1.608L9.167 20V8.333L2.105 6.408A1.667 1.667 0 0 0 0 8.015Zm17.895-1.607-7.062 1.925V20l7.939-2.165A1.667 1.667 0 0 0 20 16.227V8.015a1.667 1.667 0 0 0-2.105-1.607Z"></path>
+</svg>
+
+Guides
+</a></div>
+</div>
+
+<h4 class="search-results-title">
+Search Results
+</h4>
+<div class="search-results-wrapper" data-action="click-&gt;global-search#handleClickNavigation mouseover-&gt;global-search#handleSearchResultsEnter mouseleave-&gt;global-search#handleSearchResultsLeave" data-global-search-target="results"></div>
+
+<div class="hint"><b>Up</b> <span class="label label-key">↑</span> and <b>Down</b> <span class="label label-key">↓</span> arrows to cycle through results. Click <b>Enter</b> <span class="label label-key">↵</span> to select a search result. Click <b>Esc</b> <span class="label label-key-esc">ESC</span> to exit.</div>
+</div>
+</div>
+
+</div>
+<button class="btn btn-secondary navbar-toggler f-active-toggle btn-icon" data-bs-target=".navbar-collapse" data-bs-toggle="collapse">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-three_dots_vertical f-active-toggle__hide"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-x_lg f-active-toggle__show"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path></svg>
+<span class="visually-hidden">Toggle navigation</span>
+</button>
+<div class="dropdown order-lg-last navbar-user-dropdown">
+<div class="navbar-item" data-bs-toggle="dropdown">
+<a class="f-avatar f-avatar--link profile-link" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Your Profile" href="/student/profile" data-tooltip-initialized="true"><div class="avatar empty" data-initials="J方" data-id="13202892"></div>
+</a></div>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-md">
+<li>
+<a class="dropdown-item hover-color-inherit " href="/student/profile"><div class="avatar online empty" data-initials="J方" data-id="13202892"></div>
+<div class="cell">
+<b>Jack Fang 方籽杰</b>
+<p>Manage Your Profile</p>
+</div>
+</a></li>
+<li class="dropdown-divider"></li>
+<li>
+<a class="dropdown-item hover-color-inherit " href="/student/notifications/preferences"><img class="sebo-icon icon-24" src="https://assets.managebac.cn/assets/sebo/general/notifications-d601d6fbea6f74cb61085ab3f55903226db35b26cbed9201a7b7a7dbb0fa3246.png">
+Notification Preferences
+</a></li>
+<li>
+<a class="dropdown-item hover-color-inherit " href="/student/personalisation"><img class="sebo-icon icon-24" src="https://assets.managebac.cn/assets/sebo/other/themes-79484e90c98f32ad29c683e5fdb2eabf4cd9e20b164a827a398af292e08eae67.png">
+Personalisation
+</a></li>
+<li class="dropdown-divider"></li>
+<li>
+<a class="dropdown-item logout" data-turbolinks="false" href="/logout"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-box_arrow_left"><path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"></path><path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"></path></svg>
+Logout
+</a></li>
+</ul>
+</div>
+<div class="collapse navbar-collapse flex-grow-0" id="navbar-menu-collapse">
+<nav class="nav navbar-nav">
+<div class="dropdown f-quick-add">
+<a class="btn btn-primary btn-icon" data-bs-toggle="dropdown" data-bs-auto-close="outside" data-remote="true" href="javascript:void(0)"><span class="visually-hidden"></span>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-plus_circle"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path></svg>
+<span class="btn-tooltip" data-bs-placement="bottom" data-bs-title="Quick Add" data-bs-toggle="tooltip" data-tooltip-initialized="true"></span>
+</a><ul class="dropdown-menu dropdown-menu-end dropdown-menu-md" id="quick-add-menu"></ul>
+</div>
+<div class="dropdown ios-account">
+<a class="btn btn-blank btn-icon js-messages-and-notifications-trigger notifications-count" data-locale="en" data-timezone="Asia/Shanghai" data-token="eyJhbGciOiJFUzUxMiJ9.eyJ1c2VyX2lkIjoxMzIwMjg5MiwidXNlcl9wb3J0YWxfYWNjb3VudF9pZCI6bnVsbCwiZW1haWwiOiJmYW5ncDQ1OEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoibWFuYWdlYmFjIn0.AcM4UlrAMw27oH-CQol85NQOwPyemvo1ahB6XeXNDdd-MlyZqx-tAMmntgoh7oAt62zKMNRqZLH8AI8ihS5RExR4AIqvGTexgqjqxzIG1J_d_b1G0Xi7DcEys_2I3azVbGHuRMjjyg430HMjOGgHZhtSgY91gQO-6CidgSrD0Qnc_R5I" data-namespace="student" data-school-name="Shanghai Mingsui Creative School" data-mnn-hub-endpoint="https://mnn-hub.prod.faria.cn" data-count="100" data-bs-toggle="dropdown" data-bs-auto-close="outside" href="/student/notifications"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-bell_fill"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"></path></svg>
+<span class="f-badge-indicator count">100</span>
+<span class="btn-tooltip" data-bs-placement="bottom" data-bs-title="Notifications" data-bs-toggle="tooltip" data-tooltip-initialized="true"></span>
+</a><div class="dropdown-menu dropdown-menu-end modal-message-notifications" id="message-notifications-modal" translate="no"><div class="fusion-section-head flex flex-wrap"><h3 class="flex flex-start stretch"><span>Notifications</span><small><span class="label label-danger">100</span></small></h3><div class="flex flex-end"><a href="/student/notifications/preferences" class="btn btn-light btn-icon"><svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="fi"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="settings" fill="#859BBB" fill-rule="nonzero"><path d="M10.0002486,8.00100403 C8.90420239,8.00100403 8.01616495,8.89637512 8.01616495,10.0004217 C8.01616495,11.1051349 8.90420239,12.000506 10.0002486,12.000506 C11.0956281,12.000506 11.9836656,11.1051349 11.9836656,10.0004217 C11.9836656,8.89637512 11.0956281,8.00100403 10.0002486,8.00100403 M10.0002486,13.3345623 C8.17417161,13.3345623 6.6941092,11.8418326 6.6941092,10.0004217 C6.6941092,8.15901069 8.17417161,6.66694778 10.0002486,6.66694778 C11.8263256,6.66694778 13.306388,8.15901069 13.306388,10.0004217 C13.306388,11.8418326 11.8263256,13.3345623 10.0002486,13.3345623 M18.3472672,5.9115826 L17.685906,4.75686724 C17.5032316,4.43685375 17.0985479,4.3275158 16.7832013,4.51285695 L14.9457905,5.58223538 C14.0137512,4.52152398 12.7530313,3.76082524 11.3223043,3.46747954 L11.3223043,2.00075103 C11.3223043,1.63206882 11.0262919,1.33338956 10.6609431,1.33338956 L9.33888739,1.33338956 C8.97420534,1.33338956 8.67752617,1.63206882 8.67752617,2.00075103 L8.67752617,3.46747954 C7.24679917,3.76082524 5.98674604,4.52152398 5.05470674,5.58223538 L3.21729593,4.51285695 C2.9019493,4.3275158 2.49726557,4.43685375 2.31392451,4.75686724 L1.65256329,5.9115826 C1.47055562,6.2302627 1.57856017,6.6382799 1.89524019,6.82162097 L3.73931794,7.89566626 C3.51930867,8.55902756 3.3879698,9.26305725 3.3879698,10.0004217 C3.3879698,10.7384528 3.51930867,11.4424825 3.73931794,12.1051771 L1.89524019,13.1798891 C1.57856017,13.3632301 1.47055562,13.7712473 1.65256329,14.0905941 L2.31392451,15.2446428 C2.49726557,15.5639896 2.9019493,15.6733275 3.21729593,15.4886531 L5.05470674,14.4192747 C5.98674604,15.4799861 7.24679917,16.2406848 8.67752617,16.5333638 L8.67752617,18.0014257 C8.67752617,18.3694412 8.97420534,18.6674538 9.33888739,18.6674538 L10.6609431,18.6674538 C11.0262919,18.6674538 11.3223043,18.3694412 11.3223043,18.0014257 L11.3223043,16.5333638 C12.7530313,16.2406848 14.0137512,15.4799861 14.9457905,14.4192747 L16.7832013,15.4886531 C17.0985479,15.6733275 17.5032316,15.5639896 17.685906,15.2446428 L18.3472672,14.0905941 C18.5292749,13.7712473 18.421937,13.3632301 18.1045903,13.1798891 L16.2611793,12.1051771 C16.4811885,11.4424825 16.6125274,10.7384528 16.6125274,10.0004217 C16.6125274,9.26305725 16.4811885,8.55902756 16.2611793,7.89566626 L18.1045903,6.82162097 C18.421937,6.6382799 18.5292749,6.2302627 18.3472672,5.9115826 M19.3393091,7.64298894 L17.7912438,8.54436027 C17.8765807,9.01838026 17.9339165,9.50173398 17.9339165,10.0004217 C17.9339165,10.4997761 17.8765807,10.9837965 17.7912438,11.4571498 L19.3393091,12.3578544 C19.9713357,12.7258699 20.1880115,13.5419043 19.8219961,14.1792645 L18.500607,16.4886952 C18.1352583,17.1267222 17.3258908,17.3460647 16.6945309,16.9773825 L15.1304649,16.0660108 C14.3997674,16.6940372 13.5683991,17.2067255 12.6450268,17.5367394 L12.6450268,18.6674538 C12.6450268,19.4041515 12.0530018,20.0008433 11.3223043,20.0008433 L8.67752617,20.0008433 C7.94749538,20.0008433 7.35547042,19.4041515 7.35547042,18.6674538 L7.35547042,17.5367394 C6.43143146,17.2067255 5.60139646,16.6940372 4.87069898,16.0660108 L3.30596634,16.9773825 C2.67393969,17.3460647 1.86523892,17.1267222 1.49922349,16.4886952 L0.17783444,14.1792645 C-0.188180993,13.5419043 0.029161505,12.7258699 0.661188155,12.3578544 L2.20925343,11.4571498 C2.1232498,10.9837965 2.06658075,10.4997761 2.06658075,10.0004217 C2.06658075,9.50173398 2.1232498,9.01838026 2.20925343,8.54436027 L0.661188155,7.64298894 C0.029161505,7.27497342 -0.188180993,6.4596057 0.17783444,5.8215788 L1.49922349,3.51281479 C1.86523892,2.87545458 2.67393969,2.656112 3.30596634,3.02412751 L4.87069898,3.93483258 C5.60139646,3.30747279 6.43143146,2.79478451 7.35547042,2.46543729 L7.35547042,1.33338956 C7.35547042,0.598025216 7.94749538,0 8.67752617,0 L11.3223043,0 C12.0530018,0 12.6450268,0.598025216 12.6450268,1.33338956 L12.6450268,2.46543729 C13.5683991,2.79478451 14.3997674,3.30747279 15.1304649,3.93483258 L16.6945309,3.02412751 C17.3258908,2.656112 18.1352583,2.87545458 18.500607,3.51281479 L19.8219961,5.8215788 C20.1880115,6.4596057 19.9713357,7.27497342 19.3393091,7.64298894"></path></g></g></svg></a></div></div><div class="text-center mn-footer"><a href="/student/notifications" class="mn-footer-link">View All Notifications</a></div></div>
+</div>
+
+<div id="chat-popover">
+<a class="js-chat-trigger btn btn-blank btn-icon position-relative" data-count="0" data-controller="popover" data-bs-content-url="/student/chat/popover" data-bs-trigger="click" data-bs-custom-class="chat-popover" href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-chat_fill"><path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15"></path></svg>
+<span class="count f-badge-indicator d-none" data-controller="chat--counter">0</span>
+<span class="btn-tooltip" data-bs-placement="bottom" data-bs-title="Chat" data-bs-toggle="tooltip" data-tooltip-initialized="true"></span>
+</a></div>
+
+<div class="dropdown f-help-support">
+<a class="btn btn-blank px-2 f-help-support__btn" data-remote="true" href="javascript:void(0)"><span class="visually-hidden">3 of 6</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-question_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"></path></svg>
+<span class="badge color-box-theme d-none d-lg-inline-flex quick-start-number">
+<span class="badge-label">3 of 6</span>
+</span>
+<span class="btn-tooltip" data-bs-placement="bottom" data-bs-title="Help &amp; Support" data-bs-toggle="tooltip" data-tooltip-initialized="true"></span>
+</a><ul class="dropdown-menu dropdown-menu-end" id="quick-start-menu"></ul>
+</div>
+
+</nav>
+</div>
+</div>
+</nav>
+
+<div class="f-menu f-menu--expanded" id="menu" data-menu-initialized="true">
+<ul class="f-menu__nav">
+<li class="f-menu__item parent opened" data-path="home" data-url="/student/home">
+<a class="f-menu__link f-menu__nav-link active" href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-x_diamond_fill icon-20"><path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L4.047 3.339 8 7.293l3.954-3.954L9.049.435zm3.61 3.611L8.708 8l3.954 3.954 2.904-2.905c.58-.58.58-1.519 0-2.098l-2.904-2.905zm-.706 8.614L8 8.708l-3.954 3.954 2.905 2.904c.58.58 1.519.58 2.098 0l2.905-2.904zm-8.614-.706L7.292 8 3.339 4.046.435 6.951c-.58.58-.58 1.519 0 2.098z"></path></svg>
+<span class="f-menu__link-title text-node">My Workspace</span>
+<span class="badge color-box-gray f-menu__link-hotkey badge-key">
+<span class="badge-label">W</span>
+</span>
+</a><ul class="f-menu__submenu">
+<li class="f-menu__submenu-item ios-bottom ios-account ios-default">
+<a class="f-menu__link f-menu__submenu-link" href="/student/home"><span class="f-menu__submenu-link-title">My Workspace</span>
+</a></li>
+<li class="f-menu__submenu-item ios-bottom">
+<a class="f-menu__link f-menu__submenu-link" href="/student/timetables"><span class="f-menu__submenu-link-title">Timetables</span>
+</a></li>
+<li class="f-menu__submenu-item ios-bottom ios-default ios-account">
+<a class="f-menu__link f-menu__submenu-link active" data-ignore-nested="true" href="/student/tasks_and_deadlines"><span class="f-menu__submenu-link-title">Tasks &amp; Deadlines</span>
+</a></li>
+</ul>
+</li>
+<li class="f-menu__item ios-bottom ios-default ios-account" data-path="portfolio" data-url="/student/portfolio">
+<a class="f-menu__link f-menu__nav-link" href="/student/portfolio"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-briefcase_fill icon-20"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"></path><path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"></path></svg>
+<span class="f-menu__link-title text-node">Portfolio</span>
+<span class="badge color-box-gray f-menu__link-hotkey badge-key">
+<span class="badge-label">P</span>
+</span>
+</a></li>
+<li class="f-menu__item ios-bottom ios-default ios-accountt" data-path="year_groups" data-url="/student/ib/activity/sl">
+<a class="f-menu__link f-menu__nav-link" href="/student/ib/activity/sl"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-mortarboard_fill icon-20"><path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z"></path><path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z"></path></svg>
+<span class="f-menu__link-title text-node">Year Group</span>
+<span class="badge color-box-gray f-menu__link-hotkey badge-key">
+<span class="badge-label">Y</span>
+</span>
+</a></li>
+<li class="f-menu__item parent js-menu-classes-list" data-path="classes" data-url="/student/classes/my">
+<a class="f-menu__link f-menu__nav-link" href="javascript:void(0)"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="fi fi-book_globe_fill_c icon-20"><path fill-rule="evenodd" d="M6.431 2.238c1.95-.197 4.092-.006 5.569 1.264 1.477-1.27 3.62-1.46 5.569-1.264 2.271.229 4.564 1.008 5.991 1.657a.75.75 0 0 1 .44.683v16.5a.75.75 0 0 1-1.06.683c-1.323-.602-3.455-1.322-5.521-1.53-2.113-.214-3.885.13-4.833 1.315a.75.75 0 0 1-1.172 0c-.948-1.185-2.72-1.529-4.832-1.316-2.067.209-4.199.93-5.522 1.53A.75.75 0 0 1 0 21.079v-16.5a.75.75 0 0 1 .44-.683c1.427-.649 3.72-1.428 5.991-1.657M7 12.172a5 5 0 1 1 10 0 5 5 0 0 1-10 0m2.113-3.034.18-.403a4.375 4.375 0 1 0 7.081 3.32c-.253-.191-.431-.58-.531-.848-.046-.125-.211-.167-.306-.073a.17.17 0 0 1-.217.022l-.678-.452a.21.21 0 0 0-.263.026c-.096.097-.076.26.033.344.153.118.34.29.4.473.197.588-.1.88-.347 1.124-.147.146-.277.274-.277.438 0 .625-.782 2.813-1.876 2.813-1.14 0-1.09-.65-1.038-1.327.034-.435.069-.881-.211-1.173-.231-.24-.527-.315-.816-.386-.543-.136-1.06-.264-1.06-1.49 0-.862.813-1.562 1.563-1.562 1.093 0 1.421.102 1.734.199l.006.002a.524.524 0 0 0 .647-.304c.1-.266.056-.443-.434-.501a.7.7 0 0 1-.152-.034l-.615-.213a.63.63 0 0 0-.484.032l-.163.081a.5.5 0 0 1-.453 0 .505.505 0 0 0-.646.172l-.153.23a.53.53 0 0 1-.924-.51" clip-rule="evenodd"></path></svg>
+<span class="f-menu__link-title text-node">Classes</span>
+<span class="badge color-box-gray f-menu__link-hotkey badge-key">
+<span class="badge-label">C</span>
+</span>
+</a>
+<ul class="f-menu__submenu with-indicators">
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11436438"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator pearson_advanced background-pearson_advanced"></span>
+</div>
+<span class="f-menu__submenu-link-title">科创社 Sci-tech innovation society (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11439531"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator pearson_advanced background-pearson_advanced"></span>
+</div>
+<span class="f-menu__submenu-link-title">Rock climbing 攀岩 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11421742"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator pearson_advanced background-pearson_advanced"></span>
+</div>
+<span class="f-menu__submenu-link-title">Self Study Monday 5,6 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11426896"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator pearson_advanced background-pearson_advanced"></span>
+</div>
+<span class="f-menu__submenu-link-title">Self Study Thursday 5,6 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11421746"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator pearson_advanced background-pearson_advanced"></span>
+</div>
+<span class="f-menu__submenu-link-title">Self Study Tuesday 5,6 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11426727"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator pearson_advanced background-pearson_advanced"></span>
+</div>
+<span class="f-menu__submenu-link-title">Self Study Wednesday 5,6 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412723"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP Macroeconomics (Grade 12)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412713"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP US History (Grade 12)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11429407"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">Advanced listening and speaking 1 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412719"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP Psychology (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412820"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP US History G11,G10 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412561"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP Computer Science (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11444503"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">PBL Psychology (Grade 9)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11433858"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">Robotics (Grade 9)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412427"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP Calculus BC (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11420786"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">AP Art Elective 2 (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item">
+<a class="f-menu__link f-menu__submenu-link" href="/student/classes/11412729"><div class="f-menu__submenu-icon f-menu__submenu-indicator">
+<span class="indicator cb_ap background-cb_ap"></span>
+</div>
+<span class="f-menu__submenu-link-title">Arts Elective  (Grade 11)</span>
+</a></li>
+<li class="f-menu__submenu-item ios-bottom ios-default">
+<a class="f-menu__link f-menu__submenu-link" data-ignore-nested="true" href="/student/classes/my"><svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 0 32 32" class="fi fi-grid_circles4_c f-menu__submenu-icon current-fill icon-20"><path fill="#478cfe" d="M7 14A7 7 0 1 0 7 0a7 7 0 0 0 0 14"></path><path fill="#1ecd6e" d="M25 14a7 7 0 1 0 0-14 7 7 0 0 0 0 14"></path><path fill="#f16522" d="M7 32a7 7 0 1 0 0-14 7 7 0 0 0 0 14"></path><path fill="#f0ad2a" d="M25 32a7 7 0 1 0 0-14 7 7 0 0 0 0 14"></path></svg>
+<span class="f-menu__submenu-link-title">Browse All Classes</span>
+</a></li>
+</ul>
+</li>
+
+<li class="f-menu__item ios-bottom ios-default" data-path="groups" data-url="/student/groups/all">
+<a class="f-menu__link f-menu__nav-link" href="/student/groups/all"><svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-box_fill icon-20"><path fill-rule="evenodd" d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.004-.001.274-.11a.75.75 0 0 1 .558 0l.274.11.004.001zm-1.374.527L8 5.962 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339Z"></path></svg>
+<span class="f-menu__link-title text-node">Groups</span>
+<span class="badge color-box-gray f-menu__link-hotkey badge-key">
+<span class="badge-label">G</span>
+</span>
+</a></li>
+<li class="f-menu__item mt-auto faria-one"><div class="f-menu__link f-menu__nav-link colored-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" class="fi fi-faria icon-20"><g clip-path="url(#clip0_253_512)"><path fill="#37023c" d="M18.75 20H1.25C.563 20 0 19.438 0 18.75V1.25C0 .563.563 0 1.25 0h17.5C19.438 0 20 .563 20 1.25v17.5c0 .688-.562 1.25-1.25 1.25"></path><path fill="url(#paint0_linear_253_512)" d="M7.72 18.063a1.434 1.434 0 0 1-1.438-1.438V7.937c0-3.312 2.687-6 6-6 .78 0 1.437.625 1.437 1.438s-.625 1.437-1.437 1.437A3.17 3.17 0 0 0 9.125 7.97v1.656h2c.782 0 1.438.625 1.438 1.438 0 .78-.625 1.437-1.438 1.437h-2v4.219c.032.718-.625 1.343-1.406 1.343"></path></g><defs><linearGradient id="paint0_linear_253_512" x1="5.865" x2="13.191" y1="5.864" y2="13.191" gradientUnits="userSpaceOnUse"><stop stop-color="#f7d35f"></stop><stop offset=".507" stop-color="#f0a67e"></stop><stop offset=".999" stop-color="#e837ac"></stop></linearGradient><clipPath id="clip0_253_512"><path fill="#fff" d="M0 0h20v20H0z"></path></clipPath></defs></svg><span class="f-menu__link-title text-node fw-semibold">Faria Service Manager</span></div></li>
+</ul>
+</div>
+
+<main class="f-layout-main__wrapper main-wide" role="main">
+<div class="f-layout-main__flash-area js-flash-area z-1"><div class="user-timezone-warning js-user-timezone-warning" style="display: none;">
+<div class="alert alert-dismissible alert-warning" data-controller="helpers--dismissible-alerts" data-helpers--dismissible-alerts-cookie-key-value="user_timezone_warning">
+<h6 class="alert-heading">Warning.</h6>
+<div class="alert-content">Your time zone does not match with the time zone selected in your profile. To update your time zone click <a href="/student/profile">here</a>.</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+
+</div>
+</div>
+<div class="f-layout-main__body">
+<header class="f-title f-page-header">
+<h1 class="text-truncate f-page-header__text" id="content-header">Tasks &amp; Deadlines</h1>
+<div class="f-title__addition gap-2">
+<button class="btn btn-main btn-icon btn-sidebar-toggle--blink js-sidebar-toggle" data-action="helpers--toggle-sidebar#toggle" data-controller="helpers--toggle-sidebar" data-toggle="tooltip" title="" type="button" data-original-title="Use New Sidebar">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-layout_text_sidebar"><path d="M3.5 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM3 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"></path><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm12-1v14h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm-1 0H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h9z"></path></svg>
+</button>
+<span class="pipe d-none"></span><a class="btn btn-icon btn-toggle-rnav js-toggle-rnav px-3 border-0 d-none d-lg-flex btn-secondary active" title="" data-toggle="tooltip" data-open="Show Sidebar" data-close="Hide Sidebar" href="#" data-original-title="Show Sidebar"><svg width="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="fi fi-arrow-right inactive-icon"><path fill="#859BBB" d="M.6 6.4h9.348L6.774 9.574a.603.603 0 00.852.852l4.194-4.2a.595.595 0 000-.852l-4.194-4.2a.61.61 0 00-.852 0 .605.605 0 000 .852L9.948 5.2H.6a.6.6 0 000 1.2z"></path></svg><svg width="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" class="fi fi-list_alt active-icon"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.667 8.433a1.167 1.167 0 110-2.333 1.167 1.167 0 010 2.333zm0 4.667a1.167 1.167 0 110-2.333 1.167 1.167 0 010 2.333zm0-9.333a1.167 1.167 0 110-2.334 1.167 1.167 0 010 2.334zm4.666 7h7a1.167 1.167 0 110 2.333h-7a1.167 1.167 0 110-2.333zm7-2.334h-7a1.167 1.167 0 010-2.333h7a1.167 1.167 0 110 2.333zm0-4.666h-7a1.167 1.167 0 010-2.334h7a1.167 1.167 0 110 2.334z"></path></svg></a>
+
+</div>
+</header>
+<div class="f-layout-main__content">
+<div class="px-6 py-2">
+<div class="page-head-tile mb-0">
+<h3 class="title">Upcoming</h3>
+</div>
+<div class="fusion-section-content upcoming-tasks mt-0">
+<div class="mt-4"><div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="stretch agenda task-agenda">
+<div class="line task-node anchor js-presentation" data-id="#core-task-26438286" id="core-task-26438286">
+
+<div class="date-badge"><div class="month">Oct</div><div class="day">26</div></div>
+<div class="details">
+<h4 class="title">
+<a href="/student/classes/11412561/core_tasks/26438286">HomeWork-APCS</a>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #478cfe;">Summative</div>
+<div class="label" style="--f-label-bg: #33C; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="group-name hidden-mobile">
+in <a href="/student/classes/11412561">AP AP Computer Science (Grade 11)</a>
+</div>
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Sunday at 11:55 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex flex-column content-center">
+<div class="cell not-submitted"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-submitted">Not Submitted</span>
+</div>
+</div>
+
+</div>
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="stretch agenda task-agenda">
+<div class="line task-node anchor js-presentation" data-id="#core-task-26481974" id="core-task-26481974">
+
+<div class="date-badge"><div class="month">Oct</div><div class="day">26</div></div>
+<div class="details">
+<h4 class="title">
+<a href="/student/classes/11412723/core_tasks/26481974">Reflection Note Week 8</a>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #1aaf5d;">Formative</div>
+<div class="label" style="--f-label-bg: #2175C6; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="group-name hidden-mobile">
+in <a href="/student/classes/11412723">AP AP Macroeconomics (Grade 12)</a>
+</div>
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Sunday at 11:55 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex flex-column content-center">
+<div class="cell not-submitted"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-submitted">Not Submitted</span>
+</div>
+</div>
+
+</div>
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="stretch agenda task-agenda">
+<div class="line task-node anchor js-presentation" data-id="#core-task-26475931" id="core-task-26475931">
+
+<div class="date-badge"><div class="month">Oct</div><div class="day">27</div></div>
+<div class="details">
+<h4 class="title">
+<a href="/student/classes/11412427/core_tasks/26475931">weekend homework6</a>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #1aaf5d;">Formative</div>
+<div class="label" style="--f-label-bg: #2175C6; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="group-name hidden-mobile">
+in <a href="/student/classes/11412427">AP AP Calculus BC (Grade 11)</a>
+</div>
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Monday at  8:00 AM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex flex-column content-center">
+<div class="cell not-submitted"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-submitted">Not Submitted</span>
+</div>
+</div>
+
+</div>
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="stretch agenda task-agenda">
+<div class="line task-node anchor js-presentation" data-id="#core-task-26481957" id="core-task-26481957">
+
+<div class="date-badge"><div class="month">Oct</div><div class="day">27</div></div>
+<div class="details">
+<h4 class="title">
+<a href="/student/classes/11412723/core_tasks/26481957">Unit 2 Exercise 4 Redo</a>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #1aaf5d;">Formative</div>
+<div class="label" style="--f-label-bg: #2175C6; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="group-name hidden-mobile">
+in <a href="/student/classes/11412723">AP AP Macroeconomics (Grade 12)</a>
+</div>
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Monday at 11:55 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex flex-column content-center">
+<div class="cell not-submitted"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-submitted">Not Submitted</span>
+</div>
+</div>
+
+</div>
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="stretch agenda task-agenda">
+<div class="line task-node anchor js-presentation" data-id="#core-task-26464250" id="core-task-26464250">
+
+<div class="date-badge"><div class="month">Oct</div><div class="day">28</div></div>
+<div class="details">
+<h4 class="title">
+<a href="/student/classes/11412561/core_tasks/26464250">homeWork-AP CS</a>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #478cfe;">Summative</div>
+<div class="label" style="--f-label-bg: #33C; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="group-name hidden-mobile">
+in <a href="/student/classes/11412561">AP AP Computer Science (Grade 11)</a>
+</div>
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Tuesday at  9:30 AM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex flex-column content-center">
+<div class="cell not-submitted"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-submitted">Not Submitted</span>
+</div>
+</div>
+
+</div>
+<div class="js-show-more">
+<a class="btn btn-light btn-show-more flex centered w-100" data-toggle-spinner-to=".upcoming-tasks .js-show-more" data-remote="true" href="javascript:void(0)">Show More
+</a></div>
+</div>
+</div>
+<div class="fusion-section-head mt-0">
+<h3 class="title">Completed</h3>
+</div>
+<div class="fusion-section-content">
+<div class="completed-tasks">
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="flex flex-start flex-left">
+<div class="flex-col"><div class="date-badge past-due"><div class="month">Oct</div><div class="day">24</div></div></div>
+<div class="stretch">
+<h4 class="title">
+<a href="/student/classes/11412427/core_tasks/26449550">homework8</a>
+<span class="fusion-popover" data-bs-content-url="/student/classes/11412427/events/26449550/hint" data-bs-dont-close-on-mouseout="true" data-controller="popover"><svg xmlns="http://www.w3.org/2000/svg" width="30" viewBox="0 0 30 30" class="fi fi-info"><path fill-rule="evenodd" fill="#859bbb" d="M15 0A15 15 0 110 15 15 15 0 0115 0zm0 2A13 13 0 112 15 13 13 0 0115 2z"></path><path fill="#859bbb" d="M16.484 19.98a.814.814 0 01-.609-.3.835.835 0 01-.2-.65 7.559 7.559 0 01.063-.88 6.5 6.5 0 01.141-.66l.892-2.2a4.015 4.015 0 00.129-.72c.024-.26.034-.45.034-.55a2.115 2.115 0 00-.753-1.33 2.04 2.04 0 00-1.434-.47 3.411 3.411 0 00-1.094.19c-.386.13-1.2.39-1.618.57l-.047.9c.125-.05.276-.1.451-.16a1.867 1.867 0 01.512-.08 2.041 2.041 0 01.97.18.925.925 0 01.305.64 1.593 1.593 0 01-.059.4q-.058.315-.145.66l-.894 2.2c-.057.25-.1.8-.125 1a4.613 4.613 0 00-.039.59 1.718 1.718 0 00.644 1.22 2.067 2.067 0 001.456.48 3.154 3.154 0 001.069-.17 6.689 6.689 0 001.047-.26l.172-.74a1.214 1.214 0 01-.868.14zm1.08-11.53A1.47 1.47 0 0016.483 8a1.554 1.554 0 00-1.085.48 1.529 1.529 0 00-.453 1.1 1.5 1.5 0 00.453 1.1 1.4 1.4 0 002.166 0 1.5 1.5 0 00.449-1.1 1.59 1.59 0 00-.449-1.13z"></path></svg></span>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #1aaf5d;">Formative</div>
+<div class="label" style="--f-label-bg: #2175C6; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Friday at  8:00 AM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex flex-column content-center">
+<div class="cell not-submitted"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-submitted">Not Submitted</span>
+</div>
+</div>
+
+
+</div>
+
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="flex flex-start flex-left">
+<div class="flex-col"><div class="date-badge past-due"><div class="month">Oct</div><div class="day">21</div></div></div>
+<div class="stretch">
+<h4 class="title">
+<a href="/student/classes/11412719/core_tasks/26439987">U2 Weekend homework</a>
+<span class="fusion-popover" data-bs-content-url="/student/classes/11412719/events/26439987/hint" data-bs-dont-close-on-mouseout="true" data-controller="popover"><svg xmlns="http://www.w3.org/2000/svg" width="30" viewBox="0 0 30 30" class="fi fi-info"><path fill-rule="evenodd" fill="#859bbb" d="M15 0A15 15 0 110 15 15 15 0 0115 0zm0 2A13 13 0 112 15 13 13 0 0115 2z"></path><path fill="#859bbb" d="M16.484 19.98a.814.814 0 01-.609-.3.835.835 0 01-.2-.65 7.559 7.559 0 01.063-.88 6.5 6.5 0 01.141-.66l.892-2.2a4.015 4.015 0 00.129-.72c.024-.26.034-.45.034-.55a2.115 2.115 0 00-.753-1.33 2.04 2.04 0 00-1.434-.47 3.411 3.411 0 00-1.094.19c-.386.13-1.2.39-1.618.57l-.047.9c.125-.05.276-.1.451-.16a1.867 1.867 0 01.512-.08 2.041 2.041 0 01.97.18.925.925 0 01.305.64 1.593 1.593 0 01-.059.4q-.058.315-.145.66l-.894 2.2c-.057.25-.1.8-.125 1a4.613 4.613 0 00-.039.59 1.718 1.718 0 00.644 1.22 2.067 2.067 0 001.456.48 3.154 3.154 0 001.069-.17 6.689 6.689 0 001.047-.26l.172-.74a1.214 1.214 0 01-.868.14zm1.08-11.53A1.47 1.47 0 0016.483 8a1.554 1.554 0 00-1.085.48 1.529 1.529 0 00-.453 1.1 1.5 1.5 0 00.453 1.1 1.4 1.4 0 002.166 0 1.5 1.5 0 00.449-1.1 1.59 1.59 0 00-.449-1.13z"></path></svg></span>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #478cfe;">Summative</div>
+<div class="label" style="--f-label-bg: #2175C6; color: #fff">Homework</div>
+<span class="badge color-box-gray" data-bs-title="Waiting" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path></svg>
+<span class="badge-label">Pending</span>
+</span>
+
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Tuesday at 11:00 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class="assessment task-score score-mobile-collapsible assessment-cell">
+<div class="flex content-center inline-block">
+<div class="cell labels-set">
+<span class="grade grade-success">F</span>
+<div class="points">0 / 50 pts</div>
+</div>
+</div>
+</div>
+<div class="assessment-comments">
+<h4>Description</h4>
+<div class="show-more active in" data-show-more-label="Show More" data-show-less-label="Show Less" data-lines="3" style="height: 60px;"><div class="fix-body-margins redactor-styles fr-view fr-element" style="padding: 0" data-controller="rte-preview"><p><a href="https://shtcs.managebac.cn/attachments/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaTVuYVdRNkx5OXRZVzVoWjJWaVlXTXZRWE56WlhRdk56Y3lNVGcyTURVX1pYaHdhWEpsYzE5cGJnWTZCa1ZVIiwiZXhwIjpudWxsLCJwdXIiOiJkZWZhdWx0In19--586e666e9deb3d91564c05451a6c4ccc04bed96e" class="fr-file" data-name="Perception_weekend.docx" rel="noopener noreferrer nofollow" target="blank"><span><span class="fr-inner">Perception weekend.docx</span><span class="fr-file-size">16.32 KB</span></span></a></p><p><br></p></div>
+</div><a href="#" class="show-more-link">Show More</a></div>
+<div class="assessment-comments">
+<h4>Comment</h4>
+<div class="flex flex-start flex-top">
+<div class="author" data-toggle="tooltip" title="" data-original-title="Alex Xin left a comment on Oct 21, 2025"><a class="user-popover fusion-popover" data-controller="popover" data-bs-content-url="/student/users/13217841/popup" data-bs-container="body" data-bs-placement="auto" data-bs-trigger="click" data-bs-force-update="true" data-bs-custom-class="avatar-popover compact popover-sm" href="javascript:void(0);"><div class="avatar micro" style="background-image: url(https://managebac-cn-prod.s3.cn-north-1.amazonaws.com.cn/uploads/photo/file/26769389/1/tiny_3c7f14dea48acc80c89868238d1638a0.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=ASIAXSAROJF4FDAEBCBX%2F20251026%2Fcn-north-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20251026T152041Z&amp;X-Amz-Expires=7200&amp;X-Amz-Security-Token=FwoDYXdzEAcaDETken%2FIxXQ9%2FrTn2yLbBB48AOceglQ7PfeTdYl%2BG7HEfcDlP3%2Fer9pjIV1zfUO762S1F3Wh0ADJa7P2p0w0TTA%2BMF0Jy8%2BD%2F5xBsX3L1f40yD8jPnJT5QOR%2FSFo%2FGyJnB689%2BSNlbSskT7PZwX5uORczGO1O7P%2BrgKrNz68D7QLY1BKNRJ2r1L%2BqzlmaNYbwWdoPMXlbGsNYdY%2BeHDOd4%2FHDiavCncW7V16JzY5RIWOVUoKCFzSi6frbVfgbpsnhFwDi%2BzcQCWluGCYYjrgaDVnhPs4l571Fdpd5nIDD55gMDGZkml5SCuWfVXyGIfKj9gAORAy8wGd3NPrNK%2BOBdmQHXaz9Qm0mvmtlNW44bR1ZzZDADRBucGhKX4PCBhtPhv0zDKX7BWLaee21qoXTgpNOJEshgLmbTSs%2FNnNlTm8LKQkKTWlPq9Z5kWdCfRt%2BFmamreG%2FeC71Md1j9gQseyiGhe3IG2kJxZ2vRHYlhfo1C2BnrHKgzUM1CWfOrHQ9ikTw1nmOLI48mx2ETVtdioftmFX%2FQj99Z2Gqcb%2BQS0hV%2F4WfBg%2B1bbGPlHQjQlMyqZaVfQhNo%2BFZcXuzGN5GzXUjZ8knrnDSEErhrY%2B%2FueOXHk6j%2BgeXiGPHM0PMZI8dnWihmWU%2BzyaKU4AtEgCOw2VhGTpuvyUjB8y9xroBWz%2FA0WuYFdlF7xUzbp7Q6HOHFGcjQlTlbFSzvVjl8WXruPGT2AmDK8%2Bc6at5V%2B6qEQTlc01u7Uphh9MLtxvimaWsfkNWY8yFClj1xPfzuysNgOZhayRtGRoH2FftuHE%2F8GboQw3ocg6V3sPmyiu1%2FjHBjJBDy%2BAMEa5Po6OH4XgwFAbA6E7KkpQIb%2FFslvmrz74jYU8f9u8Zmdq5GlzqUNdXgRf0e0Nb1mrxQCpFy5F%2F5hHDNk%3D&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=e7d1b3c1ae85cae0d2654ba2a59548bc0fd34d9104754ce2ff13350e42c05a25)" data-initials="AX" data-id="13217841"></div></a></div>
+<div class="cell">
+<div class="show-more" data-show-more-label="Show More" data-show-less-label="Show Less" data-lines="3"><div class="no-margin"><div class="fix-body-margins redactor-styles fr-view fr-element" style="padding: 0" data-controller="rte-preview"><p>尽快递交</p></div></div>
+</div></div>
+</div>
+</div>
+
+
+</div>
+
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="flex flex-start flex-left">
+<div class="flex-col"><div class="date-badge past-due"><div class="month">Oct</div><div class="day">21</div></div></div>
+<div class="stretch">
+<h4 class="title">
+<a href="/student/classes/11412723/core_tasks/26462690">Bi-Week Feedback 3 (2025/10/21)</a>
+<span class="fusion-popover" data-bs-content-url="/student/classes/11412723/events/26462690/hint" data-bs-dont-close-on-mouseout="true" data-controller="popover"><svg xmlns="http://www.w3.org/2000/svg" width="30" viewBox="0 0 30 30" class="fi fi-info"><path fill-rule="evenodd" fill="#859bbb" d="M15 0A15 15 0 110 15 15 15 0 0115 0zm0 2A13 13 0 112 15 13 13 0 0115 2z"></path><path fill="#859bbb" d="M16.484 19.98a.814.814 0 01-.609-.3.835.835 0 01-.2-.65 7.559 7.559 0 01.063-.88 6.5 6.5 0 01.141-.66l.892-2.2a4.015 4.015 0 00.129-.72c.024-.26.034-.45.034-.55a2.115 2.115 0 00-.753-1.33 2.04 2.04 0 00-1.434-.47 3.411 3.411 0 00-1.094.19c-.386.13-1.2.39-1.618.57l-.047.9c.125-.05.276-.1.451-.16a1.867 1.867 0 01.512-.08 2.041 2.041 0 01.97.18.925.925 0 01.305.64 1.593 1.593 0 01-.059.4q-.058.315-.145.66l-.894 2.2c-.057.25-.1.8-.125 1a4.613 4.613 0 00-.039.59 1.718 1.718 0 00.644 1.22 2.067 2.067 0 001.456.48 3.154 3.154 0 001.069-.17 6.689 6.689 0 001.047-.26l.172-.74a1.214 1.214 0 01-.868.14zm1.08-11.53A1.47 1.47 0 0016.483 8a1.554 1.554 0 00-1.085.48 1.529 1.529 0 00-.453 1.1 1.5 1.5 0 00.453 1.1 1.4 1.4 0 002.166 0 1.5 1.5 0 00.449-1.1 1.59 1.59 0 00-.449-1.13z"></path></svg></span>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #1aaf5d;">Formative</div>
+<div class="label" style="--f-label-bg: #ee105a; color: #fff">Feedback</div>
+
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Tuesday at  6:45 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class="assessment-comments">
+<h4>Comment</h4>
+<div class="flex flex-start flex-top">
+<div class="author" data-toggle="tooltip" title="" data-original-title="Frank Tang left a comment on Oct 21, 2025"><a class="user-popover fusion-popover" data-controller="popover" data-bs-content-url="/student/users/13139981/popup" data-bs-container="body" data-bs-placement="auto" data-bs-trigger="click" data-bs-force-update="true" data-bs-custom-class="avatar-popover compact popover-sm" href="javascript:void(0);"><div class="avatar micro" style="background-image: url(https://managebac-cn-prod.s3.cn-north-1.amazonaws.com.cn/uploads/photo/file/25529071/1/tiny_tsq.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=ASIAXSAROJF4FDAEBCBX%2F20251026%2Fcn-north-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20251026T152041Z&amp;X-Amz-Expires=7200&amp;X-Amz-Security-Token=FwoDYXdzEAcaDETken%2FIxXQ9%2FrTn2yLbBB48AOceglQ7PfeTdYl%2BG7HEfcDlP3%2Fer9pjIV1zfUO762S1F3Wh0ADJa7P2p0w0TTA%2BMF0Jy8%2BD%2F5xBsX3L1f40yD8jPnJT5QOR%2FSFo%2FGyJnB689%2BSNlbSskT7PZwX5uORczGO1O7P%2BrgKrNz68D7QLY1BKNRJ2r1L%2BqzlmaNYbwWdoPMXlbGsNYdY%2BeHDOd4%2FHDiavCncW7V16JzY5RIWOVUoKCFzSi6frbVfgbpsnhFwDi%2BzcQCWluGCYYjrgaDVnhPs4l571Fdpd5nIDD55gMDGZkml5SCuWfVXyGIfKj9gAORAy8wGd3NPrNK%2BOBdmQHXaz9Qm0mvmtlNW44bR1ZzZDADRBucGhKX4PCBhtPhv0zDKX7BWLaee21qoXTgpNOJEshgLmbTSs%2FNnNlTm8LKQkKTWlPq9Z5kWdCfRt%2BFmamreG%2FeC71Md1j9gQseyiGhe3IG2kJxZ2vRHYlhfo1C2BnrHKgzUM1CWfOrHQ9ikTw1nmOLI48mx2ETVtdioftmFX%2FQj99Z2Gqcb%2BQS0hV%2F4WfBg%2B1bbGPlHQjQlMyqZaVfQhNo%2BFZcXuzGN5GzXUjZ8knrnDSEErhrY%2B%2FueOXHk6j%2BgeXiGPHM0PMZI8dnWihmWU%2BzyaKU4AtEgCOw2VhGTpuvyUjB8y9xroBWz%2FA0WuYFdlF7xUzbp7Q6HOHFGcjQlTlbFSzvVjl8WXruPGT2AmDK8%2Bc6at5V%2B6qEQTlc01u7Uphh9MLtxvimaWsfkNWY8yFClj1xPfzuysNgOZhayRtGRoH2FftuHE%2F8GboQw3ocg6V3sPmyiu1%2FjHBjJBDy%2BAMEa5Po6OH4XgwFAbA6E7KkpQIb%2FFslvmrz74jYU8f9u8Zmdq5GlzqUNdXgRf0e0Nb1mrxQCpFy5F%2F5hHDNk%3D&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=87f35b7f5f2cc0b9aa3888d977700caa33f73156c4c7c72fd9928008e30be525)" data-initials="FT" data-id="13139981"></div></a></div>
+<div class="cell">
+<div class="show-more active in" data-show-more-label="Show More" data-show-less-label="Show Less" data-lines="3" style="height: 60px;"><div class="no-margin"><div class="fix-body-margins redactor-styles fr-view fr-element" style="padding: 0" data-controller="rte-preview"><p>Jack同学国庆前后的表现大致相同，上课有不少缺勤，即使来了有时也会有走神的情况出现，不是非常专注在课堂内；作业也有大量迟交漏交，有些直到现在也没有提交。尤其是期中考试在即，希望Jack能有所改变，尽快回归正轨，保证自己课堂的出勤率，补上之前落下的作业和知识点，并且好好复习，同时有问题随时来办公室找我提问，这样一定可以取得让自己满意的成绩，不辜负自己这两个月以来的付出，加油！</p></div></div>
+</div><a href="#" class="show-more-link">Show More</a></div>
+</div>
+</div>
+
+
+</div>
+
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="flex flex-start flex-left">
+<div class="flex-col"><div class="date-badge past-due"><div class="month">Oct</div><div class="day">21</div></div></div>
+<div class="stretch">
+<h4 class="title">
+<a href="/student/classes/11429407/core_tasks/26460736">Bi-Weekly Report</a>
+<span class="fusion-popover" data-bs-content-url="/student/classes/11429407/events/26460736/hint" data-bs-dont-close-on-mouseout="true" data-controller="popover"><svg xmlns="http://www.w3.org/2000/svg" width="30" viewBox="0 0 30 30" class="fi fi-info"><path fill-rule="evenodd" fill="#859bbb" d="M15 0A15 15 0 110 15 15 15 0 0115 0zm0 2A13 13 0 112 15 13 13 0 0115 2z"></path><path fill="#859bbb" d="M16.484 19.98a.814.814 0 01-.609-.3.835.835 0 01-.2-.65 7.559 7.559 0 01.063-.88 6.5 6.5 0 01.141-.66l.892-2.2a4.015 4.015 0 00.129-.72c.024-.26.034-.45.034-.55a2.115 2.115 0 00-.753-1.33 2.04 2.04 0 00-1.434-.47 3.411 3.411 0 00-1.094.19c-.386.13-1.2.39-1.618.57l-.047.9c.125-.05.276-.1.451-.16a1.867 1.867 0 01.512-.08 2.041 2.041 0 01.97.18.925.925 0 01.305.64 1.593 1.593 0 01-.059.4q-.058.315-.145.66l-.894 2.2c-.057.25-.1.8-.125 1a4.613 4.613 0 00-.039.59 1.718 1.718 0 00.644 1.22 2.067 2.067 0 001.456.48 3.154 3.154 0 001.069-.17 6.689 6.689 0 001.047-.26l.172-.74a1.214 1.214 0 01-.868.14zm1.08-11.53A1.47 1.47 0 0016.483 8a1.554 1.554 0 00-1.085.48 1.529 1.529 0 00-.453 1.1 1.5 1.5 0 00.453 1.1 1.4 1.4 0 002.166 0 1.5 1.5 0 00.449-1.1 1.59 1.59 0 00-.449-1.13z"></path></svg></span>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #478cfe;">Summative</div>
+<div class="label" style="--f-label-bg: #0072bc; color: #fff">Performance</div>
+<span class="badge color-box-green" data-bs-title="3 hours early" data-bs-toggle="tooltip" data-tooltip-initialized="true">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-check_circle_fill"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path></svg>
+<span class="badge-label">Submitted</span>
+</span>
+
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Tuesday at  5:30 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class="assessment task-score score-mobile-compact assessment-cell">
+<div class="flex content-center">
+<div class="flex flex-column content-center">
+<div class="cell icon"><svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" class="status not-assessed"><g stroke="#f59d00" stroke-width="2"><path d="m20 40c-11.028 0-20-8.972-20-20s8.972-20 20-20 20 8.972 20 20-8.972 20-20 20zm0-38c-9.65 0-18 8.35-18 18s8.35 18 18 18c9.649 0 18-8.35 18-18s-8.351-18-18-18zm9 19h-9c-.691 0-1-.309-1-1v-12c0-.691.309-1 1-1s1 .309 1 1v11h8c.691 0 1 .309 1 1s-.309 1-1 1z" fill="#f59d00" transform="matrix(.5 0 0 .5 10.25 10)"></path><circle cx="20" cy="20" fill="none" r="19"></circle></g></svg></div>
+<span class="cell not-assessed">Not Assessed Yet</span>
+</div>
+</div>
+</div>
+
+
+
+</div>
+
+<div class="fusion-card-item short-assignment section flex flex-wrap">
+<div class="flex flex-start flex-left">
+<div class="flex-col"><div class="date-badge past-due"><div class="month">Oct</div><div class="day">21</div></div></div>
+<div class="stretch">
+<h4 class="title">
+<a href="/student/classes/11412719/core_tasks/26459761">performance</a>
+<span class="fusion-popover" data-bs-content-url="/student/classes/11412719/events/26459761/hint" data-bs-dont-close-on-mouseout="true" data-controller="popover"><svg xmlns="http://www.w3.org/2000/svg" width="30" viewBox="0 0 30 30" class="fi fi-info"><path fill-rule="evenodd" fill="#859bbb" d="M15 0A15 15 0 110 15 15 15 0 0115 0zm0 2A13 13 0 112 15 13 13 0 0115 2z"></path><path fill="#859bbb" d="M16.484 19.98a.814.814 0 01-.609-.3.835.835 0 01-.2-.65 7.559 7.559 0 01.063-.88 6.5 6.5 0 01.141-.66l.892-2.2a4.015 4.015 0 00.129-.72c.024-.26.034-.45.034-.55a2.115 2.115 0 00-.753-1.33 2.04 2.04 0 00-1.434-.47 3.411 3.411 0 00-1.094.19c-.386.13-1.2.39-1.618.57l-.047.9c.125-.05.276-.1.451-.16a1.867 1.867 0 01.512-.08 2.041 2.041 0 01.97.18.925.925 0 01.305.64 1.593 1.593 0 01-.059.4q-.058.315-.145.66l-.894 2.2c-.057.25-.1.8-.125 1a4.613 4.613 0 00-.039.59 1.718 1.718 0 00.644 1.22 2.067 2.067 0 001.456.48 3.154 3.154 0 001.069-.17 6.689 6.689 0 001.047-.26l.172-.74a1.214 1.214 0 01-.868.14zm1.08-11.53A1.47 1.47 0 0016.483 8a1.554 1.554 0 00-1.085.48 1.529 1.529 0 00-.453 1.1 1.5 1.5 0 00.453 1.1 1.4 1.4 0 002.166 0 1.5 1.5 0 00.449-1.1 1.59 1.59 0 00-.449-1.13z"></path></svg></span>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #478cfe;">Summative</div>
+<div class="label" style="--f-label-bg: #0072bc; color: #fff">performance</div>
+
+<div class="flex flex-start">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-clock"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path></svg>
+<span class="due-date">
+<div class="due regular">Tuesday at  1:40 PM</div>
+</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class="assessment-comments">
+<h4>Comment</h4>
+<div class="flex flex-start flex-top">
+<div class="author" data-toggle="tooltip" title="" data-original-title="Alex Xin left a comment on Oct 24, 2025"><a class="user-popover fusion-popover" data-controller="popover" data-bs-content-url="/student/users/13217841/popup" data-bs-container="body" data-bs-placement="auto" data-bs-trigger="click" data-bs-force-update="true" data-bs-custom-class="avatar-popover compact popover-sm" href="javascript:void(0);"><div class="avatar micro" style="background-image: url(https://managebac-cn-prod.s3.cn-north-1.amazonaws.com.cn/uploads/photo/file/26769389/1/tiny_3c7f14dea48acc80c89868238d1638a0.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=ASIAXSAROJF4FDAEBCBX%2F20251026%2Fcn-north-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20251026T152041Z&amp;X-Amz-Expires=7200&amp;X-Amz-Security-Token=FwoDYXdzEAcaDETken%2FIxXQ9%2FrTn2yLbBB48AOceglQ7PfeTdYl%2BG7HEfcDlP3%2Fer9pjIV1zfUO762S1F3Wh0ADJa7P2p0w0TTA%2BMF0Jy8%2BD%2F5xBsX3L1f40yD8jPnJT5QOR%2FSFo%2FGyJnB689%2BSNlbSskT7PZwX5uORczGO1O7P%2BrgKrNz68D7QLY1BKNRJ2r1L%2BqzlmaNYbwWdoPMXlbGsNYdY%2BeHDOd4%2FHDiavCncW7V16JzY5RIWOVUoKCFzSi6frbVfgbpsnhFwDi%2BzcQCWluGCYYjrgaDVnhPs4l571Fdpd5nIDD55gMDGZkml5SCuWfVXyGIfKj9gAORAy8wGd3NPrNK%2BOBdmQHXaz9Qm0mvmtlNW44bR1ZzZDADRBucGhKX4PCBhtPhv0zDKX7BWLaee21qoXTgpNOJEshgLmbTSs%2FNnNlTm8LKQkKTWlPq9Z5kWdCfRt%2BFmamreG%2FeC71Md1j9gQseyiGhe3IG2kJxZ2vRHYlhfo1C2BnrHKgzUM1CWfOrHQ9ikTw1nmOLI48mx2ETVtdioftmFX%2FQj99Z2Gqcb%2BQS0hV%2F4WfBg%2B1bbGPlHQjQlMyqZaVfQhNo%2BFZcXuzGN5GzXUjZ8knrnDSEErhrY%2B%2FueOXHk6j%2BgeXiGPHM0PMZI8dnWihmWU%2BzyaKU4AtEgCOw2VhGTpuvyUjB8y9xroBWz%2FA0WuYFdlF7xUzbp7Q6HOHFGcjQlTlbFSzvVjl8WXruPGT2AmDK8%2Bc6at5V%2B6qEQTlc01u7Uphh9MLtxvimaWsfkNWY8yFClj1xPfzuysNgOZhayRtGRoH2FftuHE%2F8GboQw3ocg6V3sPmyiu1%2FjHBjJBDy%2BAMEa5Po6OH4XgwFAbA6E7KkpQIb%2FFslvmrz74jYU8f9u8Zmdq5GlzqUNdXgRf0e0Nb1mrxQCpFy5F%2F5hHDNk%3D&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=e7d1b3c1ae85cae0d2654ba2a59548bc0fd34d9104754ce2ff13350e42c05a25)" data-initials="AX" data-id="13217841"></div></a></div>
+<div class="cell">
+<div class="show-more active in" data-show-more-label="Show More" data-show-less-label="Show Less" data-lines="3" style="height: 60px;"><div class="no-margin"><div class="fix-body-margins redactor-styles fr-view fr-element" style="padding: 0" data-controller="rte-preview"><p style="font-weight: 400; font-style: normal; text-align: start;">Jack同学在过去两周的课堂参与度非常不错，能够积极融入讨论，这是值得肯定的优点。然而，学习不仅需要课堂互动，更需要扎实的基础。我们注意到，你在上课时对知识点的专注与掌握仍需加强，同时作业存在漏交、不交的情况，这已直接影响学习成效。若本周内仍未补交，将按规则作零分处理。请及时端正态度，老师期待你将课堂上的活跃转化为扎实的学业成果。</p><p style="font-weight: 400; font-style: normal; text-align: start;">Jack has demonstrated excellent class participation over the past two weeks, actively engaging in discussions – this is a real strength. However, learning requires not only interaction but also a solid foundation. We've noticed that your focus and mastery of key concepts in class need improvement, and there have been instances of missing or unsubmitted homework, which is directly impacting your academic progress. Please be reminded that any outstanding assignments must be submitted this week, or they will be marked as zero. We encourage you to adjust your approach promptly and look forward to seeing you channel your classroom enthusiasm into consistent academic results.</p></div></div>
+</div><a href="#" class="show-more-link">Show More</a></div>
+</div>
+</div>
+
+
+</div>
+
+
+<div class="js-show-more">
+<a class="btn btn-light btn-show-more flex centered w-100" data-toggle-spinner-to=".completed-tasks .js-show-more" data-remote="true" href="javascript:void(0)">Show More
+</a></div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+</div>
+<aside class="f-layout-main__rnav css-sidebar d-none">
+<div class="f-sidebar row gx-4 gx-lg-0">
+
+
+
+<section>
+<h6 class="text-secondary mb-3">Filter by Class or Year Group</h6>
+<ul class="nav nav-pills flex-column gap-1">
+<li class="nav-item"><a class="nav-link justify-content-start text-start active" href="/student/tasks_and_deadlines">All</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11436438">科创社 Sci-tech innovation society (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11439531">Rock climbing 攀岩 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11421742">Self Study Monday 5,6 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11426896">Self Study Thursday 5,6 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11421746">Self Study Tuesday 5,6 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11426727">Self Study Wednesday 5,6 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412723">AP Macroeconomics (Grade 12)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412713">AP US History (Grade 12)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11429407">Advanced listening and speaking 1 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412719">AP Psychology (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412820">AP US History G11,G10 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412561">AP Computer Science (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11444503">PBL Psychology (Grade 9)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11433858">Robotics (Grade 9)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412427">AP Calculus BC (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11420786">AP Art Elective 2 (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412729">Arts Elective  (Grade 11)</a></li>
+<li class="nav-item"><a class="nav-link justify-content-start text-start" href="/student/tasks_and_deadlines?selected_group=11412413">US G11 (Grade 11)</a></li>
+</ul>
+</section>
+
+
+<section>
+<h6 class="text-secondary mb-3">Reference Guides</h6>
+<div class="reference-guides bg-white border rounded shadow-sm p-3 mb-2">
+<p>
+<a target="_blank" class="hstack gap-2" href="/help/articles/360018799612"><svg width="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" class="fi fi-upload"><path d="M13.242 12.656a.588.588 0 01-.586.586.588.588 0 01-.586-.586c0-.322.264-.586.586-.586.323 0 .586.264.586.586zm-2.46-.586a.588.588 0 00-.587.586c0 .323.264.586.586.586a.588.588 0 00.586-.586.588.588 0 00-.586-.586zM15 10.664v3.047A1.29 1.29 0 0113.71 15H1.29A1.29 1.29 0 010 13.71v-3.046a1.29 1.29 0 011.29-1.289h3.632v-2.91H3.378c-1.043 0-1.565-1.262-.83-2L6.672.343a1.174 1.174 0 011.658 0l4.122 4.122c.738.738.214 2-.829 2h-1.544v2.91h3.633a1.29 1.29 0 011.289 1.29zM5.86 5.528v5.488c0 .129.105.234.234.234h2.812a.235.235 0 00.235-.234V5.528h2.481a.236.236 0 00.167-.401L7.667 1.005a.235.235 0 00-.331 0L3.214 5.127a.236.236 0 00.167.401h2.478zm8.203 5.136a.353.353 0 00-.352-.351h-3.633v.703a1.17 1.17 0 01-1.172 1.171H6.094a1.172 1.172 0 01-1.172-1.171v-.704H1.289a.353.353 0 00-.351.352v3.047c0 .193.158.351.351.351h12.422a.353.353 0 00.351-.351v-3.047z" fill="#A6BEDC"></path></svg>
+Submitting Coursework to Deadlines</a>
+</p>
+<p class="ps-6 pt-2">How to upload coursework to tasks or deadlines</p>
+</div>
+</section>
+
+
+</div>
+</aside>
+
+</main>
+<div id="modal-box-wrapper">
+
+
+
+</div>
+<div class="modal" id="auto-logout-popup" style="display: none">
+<div class="modal-dialog modal-md">
+<div class="modal-content">
+<div class="modal-header">
+<h2 class="modal-title">Logout Reminder</h2>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+<h4 class="mb-3">You will be automatically logged out in 5 minutes due to inactivity.</h4>
+<div class="progress progress-lg" role="progressbar">
+<div class="progress-bar progress-bar-striped progress-bar-animated bar"></div>
+</div>
+</div>
+<div class="modal-footer">
+<a class="btn btn-secondary stay-logged-in" data-bs-dismiss="modal" href="javascript:void(0)">Stay Logged In</a>
+<a class="btn btn-secondary log-out" href="#">Log Out</a>
+</div>
+</div>
+</div>
+</div>
+
+<div data-email="fangp458@gmail.com" data-role="Student" data-user="Jack Fang 方籽杰" id="zendesk-widget"></div>
+<button class="zendesk-launcher-button js-zendesk-launcher">
+<svg width="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" class="fi fi-question icon-20"><g fill="#a6bedc"><path d="M11.31 8.883l-.25.27zm5.208.964c.39.48.583 1.045.583 1.697 0 .467-.133.915-.399 1.349-.159.262-.354.5-.578.71l-.8.789c-.766.752-1.26 1.42-1.487 2.003-.226.582-.34 1.35-.34 2.302h1.779c0-.839.095-1.473.285-1.903.189-.429.603-.953 1.243-1.573.88-.852 1.463-1.499 1.752-1.938.29-.439.435-1.012.435-1.718 0-1.164-.393-2.122-1.183-2.872s-1.84-1.124-3.152-1.124c-1.418 0-2.533.438-3.346 1.314-.813.875-1.22 2.031-1.22 3.47h1.78c.032-.866.17-1.528.408-1.988.426-.825 1.195-1.238 2.308-1.238.898 0 1.543.24 1.932.72z"></path><path d="M30 15c0-8.284-6.716-15-15-15S0 6.716 0 15s6.716 15 15 15 15-6.716 15-15zM1.364 15C1.364 7.469 7.468 1.364 15 1.364S28.636 7.468 28.636 15 22.532 28.636 15 28.636 1.364 22.532 1.364 15z"></path><path d="M13.456 20.354h1.988v2.076h-1.988z"></path></g></svg>
+</button>
+
+</div>
+
+
+</body></html>

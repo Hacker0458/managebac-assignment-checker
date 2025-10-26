@@ -1,0 +1,152 @@
+================================================================================
+ManageBac DOM结构分析报告
+================================================================================
+
+
+选择器: div.assignment
+描述: 作业div容器
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div.assignment-card
+描述: 作业卡片容器
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div.task-item
+描述: 任务项容器
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: li.assignment
+描述: 作业列表项
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: tr.assignment
+描述: 作业表格行
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: tr.task
+描述: 任务表格行
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: [class*='assignment']
+描述: 包含assignment类的所有元素
+找到元素数量: 10
+第一个元素文本预览: OCT
+26
+HomeWork-APCS
+Summative
+Homework
+ Pending
+in AP AP Computer Science (Grade 11)
+Sunday at 11:55 PM
+Not Submitted...
+第一个元素HTML结构:
+
+<div class="stretch agenda task-agenda">
+<div class="line task-node anchor js-presentation" data-id="#core-task-26438286" id="core-task-26438286">
+
+<div class="date-badge"><div class="month">Oct</div><div class="day">26</div></div>
+<div class="details">
+<h4 class="title">
+<a href="/student/classes/11412561/core_tasks/26438286">HomeWork-APCS</a>
+</h4>
+<div class="label-and-due">
+<div class="labels-set flex flex-start flex-wrap">
+<div class="label" style="--f-label-bg: #478cfe;">Summative</div>
+<...
+--------------------------------------------------------------------------------
+
+选择器: [class*='task']
+描述: 包含task类的所有元素
+找到元素数量: 21
+第一个元素文本预览: Menu
+Shanghai Mingsui Creative School
+100
+3 of 6
+3 of 6
+My Workspace
+My Workspace
+Timetables
+Tasks & Deadlines
+Portfolio
+Year Group
+Classes
+Groups
+Faria Service Manager
+Tasks & Deadlines
+Upcoming
+OCT
+...
+第一个元素HTML结构:
+
+
+<div class="f-layout-main">
+<nav class="navbar navbar-expand-lg bg-white fixed-top hidden-mobile">
+<div class="container-fluid p-0 column-gap-3 column-gap-lg-2">
+<div class="navbar-row">
+<a id="menu-trigger" class="btn btn-blank btn-icon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Menu" href="javascript:void(0)" data-tooltip-initialized="true"><span class="visually-hidden">Menu</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 16 16" class="fi fi-li...
+--------------------------------------------------------------------------------
+
+选择器: [data-assignment-id]
+描述: 带assignment-id属性的元素
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div.student-assignment
+描述: 学生作业容器
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div.task-row
+描述: 任务行
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div.deadline-item
+描述: 截止日期项
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: .tasks-table tr
+描述: 任务表格行
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: .assignments-list > *
+描述: 作业列表子元素
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div[class*='TaskRow']
+描述: TaskRow组件
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: div[class*='AssignmentCard']
+描述: AssignmentCard组件
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+选择器: li[class*='task-']
+描述: task-开头的列表项
+找到元素数量: 0
+--------------------------------------------------------------------------------
+
+================================================================================
+推荐选择器（按优先级）
+================================================================================
+
+1. [class*='task']
+   描述: 包含task类的所有元素
+   元素数量: 21
+
+2. [class*='assignment']
+   描述: 包含assignment类的所有元素
+   元素数量: 10
+

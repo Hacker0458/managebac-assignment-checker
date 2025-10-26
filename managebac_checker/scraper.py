@@ -15,6 +15,13 @@ class ManageBacScraper:
     """封装登录、导航及作业信息提取的逻辑。"""
 
     _ASSIGNMENT_CONTAINER_SELECTORS = [
+        # 基于真实DOM分析的精确选择器（2025-10-26更新）
+        "div.task-agenda",                    # ManageBac 任务区域容器
+        "div.line.task-node",                 # ManageBac 任务节点行
+        "[class*='assignment']",               # 包含assignment的所有类名（10个元素）
+        "div.task-node",                      # 任务节点简化选择器
+        
+        # 回退选择器（兼容旧版本或不同学校的ManageBac）
         "div.assignment",
         "div.assignment-card",
         "div.task-item",
@@ -26,6 +33,12 @@ class ManageBacScraper:
     ]
 
     _TITLE_SELECTORS = [
+        # 基于真实DOM分析（2025-10-26更新）
+        ".details h4.title a",                # ManageBac 标题链接
+        "h4.title a",                         # 标题简化选择器
+        ".title a",                           # 更通用的标题
+        
+        # 回退选择器
         "a.assignment-title",
         "a.title",
         "h3",
@@ -35,6 +48,11 @@ class ManageBacScraper:
     ]
 
     _COURSE_SELECTORS = [
+        # 基于真实DOM分析（2025-10-26更新）
+        ".details .label-and-due",            # 包含标签和截止日期的区域
+        ".class-info",                        # 课程信息区域
+        
+        # 回退选择器
         "span.course",
         "div.course",
         "span.subject",
@@ -42,6 +60,11 @@ class ManageBacScraper:
     ]
 
     _DUE_SELECTORS = [
+        # 基于真实DOM分析（2025-10-26更新）
+        ".label-and-due .due",                # ManageBac 截止日期
+        ".date-badge",                        # 日期徽章
+        
+        # 回退选择器
         "span.due",
         "span.due-date",
         "td.due",
@@ -103,6 +126,12 @@ class ManageBacScraper:
         return True
 
     async def navigate_to_assignments(self, page: Page) -> None:
+        """
+        导航到作业页面
+        
+        重要：ManageBac的作业页面包含多个section（Upcoming, Overdue, Completed）
+        我们需要确保所有section的内容都被加载
+        """
         candidates = [
             ("a:has-text('Tasks & Deadlines')", "Tasks & Deadlines"),
             ("a:has-text('Assignments')", "Assignments"),
@@ -126,6 +155,8 @@ class ManageBacScraper:
                     keyword in page.url
                     for keyword in ("tasks", "assignment", "homework")
                 ):
+                    # 成功到达作业页面，现在尝试展开所有section
+                    await self._expand_all_sections(page)
                     return
             except Exception as exc:
                 self.logger.debug("Navigation via %s failed: %s", selector, exc)
@@ -149,6 +180,7 @@ class ManageBacScraper:
                     keyword in page.url
                     for keyword in ("tasks", "assignment", "homework")
                 ):
+                    await self._expand_all_sections(page)
                     return
             except Exception as exc:
                 self.logger.debug("Fallback navigation to %s failed: %s", target, exc)
@@ -156,36 +188,104 @@ class ManageBacScraper:
         self.logger.warning(
             "Unable to confirm assignment page navigation; continuing with current page"
         )
+        # 即使导航失败，也尝试展开sections
+        await self._expand_all_sections(page)
+
+    async def _expand_all_sections(self, page: Page) -> None:
+        """
+        展开所有作业section（Upcoming, Overdue, Completed等）
+        
+        ManageBac可能使用折叠的sections来组织作业，我们需要点击展开它们
+        """
+        self.logger.info("尝试展开所有作业sections...")
+        
+        # 尝试点击各种可能的展开按钮/标签
+        expand_selectors = [
+            "a:has-text('Overdue')",           # Overdue tab/link
+            "button:has-text('Overdue')",      # Overdue button
+            "[data-section='overdue']",        # Overdue section
+            ".section-toggle",                  # Generic section toggle
+            ".expand-button",                   # Expand button
+            "a:has-text('Show all')",          # Show all link
+            "button:has-text('Show all')",     # Show all button
+        ]
+        
+        for selector in expand_selectors:
+            try:
+                elements = await page.query_selector_all(selector)
+                for element in elements:
+                    try:
+                        await element.click(timeout=1000)
+                        await page.wait_for_timeout(500)
+                        self.logger.debug("Clicked expand element: %s", selector)
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+        
+        # 滚动页面以触发lazy loading
+        try:
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await page.wait_for_timeout(1000)
+            await page.evaluate("window.scrollTo(0, 0)")
+            await page.wait_for_timeout(500)
+            self.logger.debug("Scrolled page to trigger lazy loading")
+        except Exception as e:
+            self.logger.debug("Failed to scroll page: %s", e)
+        
+        self.logger.info("完成section展开尝试")
 
     async def collect_assignments(self, page: Page) -> List[Assignment]:
+        """
+        收集页面上的所有作业
+        
+        重要改进：不再在找到第一个匹配的selector后就停止，而是尝试所有selector
+        并收集所有唯一的作业，确保不会遗漏任何作业。
+        """
         assignments: List[Assignment] = []
         seen_ids: set[str] = set()
 
+        # 尝试所有selector，收集所有可能的作业元素（不要提前break）
         for selector in self._ASSIGNMENT_CONTAINER_SELECTORS:
             try:
                 handles = await page.query_selector_all(selector)
-            except Exception:
+            except Exception as e:
+                self.logger.debug("Selector %s query failed: %s", selector, e)
                 handles = []
+            
             if not handles:
+                self.logger.debug("Selector %s yielded 0 elements", selector)
                 continue
 
-            self.logger.debug("Selector %s yielded %d elements", selector, len(handles))
+            self.logger.info("✅ Selector '%s' found %d elements", selector, len(handles))
+            
             for handle in handles:
                 assignment = await self._extract_assignment(handle)
                 if not assignment:
                     continue
+                
+                # 使用唯一标识符去重
                 if assignment.identifier in seen_ids:
+                    self.logger.debug("Skipping duplicate assignment: %s", assignment.title)
                     continue
+                
                 seen_ids.add(assignment.identifier)
                 assignments.append(assignment)
+                self.logger.debug("Collected assignment: %s (course: %s, due: %s)", 
+                                assignment.title, assignment.course, assignment.due_date)
 
-            if assignments:
-                break
-
+        # 如果所有selector都没有找到作业，尝试fallback方法
         if not assignments:
-            self.logger.info("Falling back to text-based scan")
+            self.logger.warning("⚠️ No assignments found with selectors, trying fallback method")
             assignments = await self._text_fallback(page)
+        else:
+            self.logger.info("📚 Total unique assignments collected: %d", len(assignments))
 
+        # 应用配置的过滤规则
+        assignments = self._filter_assignments(assignments)
+        self.logger.info("📋 After filtering: %d assignments remaining", len(assignments))
+
+        # 按截止日期和标题排序
         assignments.sort(key=lambda a: (a.due_date or "", a.title))
         return assignments
 
@@ -289,18 +389,93 @@ class ManageBacScraper:
             return "medium"
         return "low"
 
+    def _filter_assignments(self, assignments: List[Assignment]) -> List[Assignment]:
+        """
+        根据配置过滤作业列表
+        
+        Args:
+            assignments: 原始作业列表
+            
+        Returns:
+            过滤后的作业列表
+        """
+        if not assignments:
+            return assignments
+        
+        filtered = []
+        stats = {
+            'submitted': 0,
+            'overdue': 0,
+            'upcoming': 0,
+            'filtered_out': 0
+        }
+        
+        for assignment in assignments:
+            # 根据submitted状态过滤
+            if assignment.submitted:
+                stats['submitted'] += 1
+                if not self.config.include_submitted:
+                    stats['filtered_out'] += 1
+                    self.logger.debug("Filtered out (submitted): %s", assignment.title)
+                    continue
+            
+            # 根据overdue状态过滤
+            if assignment.overdue:
+                stats['overdue'] += 1
+                if not self.config.include_overdue:
+                    stats['filtered_out'] += 1
+                    self.logger.debug("Filtered out (overdue): %s", assignment.title)
+                    continue
+            
+            # 未提交且未过期的作业视为upcoming
+            if not assignment.submitted and not assignment.overdue:
+                stats['upcoming'] += 1
+                if not self.config.include_upcoming:
+                    stats['filtered_out'] += 1
+                    self.logger.debug("Filtered out (upcoming): %s", assignment.title)
+                    continue
+            
+            filtered.append(assignment)
+        
+        # 记录过滤统计
+        self.logger.info(
+            "Filter stats - Submitted: %d, Overdue: %d, Upcoming: %d, Filtered out: %d",
+            stats['submitted'], stats['overdue'], stats['upcoming'], stats['filtered_out']
+        )
+        
+        return filtered
+
     async def _text_fallback(self, page: Page) -> List[Assignment]:
+        """
+        文本回退方法：当CSS选择器无法找到作业时的备用方案
+        
+        重要改进：移除了原来的blocks[:20]限制，现在会处理所有可能的作业文本
+        """
         content = await page.inner_text("body")
         blocks = [
             line.strip() for line in content.splitlines() if len(line.strip()) > 10
         ]
+        
+        self.logger.info("Text fallback: analyzing %d text blocks", len(blocks))
+        
         assignments: List[Assignment] = []
-        for block in blocks[:20]:
+        seen_identifiers: set[str] = set()
+        
+        # 移除了[:20]限制，处理所有可能包含作业信息的文本块
+        for block in blocks:
             if not any(
-                token in block.lower() for token in ("due", "截止", "submit", "提交")
+                token in block.lower() for token in ("due", "截止", "submit", "提交", "assignment", "homework", "作业")
             ):
                 continue
-            identifier = block[:40].lower()
+            
+            # 使用更长的标识符以提高唯一性
+            identifier = block[:60].lower()
+            
+            # 避免重复
+            if identifier in seen_identifiers:
+                continue
+            seen_identifiers.add(identifier)
+            
             # Try to extract date from text
             due_date = "无截止日期"
             import re
@@ -310,6 +485,7 @@ class ManageBacScraper:
                 r"(\d{2}/\d{2}/\d{4})",  # MM/DD/YYYY
                 r"(\d{2}-\d{2}-\d{4})",  # MM-DD-YYYY
                 r"(\d{1,2}/\d{1,2}/\d{2,4})",  # M/D/YY or MM/DD/YYYY
+                r"([A-Z][a-z]{2}\s+\d{1,2},\s+\d{4})",  # Oct 26, 2025
             ]
 
             for pattern in date_patterns:
@@ -321,9 +497,10 @@ class ManageBacScraper:
             # Try to extract course name
             course = "未知课程"
             course_patterns = [
+                r"AP\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",  # AP courses
                 r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",  # Course names
                 r"(数学|物理|化学|生物|英语|语文|历史|地理|政治)",  # Chinese subjects
-                r"(Math|Physics|Chemistry|Biology|English|History|Geography)",  # English subjects
+                r"(Math|Physics|Chemistry|Biology|English|History|Geography|Computer Science|Calculus|Macroeconomics)",  # English subjects
             ]
 
             for pattern in course_patterns:
@@ -344,6 +521,8 @@ class ManageBacScraper:
                     priority=self._priority_from_text(block, block),
                 )
             )
+        
+        self.logger.info("Text fallback collected %d potential assignments", len(assignments))
         return assignments
 
 

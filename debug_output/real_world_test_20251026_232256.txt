@@ -1,0 +1,150 @@
+================================================================================
+ManageBac Assignment Checker - 真实账号测试报告
+================================================================================
+
+测试时间: 2025-10-26 23:22:56
+总作业数: 7
+
+测试结果汇总:
+--------------------------------------------------------------------------------
+all_assignments: 7
+upcoming_only: 7
+overdue_only: 0
+
+详细作业列表:
+--------------------------------------------------------------------------------
+
+1. weekend homework6
+   课程: Formative
+Homework
+
+
+Pending
+
+
+
+in AP AP Calculus BC (Grade 11)
+
+
+
+
+Monday at  8:00 AM
+   截止日期: Monday at  8:00 AM
+   状态: Pending
+   类型: Formative
+   优先级: medium
+   已提交: False
+   过期: False
+   链接: /student/classes/11412427/core_tasks/26475931
+
+2. Unit 2 Exercise 4 Redo
+   课程: Formative
+Homework
+
+
+Pending
+
+
+
+in AP AP Macroeconomics (Grade 12)
+
+
+
+
+Monday at 11:55 PM
+   截止日期: Monday at 11:55 PM
+   状态: Pending
+   类型: Formative
+   优先级: medium
+   已提交: False
+   过期: False
+   链接: /student/classes/11412723/core_tasks/26481957
+
+3. HomeWork-APCS
+   课程: Summative
+Homework
+
+
+Pending
+
+
+
+in AP AP Computer Science (Grade 11)
+
+
+
+
+Sunday at 11:55 PM
+   截止日期: Sunday at 11:55 PM
+   状态: Pending
+   类型: Summative
+   优先级: medium
+   已提交: False
+   过期: False
+   链接: /student/classes/11412561/core_tasks/26438286
+
+4. Reflection Note Week 8
+   课程: Formative
+Homework
+
+
+Pending
+
+
+
+in AP AP Macroeconomics (Grade 12)
+
+
+
+
+Sunday at 11:55 PM
+   截止日期: Sunday at 11:55 PM
+   状态: Pending
+   类型: Formative
+   优先级: medium
+   已提交: False
+   过期: False
+   链接: /student/classes/11412723/core_tasks/26481974
+
+5. Bi-Week Feedback 3 (2025/10/21)
+   课程: 未知课程
+   截止日期: Tuesday at  6:45 PM
+   状态: Unknown
+   类型: Formative
+   优先级: low
+   已提交: False
+   过期: False
+   链接: /student/classes/11412723/core_tasks/26462690
+
+6. homeWork-AP CS
+   课程: Summative
+Homework
+
+
+Pending
+
+
+
+in AP AP Computer Science (Grade 11)
+
+
+
+
+Tuesday at  9:30 AM
+   截止日期: Tuesday at  9:30 AM
+   状态: Pending
+   类型: Summative
+   优先级: medium
+   已提交: False
+   过期: False
+   链接: /student/classes/11412561/core_tasks/26464250
+
+7. U2 Weekend homework
+   课程: 未知课程
+   截止日期: Tuesday at 11:00 PM
+   状态: Pending
+   类型: Summative
+   优先级: medium
+   已提交: False
+   过期: False
+   链接: /student/classes/11412719/core_tasks/26439987
